@@ -1,0 +1,15 @@
+{
+  "name": "@thiagozampieri/olt-client-parser",
+  "version": "1.0.0",
+  "description": "Biblioteca para acessar OLTs multimarcas e transformar em JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon test/connect.js"
+  },
+  "author": "Thiago Zampieri <thiago.zampieri@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/thiagozampieri/olt-client-parser.git#readme",
+  "dependencies": {
+    "telnet-client": "^2.0.6"
+  }
+}
