@@ -114,6 +114,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
   */
 
   const splitted = chunk.split(regexp)
+  splitted.shift();
   const data = splitted
     .map(item => column2json(
       item
@@ -133,14 +134,14 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
     ont_id: (ont_id + 1).toString(),
     // pon_type: 'gpon',
     // capability: 'bridging_routing',
+    // allow_custom_profiles: false,
+    // catv: false,
     temperature: 0,
     tx_power: 0,
     olt_rx_power: 0,
     catv_rx_power: 0,
-    catv: false,
     onu_type: item.model_name,
     name: item.host_name,
-    allow_custom_profiles: false,
     rx_power: parseFloat((item.o_n_u_r_x_pover || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
     onu_external_id: item.description,
     serial_number: item.serial_number,
