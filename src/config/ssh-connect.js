@@ -1,7 +1,7 @@
-const Telnet = require('./telnet')
+const SSH = require('./ssh')
 
 const connect = async (defaultOptions) => {
-  const client = new Telnet(defaultOptions)
+  const client = new SSH(defaultOptions)
   const connection = client.getConnection()
   const options = client.getOptions()
   
@@ -9,36 +9,20 @@ const connect = async (defaultOptions) => {
     // const commands = cmds.split('\n')
     // for(commands)
     const chunks = await client.exec(cmd)
+    // console.log(chunks)
+    return chunks
     const _chunks = chunks.split(/\n/)
     return _chunks
       .map(chunk => chunk
         .replace(` ( Press 'Q' to break ) ----\x1B[37D                                     \x1B[37D`, '')
       )
       .join('\n')
-  }
-
-  const send = async (cmd) => {
-    // const commands = cmds.split('\n')
-    // for(commands)
-    const chunks = await client.send(cmd)
-    const _chunks = chunks.split(/\n/)
-    return _chunks
-      .map(chunk => chunk
-        .replace(` ( Press 'Q' to break ) ----\x1B[37D                                     \x1B[37D`, '')
-      )
-      .join('\n')
-  }
-
-  const send22 = async (cmd) => {
-    const chunks = await client.send(cmd)
-    return ''
   }
 
   return {
     connection,
     options,
     exec,
-    send
   }
 }
 

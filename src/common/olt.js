@@ -24,18 +24,30 @@ class OLT {
   }
 
   requireTemplate() {
-    const { brand: brandOriginal, model: modelOriginal, firmware: firmwareOriginal } = this.getParams()
+    const { 
+      brand: brandOriginal, 
+      model: modelOriginal, 
+      firmware: firmwareOriginal,
+      connectionType: connectionTypeOriginal,
+    } = this.getParams()
 
     const brand = brandOriginal.toString().toUpperCase()
     const model = modelOriginal.toString().toUpperCase()
+    const connectionType = connectionTypeOriginal.toString().toLowerCase()
     const firmware = `F${firmwareOriginal.toString().replace(/\./gi, '_')}`.toUpperCase()
 
+    
     const brandTemplate = templates[brand]
     const modelTemplate = brandTemplate[model] || brandTemplate.generic
-    const container = modelTemplate[firmware] || modelTemplate
+    const container = {
+      ...(modelTemplate && modelTemplate[connectionType]),
+      ...(modelTemplate && modelTemplate[firmware] && modelTemplate[firmware][connectionType])
+    }
 
     return {
-      container,
+      container: {
+        ...Object.assign(brandTemplate.generic, container),
+      },
       options: {
         ...brandTemplate.options,
         ...modelTemplate.options,

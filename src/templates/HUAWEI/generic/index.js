@@ -1,7 +1,13 @@
-const displayPermissionByUser = require('./command/displayPermissionByUser')
-const displayBoard = require('./command/displayBoard')
+const enableRoot = require('./telnet/enableRoot')
+const displayPermissionByUser = require('./telnet/displayPermissionByUser')
+const displayBoard = require('./telnet/displayBoard')
+const displayPon = require('./telnet/displayPon')
 
 module.exports = {
-  displayPermissionByUser,
-  displayBoard
+  telnet: {
+    enableRoot,
+    displayPermissionByUser,
+    displayBoard,
+    displayPon,
+  }
 }

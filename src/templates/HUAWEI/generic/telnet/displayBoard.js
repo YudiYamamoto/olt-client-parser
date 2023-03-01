@@ -1,5 +1,5 @@
-const { connect } = require('../../../../../config/telnet-connect')
-const dummy2json = require('../../../../../utils/dummy2json')
+const { connect } = require('../../../../config/telnet-connect')
+const { dummy2json } = require('../../../../utils/lib')
 
 /*
 >>> Mostra placas do chassi:

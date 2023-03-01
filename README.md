@@ -25,7 +25,7 @@ const olt = new OLTClientParser({
     username: 'username', // default root
     password: 'password', // default guest
   }
-})
+});
 ```
 
 ### Para verificar nivel de permissão do user:
@@ -34,7 +34,7 @@ const olt = new OLTClientParser({
 (async () => {
   const data = await olt.displayPermissionByUser('user')
   console.log(data)
-})()
+})();
 ```
 
 ### Mostra placas do chassi:
@@ -43,5 +43,5 @@ const olt = new OLTClientParser({
 (async () => {
   const data = await olt.displayBoard(0)
   console.log(data)  
-})()
+})();
 ```

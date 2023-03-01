@@ -1,5 +1,5 @@
 const { connect } = require('../../../../config/telnet-connect')
-const dummy2json = require('../../../../utils/dummy2json')
+const { dummy2json } = require('../../../../utils/lib')
 
 /*
 >>> Para verificar nivel de permissão do user:

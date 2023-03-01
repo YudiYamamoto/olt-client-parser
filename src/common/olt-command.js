@@ -1,14 +1,17 @@
-// const displayPermissionByUser = require('./displayPermissionByUser')
-
 const OLT = require('./olt')
+process.on('unhandledRejection', error => {
+  console.error(error.message)
+})
 
 class OLTCommand extends OLT {
-  async displayPermissionByUser(username) {
-    return this.getContainer().displayPermissionByUser(this.getOptions(), username)
-  }
-
-  async displayBoard(board) {
-    return this.getContainer().displayBoard(this.getOptions(), board)
+  constructor (props) {
+    super(props)
+    const container = this.getContainer()
+    const options = this.getOptions()
+    const keys = Object.keys(container)
+    const instance = keys.map((cmd) => ([cmd, (params) => container[cmd](options, params) ]))
+    const entries = new Map(instance)
+    return Object.fromEntries(entries)
   }
 }
 
