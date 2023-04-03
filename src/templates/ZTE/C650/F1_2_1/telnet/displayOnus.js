@@ -133,8 +133,8 @@ c83a.3529.9ea0   2501   Dynamic   vport-1/1/1.2:1                  `
       [23, 33],
       [33, 58],
     ]
-    const [_line1, _line2, ...splitted] = chunckMA.split('\n')
-    const [element] = dummy2json(splitted.join('\n'), columns, 1)
+    const [_line1, _line2, _line3, _line4, ...splitted] = chunckMA.split('\n')
+    const element = splitted[0].substring(0, 17).trim()
 
     /*
     // const chunkMA = await conn.exec(`show pon power attenuation gpon_onu-${f_p_s}${ont_id}`)
@@ -167,15 +167,13 @@ c83a.3529.9ea0   2501   Dynamic   vport-1/1/1.2:1                  `
       onu_type: item.type,
       name: item.name,
       rx_power: parseFloat((rx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
-      onu_external_id: item.host_name,
+      onu_external_id: item.serialnumber,
       serial_number: item.serialnumber,
-      mac_address: str2mac(element.macaddress.replace(/\./gi, '')),
+      mac_address: str2mac(element.replace(/\./gi, '')),
       description: item.description,
       distance: parseInt((item.o_n_u_distance || '').replace('m', ''), 10),
-      // Inactive
       stage: STATUS[item.phasestate] || 'disabled',
       authorization_at: new Date(), // TODO colocar uma tag de origem importada
-      online_2: item.online_duration,
       uptime_at: hour2time(item.online_duration),
       custom_fields: {
         source: 'import_onu'

@@ -166,15 +166,13 @@ c025.2ff5.555d   1201  Dynamic   gpon-onu_1/12/1:1        vport 1`
       onu_type: item.type,
       name: item.name,
       rx_power: parseFloat((rx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
-      onu_external_id: item.host_name,
+      onu_external_id: item.serialnumber,
       serial_number: item.serialnumber,
       mac_address: str2mac(element.macaddress.replace(/\./gi, '')),
       description: item.description,
       distance: parseInt((item.o_n_u_distance || '').replace('m', ''), 10),
-      // Inactive
       stage: STATUS[item.phasestate] || 'disabled',
       authorization_at: new Date(), // TODO colocar uma tag de origem importada
-      online_2: item.online_duration,
       uptime_at: hour2time(item.online_duration),
       custom_fields: {
         source: 'import_onu'

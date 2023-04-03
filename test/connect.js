@@ -94,7 +94,7 @@ const olt = new OLTClientParser({
 (async () => {
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
-  const data = await olt.displayPons({ board: '1', slot: '1' })
-  // const data = await olt.displayOnus({ board: '1', slot: '12', port: '1' })
+  // const data = await olt.displayPons({ board: '1', slot: '1' })
+  const data = await olt.displayOnus({ board: '1', slot: '12', port: '1' })
   console.log(data)  
 })()
