@@ -1,4 +1,4 @@
-const generic = require('./generic')
+const generic = require('./_generic')
 const MA5608T = require('./MA5608T')
 
 module.exports = {

@@ -42,4 +42,17 @@ const connect = async (defaultOptions) => {
   }
 }
 
-module.exports = { connect }
+const connectCommand = async (connection, command, options, time, data) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => { 
+      connection.exec(command, options, (err, response) => {
+        if (!err) reject(err)
+        // console.log(response, time, '<<<<')
+        data.push(response)
+      })
+    resolve(data)
+   }, time)
+  })
+}
+
+module.exports = { connect, connectCommand }
