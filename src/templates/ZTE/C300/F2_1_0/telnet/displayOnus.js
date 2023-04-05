@@ -97,9 +97,11 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
    8   0000-00-00 00:00:00    0000-00-00 00:00:00
    9   0000-00-00 00:00:00    0000-00-00 00:00:00
   10   0000-00-00 00:00:00    0000-00-00 00:00:00`;
+
+  const { size: length = 128 } = options && options.__extra__ && options.__extra__.onu || {}
   
   const data = []
-  for await (const [index] of Array.from({ length: 128 }).entries()) {
+  for await (const [index] of Array.from({ length }).entries()) {
     const ont_id = index + 1
     /*
     // const chunk = await conn.exec(`${cmd}:${ont_id}`)

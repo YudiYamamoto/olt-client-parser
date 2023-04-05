@@ -45,8 +45,14 @@ const olt = new OLTClientParser({
     username: 'madegraph',
     password: 'Made@graph1',
     shellPrompt: 'IRARA-OLT#',
+    __extra__: {
+      onu: {
+        size: 3
+      }
+    }
   }
 });
+*/
 
 const olt = new OLTClientParser({
   brand: 'ZTE',
@@ -59,9 +65,14 @@ const olt = new OLTClientParser({
     username: 'madegraph',
     password: 'Made@graph1',
     shellPrompt: 'ZXAN#',
+    __extra__: {
+      onu: {
+        size: 3
+      }
+    }
   }
 });
-*/
+
 
 /*
 // HUAWEI MA5608T
@@ -102,6 +113,6 @@ const olt = new OLTClientParser({
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
-  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
-  // console.log(data)  
+  const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
+  console.log(data)  
 })()

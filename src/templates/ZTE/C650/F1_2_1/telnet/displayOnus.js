@@ -99,9 +99,11 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
    8   2023-01-30 18:37:32    2023-01-30 18:38:39     DyingGasp 
    9   2023-01-30 18:39:34    2023-02-26 06:04:58     DyingGasp 
   10   2023-02-26 06:06:03    2023-03-08 20:12:31     DyingGasp`;
+
+  const { size: length = 128 } = options && options.__extra__ && options.__extra__.onu || {}
   
   const data = []
-  for await (const [index] of Array.from({ length: 128 }).entries()) {
+  for await (const [index] of Array.from({ length }).entries()) {
     const ont_id = index + 1
     /*
     // const chunk = await conn.exec(`${cmd}:${ont_id}`)
