@@ -1,53 +1,13 @@
 'use strict'
 const OLTClientParser = require('../index')
 
-const olt = new OLTClientParser({
-  brand: 'ZTE',
-  model: 'C650',
-  firmware: '1_2_1',
-  connectionType: 'telnet',
-  options: {
-    host: '177.155.144.1',
-    port: 2023,
-    username: 'smartoltusr',
-    password: 'Mega@1926',
-    shellPrompt: 'ZXAN#',
-  }
-});
 
 /*
-const olt = new OLTClientParser({
-  brand: 'ZTE',
-  model: 'C300',
-  firmware: '2_1_0',
-  connectionType: 'telnet',
-  options: {
-    host: '177.155.144.1',
-    port: 2023,
-    username: 'smartoltusr',
-    password: 'Mega@1926',
-    shellPrompt: 'ZXAN#',
-  }
-});
-const olt = new OLTClientParser({
-  brand: 'Furukawa',
-  model: '3032',
-  firmware: '2_0_9',
-  connectionType: 'ssh',
-  options: {
-    host: '177.128.99.254',
-    port: 3022,
-    username: 'madegraph',
-    password: '18012023',
-    shellPrompt: 'OLT-3008-DATACIT-RET>',
-  }
-});
-
-
+// FURUKAWA 3008
 const olt = new OLTClientParser({
   brand: 'Furukawa',
   model: '3008',
-  firmware: '1_09-0050',
+  firmware: '1.0.2',
   connectionType: 'ssh',
   options: {
     host: '177.128.99.254',
@@ -58,6 +18,53 @@ const olt = new OLTClientParser({
   }
 });
 
+// FURUKAWA 3032
+const olt = new OLTClientParser({
+  brand: 'Furukawa',
+  model: '3032',
+  firmware: '2.0.9',
+  connectionType: 'ssh',
+  options: {
+    host: '186.232.56.242',
+    port: 3022,
+    username: 'madegraph',
+    password: 'made@graph1',
+    shellPrompt: 'FKW-AVANZA-3032[A]>',
+  }
+});
+
+// ZTE C650
+const olt = new OLTClientParser({
+  brand: 'ZTE',
+  model: 'C650',
+  firmware: '1.2.1',
+  connectionType: 'ssh',
+  options: {
+    host: '177.128.99.254',
+    port: 3050,
+    username: 'madegraph',
+    password: 'Made@graph1',
+    shellPrompt: 'IRARA-OLT#',
+  }
+});
+
+const olt = new OLTClientParser({
+  brand: 'ZTE',
+  model: 'C320',
+  firmware: '2.1.0',
+  connectionType: 'ssh',
+  options: {
+    host: '177.155.144.1',
+    port: 3051,
+    username: 'madegraph',
+    password: 'Made@graph1',
+    shellPrompt: 'ZXAN#',
+  }
+});
+*/
+
+/*
+// HUAWEI MA5608T
 const olt = new OLTClientParser({
   brand: 'Huawei',
   model: 'MA5608T',
@@ -73,6 +80,7 @@ const olt = new OLTClientParser({
   }
 });
 
+/*
 (async () => {
   const data = await olt.displayPermissionByUser('made4it')
   console.log(data)
@@ -88,13 +96,12 @@ const olt = new OLTClientParser({
   const data = await olt.displayPon(params)
   console.log(data)  
 })()
-
 */
 
 (async () => {
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
-  const data = await olt.displayOnus({ board: '1', slot: '12', port: '1' })
-  console.log(data)  
+  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
+  // console.log(data)  
 })()

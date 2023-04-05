@@ -42,48 +42,14 @@ FKW-AVANZA-3032[A]#
 */
 
 
-const displayPons = async (_options, { board = '1', slot = '1' }) => {  
-  /*
+const displayPons = async (options, { board = '1', slot = '1' }) => {  
   const conn = await connect(options)
   const cmd = `show olt status`  
-  // const chunk = await conn.exec(cmd)
-  */
-
-  const chunk = `----------------------------------------------------------------
-    OLT    |  Status   |  Protect  | Distance | FEC mode(DS/US)
-----------------------------------------------------------------
-   GPON1/1 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/2 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/3 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/4 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/5 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/6 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/7 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/8 |    Active |           | 20/20 Km |  enable/disable
-   GPON1/9 |    Active |           | 20/20 Km |  enable/disable
-  GPON1/10 |    Active |           | 20/20 Km |  enable/disable
-  GPON1/11 |    Active |           | 20/20 Km |  enable/disable
-  GPON1/12 |    Active |           | 20/20 Km |  enable/disable
-  GPON1/13 |    Active |           | 20/20 Km |  enable/disable
-  GPON1/14 |    Active |           | 20/20 Km |  enable/disable
-  GPON1/15 |    Active |           | 20/20 Km |  enable/disable
-  GPON1/16 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/1 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/2 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/3 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/4 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/5 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/6 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/7 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/8 |    Active |           | 20/20 Km |  enable/disable
-   GPON2/9 |    Active |           | 20/20 Km |  enable/disable
-  GPON2/10 |    Active |           | 20/20 Km |  enable/disable
-  GPON2/11 |    Active |           | 20/20 Km |  enable/disable
-  GPON2/12 |    Active |           | 20/20 Km |  enable/disable
-  GPON2/13 |    Active |           | 20/20 Km |  enable/disable
-  GPON2/14 |    Active |           | 20/20 Km |  enable/disable
-  GPON2/15 |    Active |           | 20/20 Km |  enable/disable
-  GPON2/16 |    Active |           | 20/20 Km |  enable/disable`
+  
+  const chunk = await conn.exec(cmd)
+  const splitted = chunk.split('\n')
+  splitted.shift()
+  
   const columns = [
     [0, 11],
     [12, 23],
@@ -92,7 +58,12 @@ const displayPons = async (_options, { board = '1', slot = '1' }) => {
     [47, 64],
   ]
 
-  const data = dummy2json(chunk, columns, 2)
+  const chunkMaster = `----------------------------------------------------------------
+    OLT    |  Status   |  Protect  | Distance | FEC mode(DS/US) 
+----------------------------------------------------------------
+${splitted.join('\n')}`
+
+  const data = dummy2json(chunkMaster, columns, 2)
 
   return data
     .filter(item => {

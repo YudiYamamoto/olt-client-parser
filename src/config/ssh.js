@@ -13,7 +13,7 @@ class SSHWrapper {
       password, 
       tryKeyboard: true,
       keepaliveInterval: 60000,
-      keepaliveCountMax: 1,
+      keepaliveCountMax: 3,
       // timeout, 
       authHandler: ['password'],
       algorithms: {
@@ -31,12 +31,13 @@ class SSHWrapper {
         // hmac?: AlgorithmList<MacAlgorithm>,
         // compress?: AlgorithmList<CompressionAlgorithm>,
       },
-      /*tryKeyboard: true,
+      /*
       onKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
         if (prompts.length > 0 && prompts[0].prompt.toLowerCase().includes('password')) {
           finish([password])
         }
-      },*/
+      },
+      */
       // "debug": console.log
     }    
     this._connection = connection
@@ -60,31 +61,45 @@ class SSHWrapper {
     // console.error(test)
     return new Promise((resolve, reject) => {
       const conn = connection.connection
-      let test = null
+      // let test = null
       const chunks = []
       conn.shell((err, stream) => {
         if (err) reject(err)
         stream
-          .on('end', function () {
-            const item = chunks.join('').split('\r\n').slice(6, -3)
-            // chunks.shift()
-            // chunks.pop()
-            // console.table(item)
-            resolve(item.join('\n'))
-          })
+          /*
           .on('data', (data) => {
             // console.log(Buffer.from(data).toString('utf-8'), '>>>')
             // resolve(Buffer.from(data).toString('utf-8'))
             test = Buffer.from(data).toString('utf-8')
           })          
+          .on('error', (data) => {
+            console.error(data, '<<<')
+          })          
+          */
           .on('readable', () => {
             let chunk;            
             while (null !== (chunk = stream.read())) {
-              // console.log('got %d bytes of data', chunk.length);
-              chunks.push(Buffer.from(chunk).toString('utf-8'))
+              const item = Buffer.from(chunk).toString('utf-8')
+              // console.log('got %d bytes of data', chunk.length)
+              // console.log(item)
+              // chunks.push(item.replace('--More-- \r         \r', ''))
+              chunks.push(item)
+              // console.log(stream)
             }
+            // if (!chunk) stream.close()
           })
-          .end(`${cmd}\n exit\n`)
+
+        stream.on('end', function () {
+          const item = chunks.join('').split('\r\n').slice(6, -3)
+          // chunks.shift()
+          // chunks.pop()
+          // console.table(item)
+          resolve(item.join('\n'))
+        })
+
+        stream.end(`terminal length 512\n ${cmd}\n exit\n`, 'utf8', () => {
+          setTimeout(() => stream.close(), 5000)
+        })
       })
     })
   }

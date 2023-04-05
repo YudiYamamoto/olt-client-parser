@@ -18,35 +18,23 @@ OLT-3008-DATACIT-RET#
 */
 
 
-const displayPons = async (_options, { board = '1', slot = '1' }) => {  
-  /*
+const displayPons = async (options, { board = '1', slot = '1' }) => {  
   const conn = await connect(options)
   const cmd = `show olt status`  
-  // const chunk = await conn.exec(cmd)
-  */
-
-  const chunk = `----------------------------------------------------------------
-  OLT    |  Status   |  Protect  | Distance | FEC mode(DS/US)
-----------------------------------------------------------------
-       1 |    Active |           | 20/20 Km |  enable/disable
-       2 |    Active |           | 20/20 Km |  enable/disable
-       3 |    Active |           | 20/20 Km |  enable/disable
-       4 |    Active |           | 20/20 Km |  enable/disable
-       5 |    Active |           | 20/20 Km |  enable/disable
-       6 |    Active |           | 20/20 Km |  enable/disable
-       7 |    Active |           | 20/20 Km |  enable/disable
-       8 |    Active |           | 20/20 Km |  enable/disable`
-
+  const chunk = await conn.exec(cmd)
+  const splitted = chunk.split('\n')
+  splitted.shift()
+  
   const columns = [
-    [0, 9],
-    [10, 21],
-    [22, 33],
-    [34, 44],
-    [45, 64],
+    [0, 10],
+    [12, 23],
+    [24, 35],
+    [36, 46],
+    [48, 64],
   ]
 
-  const data = dummy2json(chunk, columns, 2)
-
+  const data = dummy2json(splitted.join('\n'), columns, 1)
+  console.log(data)
   return data.map((item) =>  {
     const [min_range, max_range] = (item.distance || '0/0')
       .toLowerCase()
