@@ -38,23 +38,20 @@ const { column2json, day2time } = require('../../../../../utils/lib')
  Remote Debug Format               : ASCIT
 */
 
-const base = 'OLT : GPON\\d+/\\d+, ONU : \\d+\\n---------------------------------------------------------------'
+const base = ' OLT : GPON\\d+/\\d+, ONU : \\d+\\n---------------------------------------------------------------'
 const regexp_base = new RegExp(base, 'gmi')
 // const regexp = /---------------------------------------------------------------\n regexp_base/gmi;
-const regexp = new RegExp(`---------------------------------------------------------------\\n ${base}`, 'gmi')
+const regexp = new RegExp(`---------------------------------------------------------------\\n${base}`, 'gmi')
 
 const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
+  if (parseInt(port, 10) < 15) return null; // TODO verificar limitação
+
+  const cmd = `show onu detail-info gpon ${slot}/${port}`
   const conn = await connect(options)
+  const chunk = await conn.exec(cmd)
+  if (!chunk && chunk === '') return null
 
-  const cmd = `show onu detail-info gpon ${slot}/${port}`  
-  const chunkDa = await conn.exec(cmd)
-  if (!chunkDa && chunkDa === '') return null
-
-  const chunkIt = chunkDa.split('\n')
-  chunkIt.shift()
-  const chunk = chunkIt.join('\n')
-  const match = chunk.match(regexp_base)
-  
+  const match = chunk.match(regexp_base)  
   const splitted = (`---------------------------------------------------------------\n ${chunk}`).split(regexp)
 
   const data = splitted
@@ -71,7 +68,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
     )
 
   return data.map((item, index) => {
-    const index_match = match[index].match(/ONU : \d+/gi)
+    const index_match = (match[index] || '').match(/ONU : \d+/gi)
     const ont_id = String(index_match)
     return ({
       board,

@@ -107,7 +107,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       const [_header0, _header1, _header2, _header3, upSignal, _header4, downSignal] = chunckSignal.split('\r\n')
       
       if (downSignal) {
-        tx_power = downSignal.trim().substring(12, 27) || '0';
+        tx_power = downSignal.trim().substring(12, 27);
         rx_power = downSignal.trim().substring(33, 47);
       }
       if (upSignal) olt_rx_power = upSignal.trim().substring(12, 27);

@@ -12,8 +12,8 @@ class SSHWrapper {
       username,
       password, 
       tryKeyboard: true,
-      keepaliveInterval: 60000,
-      keepaliveCountMax: 3,
+      keepaliveInterval: 300,
+      keepaliveCountMax: 8,
       // timeout, 
       authHandler: ['password'],
       algorithms: {
@@ -64,7 +64,8 @@ class SSHWrapper {
       // let test = null
       const chunks = []
       conn.shell((err, stream) => {
-        if (err) reject(err)
+        // if (err) reject(err)
+        if (err) resolve(null) // TODO 
         stream
           /*
           .on('data', (data) => {

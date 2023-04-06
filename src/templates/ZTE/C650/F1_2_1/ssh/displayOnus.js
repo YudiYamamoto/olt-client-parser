@@ -89,7 +89,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
     const chunkMA = await conn.exec2(cmd2)
     if (chunkMA && chunkMA !== '') {
       const [_line1, _line2, _line3, _line4, ...splitted] = chunkMA.split('\r\n')
-      element = splitted[3].substring(0, 17).trim()
+      element = (splitted && (splitted[3] || '').substring(0, 17).trim()) || ''
     }
 
     let tx_power = 0;

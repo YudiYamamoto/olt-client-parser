@@ -10,7 +10,7 @@ const dummy2json = (chunk, columns, skipLine = 3, delimiter = '_', delimiterHead
     const element = {}
     for (const [col, position] of columns.entries()) {
       const [start, end] = position
-      const value = line.substring(start, end).trim()
+      const value = (line || '').substring(start, end).trim()
       if (!header[col]) header[col] = []
       const name = header[col].join(delimiter).trim()
       if (numOfLine > skipLine) {
@@ -75,8 +75,8 @@ const hour2time = (period) => {
 const line2json = (lines) => {
   const columns = []
   for (const line of lines) {
-    const item1 = line.substring(0, 44).trim()
-    const item2 = line.substring(44).trim()
+    const item1 = (line || '').substring(0, 44).trim()
+    const item2 = (line || '').substring(44).trim()
     if (item1 && item1 !== '') columns.push(item1.replace(':', '[$%]').replace(/\:/gi, '-').replace('[$%]', ':'))
     if (item2 && item2 !== '') columns.push(item2.replace(':', '[$%]').replace(/\:/gi, '-').replace('[$%]', ':'))
   }

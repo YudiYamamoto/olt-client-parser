@@ -11,8 +11,8 @@ class SSHWrapper {
       userName: username,
       password, 
       tryKeyboard: true,
-      keepaliveInterval: 60000,
-      keepaliveCountMax: 3,
+      keepaliveInterval: 300,
+      keepaliveCountMax: 8,
       // timeout, 
       authHandler: ['password'],
       algorithms: {

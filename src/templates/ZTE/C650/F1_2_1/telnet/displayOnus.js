@@ -136,7 +136,7 @@ c83a.3529.9ea0   2501   Dynamic   vport-1/1/1.2:1                  `
       [33, 58],
     ]
     const [_line1, _line2, _line3, _line4, ...splitted] = chunckMA.split('\n')
-    const element = splitted[0].substring(0, 17).trim()
+    const element = (splitted[0] || '').substring(0, 17).trim()
 
     /*
     // const chunkMA = await conn.exec(`show pon power attenuation gpon_onu-${f_p_s}${ont_id}`)

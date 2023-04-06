@@ -1,7 +1,20 @@
 'use strict'
 const OLTClientParser = require('../index')
 
-
+// FURUKAWA 3032
+const olt = new OLTClientParser({
+  brand: 'Furukawa',
+  model: '3032',
+  firmware: '2.0.9',
+  connectionType: 'ssh',
+  options: {
+    host: '186.232.56.242',
+    port: 3022,
+    username: 'madegraph',
+    password: 'made@graph1',
+    shellPrompt: 'FKW-AVANZA-3032[A]>',
+  }
+});
 /*
 // FURUKAWA 3008
 const olt = new OLTClientParser({
@@ -18,20 +31,7 @@ const olt = new OLTClientParser({
   }
 });
 
-// FURUKAWA 3032
-const olt = new OLTClientParser({
-  brand: 'Furukawa',
-  model: '3032',
-  firmware: '2.0.9',
-  connectionType: 'ssh',
-  options: {
-    host: '186.232.56.242',
-    port: 3022,
-    username: 'madegraph',
-    password: 'made@graph1',
-    shellPrompt: 'FKW-AVANZA-3032[A]>',
-  }
-});
+
 
 // ZTE C650
 const olt = new OLTClientParser({
@@ -72,9 +72,7 @@ const olt = new OLTClientParser({
     }
   }
 });
-*/
 
-/*
 // HUAWEI MA5608T
 const olt = new OLTClientParser({
   brand: 'Huawei',
@@ -113,6 +111,8 @@ const olt = new OLTClientParser({
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
-  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
-  // console.log(data)  
+  // const data2 = await olt.displayPons({ board: '1', slot: '2' })
+  const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
+  // const data4 = await olt.displayOnus({ board: '1', slot: '2', port: '4' })
+  console.log(data)  
 })()
