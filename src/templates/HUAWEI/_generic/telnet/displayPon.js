@@ -83,7 +83,6 @@ const displayPon = async ({ params, ...options }, { board: boardNumber, pon }) =
   const { posnr, data: table_pons } = text2table(array, MAX_LEN + 1)
   const pons = dummy2json(table_pons, pon_columns, 3)
   
-  // console.log(chunk)
   return {
     ...board,
     ...power,

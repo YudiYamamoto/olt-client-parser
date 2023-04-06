@@ -34,7 +34,7 @@ const displayPons = async (options, { board = '1', slot = '1' }) => {
   ]
 
   const data = dummy2json(splitted.join('\n'), columns, 1)
-  console.log(data)
+
   return data.map((item) =>  {
     const [min_range, max_range] = (item.distance || '0/0')
       .toLowerCase()

@@ -3,7 +3,7 @@ const { NodeSSH } = require('node-ssh')
 class SSHWrapper {
   constructor({ host, port, username = 'root', password = 'guest', timeout = 2500, ...restOptions }) {
     const connection = new NodeSSH()
-    if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params' }))
+    if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params_ssh' }))
 
     this._options = {
       ...restOptions,

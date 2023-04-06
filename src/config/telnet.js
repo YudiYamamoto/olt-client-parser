@@ -3,7 +3,7 @@ const { Telnet } = require('telnet-client')
 class TelnetWrapper {
   constructor({ host, port, username = 'root', password = 'guest', timeout = 2500, ...restOptions }) {
     const connection = new Telnet()
-    if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params' }))
+    if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params_telnet' }))
 
     this._options = {
       ...restOptions,
