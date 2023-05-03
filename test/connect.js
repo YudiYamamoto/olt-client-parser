@@ -1,38 +1,6 @@
 'use strict'
 const OLTClientParser = require('../index')
 
-// FURUKAWA 3032
-const olt = new OLTClientParser({
-  brand: 'Furukawa',
-  model: '3032',
-  firmware: '2.0.9',
-  connectionType: 'ssh',
-  options: {
-    host: '186.232.56.242',
-    port: 3022,
-    username: 'madegraph',
-    password: 'made@graph1',
-    shellPrompt: 'FKW-AVANZA-3032[A]>',
-  }
-});
-/*
-// FURUKAWA 3008
-const olt = new OLTClientParser({
-  brand: 'Furukawa',
-  model: '3008',
-  firmware: '1.0.2',
-  connectionType: 'ssh',
-  options: {
-    host: '177.128.99.254',
-    port: 3022,
-    username: 'madegraph',
-    password: '18012023',
-    shellPrompt: 'OLT-3008-DATACIT-RET>',
-  }
-});
-
-
-
 // ZTE C650
 const olt = new OLTClientParser({
   brand: 'ZTE',
@@ -40,7 +8,7 @@ const olt = new OLTClientParser({
   firmware: '1.2.1',
   connectionType: 'ssh',
   options: {
-    host: '177.128.99.254',
+    host: '177.128.98.246',
     port: 3050,
     username: 'madegraph',
     password: 'Made@graph1',
@@ -50,42 +18,6 @@ const olt = new OLTClientParser({
         size: 3
       }
     }
-  }
-});
-
-
-const olt = new OLTClientParser({
-  brand: 'ZTE',
-  model: 'C320',
-  firmware: '2.1.0',
-  connectionType: 'ssh',
-  options: {
-    host: '177.155.144.1',
-    port: 3051,
-    username: 'madegraph',
-    password: 'Made@graph1',
-    shellPrompt: 'ZXAN#',
-    __extra__: {
-      onu: {
-        size: 3
-      }
-    }
-  }
-});
-
-// HUAWEI MA5608T
-const olt = new OLTClientParser({
-  brand: 'Huawei',
-  model: 'MA5608T',
-  firmware: '1.9',
-  connectionType: 'telnet',
-  options: {
-    host: '10.11.105.2',
-    port: 23,
-    username: 'made4it',
-    password: 'made4olt',
-    shellPrompt: 'ZAMPI>',
-    // timeout: 10000
   }
 });
 
@@ -112,7 +44,9 @@ const olt = new OLTClientParser({
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data2 = await olt.displayPons({ board: '1', slot: '2' })
-  const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
+  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
+  // const data = await olt.displayVlans()
+  const data = await olt.displayVlan('1')
   // const data4 = await olt.displayOnus({ board: '1', slot: '2', port: '4' })
   console.log(data)  
 })()
