@@ -13,7 +13,7 @@ $ npm install @thiago.zampieri/olt-client-parser
 ### Configuração da API
 
 ```js
-const OLTClientParser = require('@thiagozampieri/olt-client-parser')
+const OLTClientParser = require('@thiago.zampieri/olt-client-parser')
 
 const olt = new OLTClientParser({
   brand: 'Huawei',
