@@ -1,12 +1,12 @@
 {
-  "name": "@thiagozampieri/olt-client-parser",
+  "name": "@thiago.zampieri/olt-client-parser",
   "version": "1.0.0",
   "description": "Biblioteca para acessar OLTs multimarcas e transformar em JSON",
   "main": "index.js",
   "scripts": {
     "test": "nodemon test/connect.js"
   },
-  "author": "Thiago Zampieri <thiago.zampieri@gmail.com>",
+  "author": "Thiago Zampieri <thiago@corelab.com.br>",
   "license": "MIT",
   "homepage": "https://github.com/thiagozampieri/olt-client-parser.git#readme",
   "dependencies": {
@@ -16,5 +16,16 @@
     "promise-series": "^1.0.0",
     "ssh2shell": "^2.0.8",
     "telnet-client": "^2.0.6"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagozampieri/olt-client-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thiagozampieri/olt-client-parser/issues"
   }
 }

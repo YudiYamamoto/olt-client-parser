@@ -5,7 +5,7 @@ Biblioteca para acessar OLTs multimarcas e transformar em JSON
 ## Instalação
 
 ```bash
-$ npm install @thiagozampieri/olt-client-parser
+$ npm install @thiago.zampieri/olt-client-parser
 ```
 
 ## Uso
