@@ -8,6 +8,9 @@ const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayPons = require('./ssh/displayPons')
 const sshDisplayOnus = require('./ssh/displayOnus')
 const sshDisplayVlans = require('../../_generic/ssh/displayVlans')
+const sshDisplayVlan = require('../../_generic/ssh/displayVlan')
+const sshCreateVlan = require('../../_generic/ssh/createVlan')
+const sshDeleteVlan = require('../../_generic/ssh/deleteVlan')
 
 module.exports = {
   telnet: {
@@ -22,5 +25,8 @@ module.exports = {
     displayPons: sshDisplayPons,
     displayOnus: sshDisplayOnus,
     displayVlans: sshDisplayVlans,
+    displayVlan: sshDisplayVlan,
+    createVlan: sshCreateVlan,
+    deleteVlan: sshDeleteVlan,
   }
 }

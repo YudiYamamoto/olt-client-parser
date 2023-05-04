@@ -1,5 +1,4 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../utils/lib')
 
 /*
 IRARA-OLT#show vlan summary
