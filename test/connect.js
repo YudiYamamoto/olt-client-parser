@@ -46,9 +46,11 @@ const olt = new OLTClientParser({
   // const data2 = await olt.displayPons({ board: '1', slot: '2' })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
   // const data = await olt.displayVlans()
-  const data = await olt.displayVlan('666')
+  // const data = await olt.displayVlan('666')
   // const data = await olt.createVlan({ vlan: '666', description: 'TESTE' })
   // const data = await olt.deleteVlan('666')
   // const data4 = await olt.displayOnus({ board: '1', slot: '2', port: '4' })
+
+  const data = await olt.displayUplinks()
   console.log(data)  
 })()

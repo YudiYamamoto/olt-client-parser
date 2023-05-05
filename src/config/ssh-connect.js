@@ -8,8 +8,6 @@ const connect = async (defaultOptions) => {
   const options = client.getOptions()
   
   const exec = async (cmd) => {
-    // const commands = cmds.split('\n')
-    // for(commands)
     const chunks = await client.exec(cmd)
     return chunks
     const _chunks = chunks.split(/\n/)
@@ -20,8 +18,6 @@ const connect = async (defaultOptions) => {
       .join('\n')
   }
   const exec2 = async (cmd) => {
-    // const commands = cmds.split('\n')
-    // for(commands)
     const chunks = await client2.exec(cmd)
     return chunks    
   }
