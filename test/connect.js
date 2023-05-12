@@ -51,7 +51,9 @@ const olt = new OLTClientParser({
   // const data = await olt.createVlan({ vlan: '666', description: 'TESTE' })
   // const data = await olt.deleteVlan('666')
   // const data4 = await olt.displayOnus({ board: '1', slot: '2', port: '4' })
-  const data = await olt.vlanTag({ interface: 'xgei-1/5/2', vlan: '666'})
+  // const data = await olt.vlanTag({ interface: 'xgei-1/5/2', vlan: '666'})
+  // const data = await olt.vlanUntag({ interface: 'xgei-1/5/2', vlan: '666'})
+  const data = await olt.showOpticalModuleInfo({ interface: 'xgei-1/5/1'})
 
   // const data = await olt.displayUplinks()
   console.log(data)  
