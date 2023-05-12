@@ -68,37 +68,11 @@ Rack Shelf Slot CfgType RealType Port  HardVer SoftVer         Status
   for await (const [index] of Array.from({ length: theSlot.port }).entries()) {
     const port = (index + 1)
     const cmd1 = `show interface gpon-olt_${board}/${slot}/${port}`
-    // const chunk1 = await conn.exec(cmd1)
-
-    const chunk1 = `gpon-olt_${board}/${slot}/${port} is activate,line protocol is up.
-    Description is none.`
+    const chunk1 = await conn.exec(cmd1)
     const [status] = chunk1.split('\n')
 
     const cmd2 = `show interface optical-module-info gpon-olt_${board}/${slot}/${port}`
-    // const chunk2 = await conn.exec(cmd2)
-    const chunk2 = `Optical module information:gpon-olt_1/12/1
-  Basic-info:
-  Vendor-Name    : EOPTOLINK INC            Vendor-Pn      : EOLS-GT-37-D-DM
-  Vendor-Sn      : SH14373963               Version-Lev    : 1.0
-  Production-Date: 170118                   Module-Type    : SFP/SFP+
-  Wavelength     : 1490      (nm)           Connector      : SC
-  OTDR           : NON-OTDR                 OTDR-Version   : N/A
-  Fiber-Type     : N/A
-  Class          : N/A
-  Trans-Distance : 20(km)
-  Material-Number: N/A
-  Register-Data  : N/A
-  Diagnostic-info:
-   RxPower        : N/A                      TxPower      : 6.820(dbm)
-   TxBias-Current : 36.318    (mA)           Laser-Rate   : 25(100Mb/s)
-   Temperature    : 32.453    (c)            Supply-Vol   : 3.249(v)
-  Alarm-thresh:
-   RxPower-Upper    : 3  (dbm)               RxPower-Lower    : -20(dbm)
-   TxPower-Upper    : 9  (dbm)               TxPower-Lower    : -14(dbm)
-   Bias-Upper       : 131(mA)                Bias-Lower       : 0  (mA)
-   Voltage-Upper    : 7  (v)                 Voltage-Lower    : 0  (v)
-   Temperature-Upper: 90 (c)                 Temperature-Lower: -45(c)
-  Configuration-Module-Class: N/A`
+    const chunk2 = await conn.exec(cmd2)
 
   const lines = chunk2.split('\n')
     const column = line2json(lines)
@@ -109,7 +83,7 @@ Rack Shelf Slot CfgType RealType Port  HardVer SoftVer         Status
       board, 
       slot,
       port: port.toString(),
-      admin_status: (status || '').indexOf('activate') > -1 ? true : false,
+      admin_status: (status || '').indexOf('deactivate') > -1 ? false : true,
       operational_status: (status || '').indexOf(' up.') > -1 ? 'up' : 'down',
       description: '',
       min_range: 0,

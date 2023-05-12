@@ -7,7 +7,7 @@ const displayPon = async (options, { board = '1', slot = '1', port = '1' }) => {
   const [status] = chunk1.split('\n')
 
   return {
-    admin_status: (status || '').indexOf('activate') > -1 ? true : false,
+    admin_status: (status || '').indexOf('deactivate') > -1 ? false : true,
     operational_status: (status || '').indexOf(' up.') > -1 ? 'up' : 'down',
   }
 }
