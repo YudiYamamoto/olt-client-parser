@@ -14,7 +14,7 @@ Shelf Slot CfgType CardName     Port HardVer Status
 IRARA-OLT#
 */
 
-const displaySlots = async (options, { board = '1', slot = '1' }) => {
+const displayPons = async (options, { board = '1', slot = '1' }) => {
   const conn = await connect(options)
   // const cmd = 'show card'
   // const chunk = await conn.exec(cmd)
@@ -46,7 +46,9 @@ const displaySlots = async (options, { board = '1', slot = '1' }) => {
     if (!boards[key]) boards[key] = []
     boards[key].push(item)
   })
-  const slots = boards[`B${board}`].filter(item => item.slot === slot && item.status === 'INSERVICE')
+  const slots = (boards && boards[`B${board}`] || [])
+    .filter(item => item.slot === slot && item.status === 'INSERVICE')
+  
   if (!slots) return null
 
   const [theSlot] = slots
@@ -54,10 +56,7 @@ const displaySlots = async (options, { board = '1', slot = '1' }) => {
   for await (const [index] of Array.from({ length: theSlot.port }).entries()) {
     const port = (index + 1)
     const cmd1 = `show interface gpon_olt-${board}/${slot}/${port}`
-    // const chunk1 = await conn.exec(cmd1)
-
-    const chunk1 = `gpon_olt-${board}/${slot}/${port} is activate,line protocol is up.
-    The port link up/down notification is trap enable.`
+    const chunk1 = await conn.exec(cmd1)
     const [status] = chunk1.split('\n')
 
     data.push({
@@ -77,4 +76,4 @@ const displaySlots = async (options, { board = '1', slot = '1' }) => {
   return data
 }
 
-module.exports = displaySlots
+module.exports = displayPons

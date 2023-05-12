@@ -14,7 +14,7 @@ Shelf Slot CfgType CardName     Port HardVer Status
 IRARA-OLT#
 */
 
-const displaySlots = async (options, { board = '1', slot = '1' }) => {
+const displayPons = async (options, { board = '1', slot = '1' }) => {
   const conn = await connect(options)
   const cmd = 'show card'
   const chunk = await conn.exec2(cmd)
@@ -40,7 +40,8 @@ const displaySlots = async (options, { board = '1', slot = '1' }) => {
     if (!boards[key]) boards[key] = []
     boards[key].push(item)
   })
-  const slots = boards[`B${board}`].filter(item => item.slot === slot && item.status === 'INSERVICE')
+  const slots = (boards && boards[`B${board}`] || [])
+    .filter(item => item.slot === slot && item.status === 'INSERVICE')
   if (!slots) return null
 
   const [theSlot] = slots
@@ -74,4 +75,4 @@ const displaySlots = async (options, { board = '1', slot = '1' }) => {
   return data
 }
 
-module.exports = displaySlots
+module.exports = displayPons
