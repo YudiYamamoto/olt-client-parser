@@ -1,6 +1,7 @@
 const sshDisplayVlans = require('./ssh/displayVlans')
 const sshDisplayVlan = require('./ssh/displayVlan')
 const sshCreateVlan = require('./ssh/createVlan')
+const sshvlanTag = require('./ssh/vlanTag')
 const sshDeleteVlan = require('./ssh/deleteVlan')
 const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
 const sshScopeVlanInternet = require('./ssh/scopeVlanInternet')
@@ -21,6 +22,7 @@ module.exports = {
     displayVlans: sshDisplayVlans,
     displayVlan: sshDisplayVlan,
     createVlan: sshCreateVlan,
+    vlanTag: sshvlanTag,
     deleteVlan: sshDeleteVlan,
     scopeVlanLanToLan: sshScopeVlanLanToLan,
     scopeVlanInternet: sshScopeVlanInternet,

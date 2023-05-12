@@ -43,7 +43,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
-  const data = await olt.displayPon({ board: '1', slot: '3', port: '12' })
+  //const data = await olt.displayPon({ board: '1', slot: '3', port: '12' })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
   // const data = await olt.displayVlans()
   // const data = await olt.scopeVlanLanToLan()
@@ -51,6 +51,7 @@ const olt = new OLTClientParser({
   // const data = await olt.createVlan({ vlan: '666', description: 'TESTE' })
   // const data = await olt.deleteVlan('666')
   // const data4 = await olt.displayOnus({ board: '1', slot: '2', port: '4' })
+  const data = await olt.vlanTag({ interface: 'xgei-1/5/2', vlan: '666'})
 
   // const data = await olt.displayUplinks()
   console.log(data)  
