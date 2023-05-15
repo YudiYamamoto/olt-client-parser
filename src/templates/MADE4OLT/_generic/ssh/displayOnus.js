@@ -25,7 +25,7 @@ ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
   Configured speed mode:auto
   Current speed mode:   ${type.toUpperCase()}
   Admin state:          ${chance.bool({ likelihood: 70 }) ? 'enable' : 'disable'}
-  Phase state:          DyingGasp
+  Phase state:          ${chance.bool({ likelihood: 80 }) ? 'working' : chance.bool({ likelihood: 50 }) ? 'LOS' : 'DyingGasp'}
   Config state:         fail
   Authentication mode:  sn
   SN Bind:              enable with SN check
@@ -34,7 +34,7 @@ ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
   Description:          ********
   Vport mode:           gemport
   DBA Mode:             Hybrid
-  ONU Status:           enable
+  ONU Status:           ${chance.bool({ likelihood: 70 }) ? 'enable' : 'disable'}
   OMCI BW Profile:      704kbps
   OMCC Encrypt:         disable
   Line Profile:         N/A
