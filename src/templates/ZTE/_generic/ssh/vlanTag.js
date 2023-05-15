@@ -1,6 +1,6 @@
 const { connect } = require('../../../../config/ssh-connect')
 
-const createVlan = async (options, { vlan, interface }) => {
+const vlanTag = async (options, { vlan, interface }) => {
   const conn = await connect(options)
   const cmd = `conf t 
 interface ${interface}
@@ -10,4 +10,4 @@ switchport vlan ${vlan} tag`
   return cmd
 }
 
-module.exports = createVlan
+module.exports = vlanTag

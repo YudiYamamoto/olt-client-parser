@@ -1,13 +1,13 @@
 const { connect } = require('../../../../config/ssh-connect')
 
-const enableAutoNegotiation = async (options, { interface }) => {
+const vlanUntag = async (options, { vlan, interface }) => {
   const conn = await connect(options)
-  const cmd = `conf t
+  const cmd = `conf t 
 interface ${interface}
- negotiation negotiation-auto`
+switchport vlan ${vlan} untag`
   await conn.exec2(cmd)
 
   return cmd
 }
 
-module.exports = enableAutoNegotiation
+module.exports = vlanUntag

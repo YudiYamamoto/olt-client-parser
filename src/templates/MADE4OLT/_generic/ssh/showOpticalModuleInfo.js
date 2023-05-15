@@ -1,13 +1,9 @@
-const { connect } = require('../../../../config/ssh-connect')
-const { line2json, column2json } = require('../../../../utils/lib')
+const { line2json, column2json, filterLine } = require('../../../../utils/lib')
+const chance = require('chance').Chance();
 
-const filterLine = (lines, start, end) => {
-  return lines.slice(start, end).map(item => item.trim()).map(item => item !== '' && item).filter(item => item)
-}
-
-/*
-IRARA-OLT#show optical-module-info xgei-1/5/1 
-Optical Module Position    : xgei-1/5/1
+const showOpticalModuleInfo = async (_options, interface) => {
+  const chunk = `IRARA-OLT#show optical-module-info ${interface} 
+Optical Module Position    : ${interface}
 Optical Module Power State : on
 Optical Module State       : online                                             
                           
@@ -15,19 +11,19 @@ Optical Module State       : online
 Optical Module Manufacture Information:
 --------------------------------------------------------------------------------
 Vendor-Name    : CISCO-PRE                Product-Name   : PRE-SFP10G-SR
-Sequence-Number: BC160617662              Version-Level  : 1.0
-Product-Date   : 160620                   
+Sequence-Number: ${chance.geohash({ length: 10 })}               Version-Level  : 1.0
+Product-Date   : ${chance.date({ string: true, american: false }).replace(/\//gi, '')}                   
 Part-Number    : 
 Material-Number: 5a 54 45 57 41 38 4e 43 41 41
-                 31 30 2d 32 34 31 35 00 00 00                    
+                  31 30 2d 32 34 31 35 00 00 00                    
 Register-Data  : 03 04 07 10 00 00 00 00 00 00 00 06 67 00 00 00
-                 1e 1e 00 00 43 49 53 43 4f 2d 50 52 45 20 20 20
-                 20 20 20 20 00 a8 29 4c 50 52 45 2d 53 46 50 31
-                 30 47 2d 53 52 20 20 20 31 2e 30 20 03 52 00 24
-                 00 1a 00 00 42 43 31 36 30 36 31 37 36 36 32 20
-                 20 20 20 20 31 36 30 36 32 30 20 20 68 f0 01 da
-                 00 00 02 8e c5 5f ca 49 19 83 bb 75 79 36 c6 3a
-                 6c f1 45 00 00 00 00 00 00 00 00 00 7f 06 d1 00
+                  1e 1e 00 00 43 49 53 43 4f 2d 50 52 45 20 20 20
+                  20 20 20 20 00 a8 29 4c 50 52 45 2d 53 46 50 31
+                  30 47 2d 53 52 20 20 20 31 2e 30 20 03 52 00 24
+                  00 1a 00 00 42 43 31 36 30 36 31 37 36 36 32 20
+                  20 20 20 20 31 36 30 36 32 30 20 20 68 f0 01 da
+                  00 00 02 8e c5 5f ca 49 19 83 bb 75 79 36 c6 3a
+                  6c f1 45 00 00 00 00 00 00 00 00 00 7f 06 d1 00
 --------------------------------------------------------------------------------
 Optical Module Information:           
 --------------------------------------------------------------------------------
@@ -50,14 +46,9 @@ TxPower-Upper    : 9.000 (dbm)       TxPower-Lower    : -14.000(dbm)
 Bias-Upper       : 131(mA)           Bias-Lower       : 0(mA)
 Voltage-Upper    : 7  (v)            Voltage-Lower    : 0(v)
 Temperature-Upper: 90 (c)            Temperature-Lower: -45(c)
-Module-Class     : default                      
-*/
-
-const showOpticalModuleInfo = async (options, interface) => {
-  const conn = await connect(options)
-  const cmd = `show optical-module-info ${interface}`
-  const chunk = await conn.exec2(cmd)
-  const lines = chunk.split('\r\n')
+Module-Class     : default   `
+return chunk;
+  const lines = chunk.split('\n')
   lines.shift()
   const head = column2json(lines.slice(0, 3))
   const check_omi = lines.findIndex(item => item.startsWith('Optical Module Information:'))

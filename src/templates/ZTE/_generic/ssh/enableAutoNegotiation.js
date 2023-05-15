@@ -1,6 +1,6 @@
 const { connect } = require('../../../../config/ssh-connect')
 
-const disableAutoNegotiation = async (options, {interface }) => {
+const disableAutoNegotiation = async (options, { interface }) => {
   const conn = await connect(options)
   const cmd = `conf t
 interface ${interface}

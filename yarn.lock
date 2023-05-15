@@ -21,6 +21,11 @@ buildcheck@0.0.3:
   resolved "https://registry.npmjs.org/buildcheck/-/buildcheck-0.0.3.tgz"
   integrity sha512-pziaA+p/wdVImfcbsZLNF32EiWyujlQLwolMqUQE8xpKNOH7KmZQaY8sXN7DGOEzPAElo9QTaeNRfGnf3iOJbA==
 
+chance@^1.1.11:
+  version "1.1.11"
+  resolved "https://registry.npmjs.org/chance/-/chance-1.1.11.tgz"
+  integrity sha512-kqTg3WWywappJPqtgrdvbA380VoXO2eu9VCV895JgbyHsaErXdyHK9LOZ911OvAk6L0obK7kDk9CGs8+oBawVA==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.npmjs.org/co/-/co-4.6.0.tgz"

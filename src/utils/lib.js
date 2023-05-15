@@ -72,11 +72,11 @@ const hour2time = (period) => {
     .toISOString()
 }
 
-const line2json = (lines) => {
+const line2json = (lines, delimiter1 = 44) => {
   const columns = []
   for (const line of lines) {
-    const item1 = (line || '').substring(0, 44).trim()
-    const item2 = (line || '').substring(44).trim()
+    const item1 = (line || '').substring(0, delimiter1).trim()
+    const item2 = (line || '').substring(delimiter1).trim()
     if (item1 && item1 !== '') columns.push(item1.replace(':', '[$%]').replace(/\:/gi, '-').replace('[$%]', ':'))
     if (item2 && item2 !== '') columns.push(item2.replace(':', '[$%]').replace(/\:/gi, '-').replace('[$%]', ':'))
   }
@@ -87,6 +87,29 @@ const line2json = (lines) => {
 const str2mac = (string) => string
   .replace(/([a-z,0-9]{2})([a-z,0-9]{2})([a-z,0-9]{2})([a-z,0-9]{2})([a-z,0-9]{2})([a-z,0-9]{2})/gi, '$1-$2-$3-$4-$5-$6')
 
+
+const hidrateInfo = (match) => {
+  const hidrate = match.trim().split('\r\n').join(',').split(',')
+  const data = []
+  for (const item of hidrate) {
+    let [start, end] = item.split('-')
+    if (!end) end = start
+    while(start <= end) {
+      data.push(start.toString())
+      start++
+    }
+  }
+  return data
+}
+
+const filterLine = (lines, start, end) => {
+  return lines
+    .slice(start, end)
+    .map(item => item.trim())
+    .map(item => item !== '' && item)
+    .filter(item => item)
+}
+
 module.exports = { 
   dummy2json,
   column2json,
@@ -95,4 +118,6 @@ module.exports = {
   line2json,
   str2mac,
   hour2time,
+  hidrateInfo,
+  filterLine,
 }

@@ -90,7 +90,6 @@ class TelnetWrapper {
           const buff = Buffer.from(cmd, 'utf-8')
           // console.log(buff)
           connection.exec(cmd, options, (err, response) => {
-            // console.log(response, '<<<<')
             // resolve(response)
 
             connection.on('data', async (chunk) => {
@@ -137,7 +136,6 @@ class TelnetWrapper {
           const command = commands.length === (index + 1) ? 'exec' : 'send'
           const buff = Buffer.from(cmd, 'utf-8')
           connection[command](buff, options, (err, response) => {
-            console.log(command, cmd, response, err, '<<<<')
             arrData.push(response)
 
             if (command === 'exec') resolve(response)

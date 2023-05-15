@@ -1,6 +1,6 @@
 const { connect } = require('../../../../config/ssh-connect')
 
-const enableTrunkMode = async (options, {interface }) => {
+const enableTrunkMode = async (options, { interface }) => {
   const conn = await connect(options)
   const cmd = `conf t
 interface ${interface}

@@ -1,8 +1,7 @@
-const { connect } = require('../../../../config/ssh-connect')
 const { hidrateInfo } = require('../../../../utils/lib')
 
-/*
-IRARA-OLT#show vlan summary
+const displayVlans = async (_originalOptions) => {
+  const chunk = `IRARA-OLT#show vlan summary
 All created vlan num: 71  
 Details are following:
   1,11,40-41,99,303,500,502,667,854,856,865,1001
@@ -10,16 +9,9 @@ Details are following:
 2501-2548
 Hardware operate fail following:
   
-IRARA-OLT#
-
-*/
-
-const displayVlans = async (originalOptions) => {
-  const conn = await connect(originalOptions)
-  const cmd = 'show vlan summary'
-  const chunk = await conn.exec2(cmd)
+IRARA-OLT#`
   const [match] = chunk.split('Details are following:').reverse()[0].split('Hardware operate fail following:')
-  const data = hidrateInfo(match)
+  const data = hidrateInfo(match.replace(/\n/gi, '\r\n'))
   return data
 }
 

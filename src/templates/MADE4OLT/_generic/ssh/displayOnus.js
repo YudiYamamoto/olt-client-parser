@@ -1,21 +1,35 @@
-const { connect } = require('../../../../../config/ssh-connect')
-const { column2json, hour2time, str2mac } = require('../../../../../utils/lib')
+const { column2json, hour2time } = require('../../../../utils/lib')
+const chance = require('chance').Chance();
 
-/*
-ZXAN#show gpon onu detail-info gpon-onu_1/12/1:1
+const STATUS = {
+  'working': 'online',
+  'LOS': 'los',
+  'DyingGasp': 'pwr_fail',
+}
 
-ONU interface:          gpon_onu-1/1/1:1
+const displayOnus = async (options, { type = 'gpon', board = '1', slot = '1', port = '1' }) => {
+  const f_p_s = `${board}/${slot}/${port}`
+  
+  const { size: length = 128 } = options && options.__extra__ && options.__extra__.onu || {}
+  
+  const data = []
+  for await (const [index] of Array.from({ length }).entries()) {
+    const ont_id = index + 1
+    const chunk = `
+ZXAN#show ${type} onu detail-info ${type}-onu_${f_p_s}:${ont_id}
+
+ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
   Name:                 ********
   Splitter:             
-  Type:                 630-10B
+  Type:                 XZ000-G3
   Configured speed mode:auto
-  Current speed mode:   GPON
-  Admin state:          enable
+  Current speed mode:   ${type.toUpperCase()}
+  Admin state:          ${chance.bool({ likelihood: 70 }) ? 'enable' : 'disable'}
   Phase state:          DyingGasp
   Config state:         fail
   Authentication mode:  sn
   SN Bind:              enable with SN check
-  Serial number:        FRKW2782DDD6
+  Serial number:        ${chance.geohash({ length: 15 })}
   Password:             
   Description:          ********
   Vport mode:           gemport
@@ -44,29 +58,10 @@ ONU interface:          gpon_onu-1/1/1:1
    7   2023-01-19 22:08:50    2023-01-30 18:32:13     LOSi     
    8   2023-01-30 18:37:32    2023-01-30 18:38:39     DyingGasp 
    9   2023-01-30 18:39:34    2023-02-26 06:04:58     DyingGasp 
-  10   2023-02-26 06:06:03    2023-03-08 20:12:31     DyingGasp 
-*/
-
-const STATUS = {
-  'working': 'online',
-  'LOS': 'los',
-  'DyingGasp': 'pwr_fail',
-}
-
-const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
-  const conn = await connect(options)
-  const f_p_s = `${board}/${slot}/${port}`
-  const cmd = `show gpon onu detail-info gpon_onu-${f_p_s}`
-  
-  const { size: length = 128 } = options && options.__extra__ && options.__extra__.onu || {}
-  
-  const data = []
-  for await (const [index] of Array.from({ length }).entries()) {
-    const ont_id = index + 1
-    const chunk = await conn.exec2(`${cmd}:${ont_id}`)    
+  10   2023-02-26 06:06:03    2023-03-08 20:12:31     DyingGasp `
     if (!chunk && chunk === '') continue
     
-    const splitted = chunk.split('\r\n')
+    const splitted = chunk.split('\n')
     splitted.pop()
     splitted.shift()
     splitted.shift()
@@ -85,29 +80,43 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       )
 
     let element = ''
-    const cmd2 = `show mac interface vport-${f_p_s}.${ont_id}:1`
-    const chunkMA = await conn.exec2(cmd2)
+    const chunkMA = `177.128.98.246: terminal length 512
+  IRARA-OLT#show mac interface vport-1/1/16.1:1
+  Total mac address : 1
+  
+  Mac address      Vlan  Type      Port                  Vc                      
+              
+  -------------------------------------------------------------------------------
+  ${chance.mac_address()}   2516   Dynamic   vport-1/1/16.1:1                 
+  IRARA-OLT#`
     if (chunkMA && chunkMA !== '') {
-      const [_line1, _line2, _line3, _line4, ...splitted] = chunkMA.split('\r\n')
-      element = (splitted && (splitted[3] || '').substring(0, 17).trim()) || ''
+      const [_line1, _line2, _line3, _line4, ...splitted] = chunkMA.split('\n')
+      element = (splitted && (splitted[3] || '').substring(0, 19).trim()) || ''
     }
 
     let tx_power = 0;
     let rx_power = 0;
     let olt_rx_power = 0;
-    const cmd3 = `show pon power attenuation gpon_onu-${f_p_s}:${ont_id}`
-    const chunckSignal = await conn.exec2(cmd3)
+    const chunckSignal = `177.128.98.246: terminal length 512
+IRARA-OLT#show pon power attenuation gpon_onu-1/1/16:1
+            OLT                  ONU              Attenuation
+--------------------------------------------------------------------------
+  up      Rx :${chance.floating({ min: -100, max: 100, fixed: 3 })}(dbm)      Tx:${chance.floating({ min: -100, max: 100, fixed: 3 })}(dbm)      ${chance.floating({ min: -100, max: 100, fixed: 3 })}(dB)     
+  
+  down    Tx :${chance.floating({ min: -100, max: 100, fixed: 3 })}(dbm)      Rx:${chance.floating({ min: -100, max: 100, fixed: 3 })}(dbm)      ${chance.floating({ min: -100, max: 100, fixed: 3 })}(dB)     
+IRARA-OLT#`
+
     if (chunckSignal && chunckSignal !== '') {
-      const [_header0, _header1, _header2, _header3, upSignal, _header4, downSignal] = chunckSignal.split('\r\n')
+      const [_header0, _header1, _header2, _header3, upSignal, _header4, downSignal] = chunckSignal.split('\n')
       
       if (downSignal) {
-        tx_power = downSignal.trim().substring(12, 27);
-        rx_power = downSignal.trim().substring(33, 47);
+        tx_power = downSignal.trim().substring(12, 27)
+        rx_power = downSignal.trim().substring(33, 47)
       }
-      if (upSignal) olt_rx_power = upSignal.trim().substring(12, 27);
+      if (upSignal) olt_rx_power = upSignal.trim().substring(12, 27)
     }
 
-    const distance = (item.o_n_u_distance || '-').replace('-', '').replace('m', '')
+    const distance = chance.integer({ min: 0, max: 10000 })
 
     data.push({
       board,
@@ -118,7 +127,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       // capability: 'bridging_routing',
       // allow_custom_profiles: false,
       // catv: false,
-      temperature: 0,
+      temperature: chance.floating({ min: -100, max: 100, fixed: 3 }),
       tx_power: parseFloat((tx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
       olt_rx_power: parseFloat((olt_rx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
       catv_rx_power: 0,
@@ -127,11 +136,11 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       rx_power: parseFloat((rx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
       onu_external_id: item.serialnumber,
       serial_number: item.serialnumber,
-      mac_address: str2mac((element.macaddress || '').replace(/\./gi, '')).replace(/\-/gi, ':'),
+      mac_address: (element || ''),
       description: item.description,
       distance: parseInt(distance !== '' ? distance : '0', 10),
       stage: STATUS[item.phasestate] || 'disabled',
-      authorization_at: new Date(), // TODO colocar uma tag de origem importada
+      authorization_at: new Date(),
       uptime_at: hour2time(item.online_duration),
       custom_fields: {
         source: 'import_onu'

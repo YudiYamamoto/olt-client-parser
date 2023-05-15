@@ -24,7 +24,6 @@ const rrr = async (connection, command, options, time, data) => {
     setTimeout(() => { 
       connection.exec(command, options, (err, response) => {
         if (!err) reject(err)
-        // console.log(response, time, '<<<<')
         data.push(response)
       })
     resolve(data)
@@ -36,9 +35,7 @@ const get = async (connection, command, options, data) => {
   return new Promise((resolve, reject) => {
     connection.exec(command, options, (err, response) => {
       // if (!err) reject(err)
-      // console.log(response, time, '<<<<')
       data.push(response)
-      // console.log(response, '<<<')
       resolve(data)
     })
   })
@@ -100,7 +97,6 @@ const displayBoard = async (originalOptions, board) => {
   return new Promise((resolve, reject) => {
     connection.on('ready', (prompt) => {
       connection.exec('sysname ZAMPIZAMPI\n', { ...options, shellPrompt: '#' }, ({ err, response }) => {
-        console.log(response, '<<<')
         resolve(response)
       })
     })

@@ -47,7 +47,6 @@ const connectCommand = async (connection, command, options, time, data) => {
     setTimeout(() => { 
       connection.exec(command, options, (err, response) => {
         if (!err) reject(err)
-        // console.log(response, time, '<<<<')
         data.push(response)
       })
     resolve(data)

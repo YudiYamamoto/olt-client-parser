@@ -1,3 +1,9 @@
+const sshDisplayBoards = require('./ssh/displayBoards')
+const sshDisplaySlots = require('./ssh/displaySlots')
+const sshDisplayPons = require('./ssh/displayPons')
+const sshDisplayPon = require('./ssh/displayPon')
+const sshDisplayOnus = require('./ssh/displayOnus')
+
 const sshDisplayVlans = require('./ssh/displayVlans')
 const sshDisplayVlan = require('./ssh/displayVlan')
 const sshCreateVlan = require('./ssh/createVlan')
@@ -25,7 +31,7 @@ const sshDisablePon = require('./ssh/disablePon')
 
 const sshCreateOnu = require('./ssh/createOnu')
 
-const sshEnableTrunkMode = require('./ssh/enableTrunkMode') // TODO Validar
+const sshEnableTrunkMode = require('./ssh/enableTrunkMode')
 
 const sshDisplaySpeedProfiles = require('./ssh/displaySpeedProfiles')
 
@@ -33,10 +39,13 @@ const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
 
 const sshDisplayUnconfiguredOnus = require('./ssh/displayUnconfiguredOnus')
 
-const sshRunCommand = require('./ssh/runCommand')
-
 module.exports = {
   ssh: {
+    displayBoards: sshDisplayBoards,
+    displaySlots: sshDisplaySlots,
+    displayPons: sshDisplayPons,
+    displayPon: sshDisplayPon,
+    displayOnus: sshDisplayOnus,
     displayDbaProfiles: sshDisplayDbaProfiles,
     displaySpeedProfiles: sshDisplaySpeedProfiles,
     displayVlans: sshDisplayVlans,
@@ -68,7 +77,5 @@ module.exports = {
     createOnu: sshCreateOnu,
 
     displayUnconfiguredOnus: sshDisplayUnconfiguredOnus,
-
-    runCommand: sshRunCommand,
   }
 }
