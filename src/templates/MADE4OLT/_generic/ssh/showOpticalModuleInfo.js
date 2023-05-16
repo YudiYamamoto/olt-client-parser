@@ -1,5 +1,5 @@
 const { line2json, column2json, filterLine } = require('../../../../utils/lib')
-const chance = require('chance').Chance();
+const chance = require('chance').Chance()
 
 const showOpticalModuleInfo = async (_options, interface) => {
   const chunk = `IRARA-OLT#show optical-module-info ${interface} 
@@ -47,7 +47,6 @@ Bias-Upper       : 131(mA)           Bias-Lower       : 0(mA)
 Voltage-Upper    : 7  (v)            Voltage-Lower    : 0(v)
 Temperature-Upper: 90 (c)            Temperature-Lower: -45(c)
 Module-Class     : default   `
-return chunk;
   const lines = chunk.split('\n')
   lines.shift()
   const head = column2json(lines.slice(0, 3))

@@ -3,6 +3,7 @@ const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayPons = require('./ssh/displayPons')
 const sshDisplayPon = require('./ssh/displayPon')
 const sshDisplayOnus = require('./ssh/displayOnus')
+const sshDisplayOnu = require('./ssh/displayOnu')
 
 const sshDisplayVlans = require('./ssh/displayVlans')
 const sshDisplayVlan = require('./ssh/displayVlan')
@@ -38,6 +39,7 @@ const sshDisplaySpeedProfiles = require('./ssh/displaySpeedProfiles')
 const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
 
 const sshDisplayUnconfiguredOnus = require('./ssh/displayUnconfiguredOnus')
+const sshDisplayTraffic = require('./ssh/displayTraffic')
 
 module.exports = {
   ssh: {
@@ -46,6 +48,7 @@ module.exports = {
     displayPons: sshDisplayPons,
     displayPon: sshDisplayPon,
     displayOnus: sshDisplayOnus,
+    displayOnu: sshDisplayOnu,
     displayDbaProfiles: sshDisplayDbaProfiles,
     displaySpeedProfiles: sshDisplaySpeedProfiles,
     displayVlans: sshDisplayVlans,
@@ -77,5 +80,6 @@ module.exports = {
     createOnu: sshCreateOnu,
 
     displayUnconfiguredOnus: sshDisplayUnconfiguredOnus,
+    displayTraffic: sshDisplayTraffic,
   }
 }

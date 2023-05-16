@@ -23,7 +23,7 @@ IRARA-OLT#`
   splitted.shift()
   splitted.pop()
   
-  if (splitted.length === 0) return null;
+  if (splitted.length === 0) return null
 
   const item = column2json(
     splitted

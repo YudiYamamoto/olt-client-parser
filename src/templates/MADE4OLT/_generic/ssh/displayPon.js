@@ -1,8 +1,8 @@
 const displayPon = async (options, { board = '1', slot = '1', port = '1' }) => {
 
   const chunk1 = `177.128.98.246: terminal length 512
-IRARA-OLT#show interface gpon_olt-1/3/12
-  gpon_olt-1/3/12 is deactivate,line protocol is down.
+IRARA-OLT#show interface ${type}_olt-${board}/${slot}/${port}
+  ${type}_olt-${board}/${slot}/${port} is deactivate,line protocol is down.
   The port link up/down notification is trap enable.
 Current channel num : 1 GPON
 OLT statistic:

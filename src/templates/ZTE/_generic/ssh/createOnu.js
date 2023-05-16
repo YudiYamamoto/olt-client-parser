@@ -1,7 +1,7 @@
 const { connect } = require('../../../../config/ssh-connect')
 
 const createOnu = async (options, { 
-  type = 'gpon', 
+  pon_type: type = 'gpon', 
   board = '1', 
   slot = '1', 
   port = '1', 

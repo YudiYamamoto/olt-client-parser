@@ -1,17 +1,11 @@
-const { column2json, hour2time } = require('../../../../utils/lib')
-const chance = require('chance').Chance();
+const displayOnu = require('./displayOnu')
+const chance = require('chance').Chance()
 
-const STATUS = {
-  'working': 'online',
-  'LOS': 'los',
-  'DyingGasp': 'pwr_fail',
-}
+const displayOnus = async (options, params) => {
+  const { size = 128 } = options && options.__extra__ && options.__extra__.onu || {}
+  
+  const length = chance.integer({ min: 0, max: size })
 
-const displayOnus = async (options, { type = 'gpon', board = '1', slot = '1', port = '1' }) => {
-  const f_p_s = `${board}/${slot}/${port}`
-  
-  const { size: length = 128 } = options && options.__extra__ && options.__extra__.onu || {}
-  
   const data = []
   for await (const [index] of Array.from({ length }).entries()) {
     const ont_id = index + 1
@@ -25,7 +19,7 @@ ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
   Configured speed mode:auto
   Current speed mode:   ${type.toUpperCase()}
   Admin state:          ${chance.bool({ likelihood: 70 }) ? 'enable' : 'disable'}
-  Phase state:          ${chance.bool({ likelihood: 80 }) ? 'working' : chance.bool({ likelihood: 50 }) ? 'LOS' : 'DyingGasp'}
+  Phase state:          DyingGasp
   Config state:         fail
   Authentication mode:  sn
   SN Bind:              enable with SN check
@@ -34,7 +28,7 @@ ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
   Description:          ********
   Vport mode:           gemport
   DBA Mode:             Hybrid
-  ONU Status:           ${chance.bool({ likelihood: 70 }) ? 'enable' : 'disable'}
+  ONU Status:           enable
   OMCI BW Profile:      704kbps
   OMCC Encrypt:         disable
   Line Profile:         N/A

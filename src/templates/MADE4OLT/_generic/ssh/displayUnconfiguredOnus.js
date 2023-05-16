@@ -1,10 +1,10 @@
 const { dummy2json } = require('../../../../utils/lib')
-const chance = require('chance').Chance();
+const chance = require('chance').Chance()
 
 const displayUnconfiguredOnus = async (_originalOptions) => {
-  const board = 1;
-  const slot = chance.integer({ min: 1, max: 4 });
-  const port = chance.integer({ min: 1, max: 16 });
+  const board = 1
+  const slot = chance.integer({ min: 1, max: 4 })
+  const port = chance.integer({ min: 1, max: 16 })
   const chunk = `177.128.98.246: terminal length 512
 IRARA-OLT#show pon onu uncfg
 OltIndex            Model                SN                 PW

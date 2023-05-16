@@ -41,6 +41,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data = await olt.displayPon({ board: '1', slot: '3', port: '12' })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
+  // const data = await olt.displayOnu({ board: '1', slot: '1', port: '16', ont_id: '1' })
   // const data = await olt.displayVlans()
   // const data = await olt.scopeVlanLanToLan()
   // const data = await olt.displayVlan('502')
@@ -58,7 +59,8 @@ const olt = new OLTClientParser({
   // const data = await olt.displayDbaProfiles()
   // const data = await olt.displaySpeedProfiles()
   // const data = await olt.displayUnconfiguredOnus()
-  const data = await olt.displayUplinks()
+  // const data = await olt.displayUplinks()
+  // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '3', port: '12', ont_id: '1' })
   // const data = await olt.runCommand('show pon power attenuation gpon_onu-1/1/16:1');
   // await olt.disablePon({ type: 'gpon', board: '1', slot: '3', port: '12' })
   // await olt.enablePon({ type: 'gpon', board: '1', slot: '3', port: '12' })
