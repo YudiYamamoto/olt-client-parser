@@ -1,5 +1,5 @@
 const { dummy2json } = require('../../../../utils/lib')
-const chance = require('chance').Chance();
+const chance = require('chance').Chance()
 
 const up_down = () => chance.bool({ likelihood: 70 }) ? 'up' : 'down'
 
@@ -72,7 +72,7 @@ IRARA-OLT#`
       pvid_untag: '1',
       mode_tagged_vlan: 'Tagged',
     },
-  ];
+  ]
   */
 }
 

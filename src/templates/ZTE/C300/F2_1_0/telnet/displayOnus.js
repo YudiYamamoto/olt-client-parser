@@ -53,7 +53,7 @@ const STATUS = {
   'DyingGasp': 'pwr_fail',
 }
 
-const displayOnus = async (options, { type = 'gpon', board = '1', slot = '1', port = '1' }) => {
+const displayOnus = async (options, { pon_type: type = 'gpon', board = '1', slot = '1', port = '1' }) => {
   const conn = await connect(options)
   const f_p_s = `${board}/${slot}/${port}`
   const cmd = `show gpon onu detail-info ${type}-onu_${f_p_s}`  

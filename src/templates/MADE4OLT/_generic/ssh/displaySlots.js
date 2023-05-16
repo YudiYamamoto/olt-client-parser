@@ -1,5 +1,5 @@
 const { dummy2json } = require('../../../../utils/lib')
-const chance = require('chance').Chance();
+const chance = require('chance').Chance()
 
 const displaySlots = async (_options, { board = '1' }) => {
   const chunk = `
