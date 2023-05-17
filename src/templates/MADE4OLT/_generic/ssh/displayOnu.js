@@ -32,7 +32,7 @@ ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
   Config state:         fail
   Authentication mode:  sn
   SN Bind:              enable with SN check
-  Serial number:        ${serial_number_original || chance.geohash({ length: 15 })}
+  Serial number:        ${serial_number_original || `M${ont_id}Bx${board}Sr4${slot}g834r${type.toUpperCase()}${port}`}
   Password:             
   Description:          ********
   Vport mode:           gemport
