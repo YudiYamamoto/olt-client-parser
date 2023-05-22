@@ -17,32 +17,48 @@ const displayOnu = async (_options, {
   mac_address: mac_address_original,
 }) => {
   const f_p_s = `${board}/${slot}/${port}`
+
+  const randomStatus = () => {
+    return chance.bool({ likelihood: 80 }) 
+      ? 'working' : chance.bool({ likelihood: 50 }) 
+      ? 'LOS' : 'DyingGasp'
+  }
+
+  const randomDbaMode = () => {
+    return chance.bool({ likelihood: 80 }) 
+      ? 'Hybrid' : chance.bool({ likelihood: 50 }) 
+      ? 'Access' : chance.bool({ likelihood: 50 }) 
+      ? 'Trunk' : 'Transparent'
+  }
+
+  const randomOnuType = () => `MD000-${type[0].toUpperCase()}${chance.integer({ min: 1, max: '4' })}`
+  const randomSerialNumber = () => `MB${board}S${slot}R${type.toUpperCase()}${port.padStart(2, '0')}`
   
   const chunk = `
 ZXAN#show ${type} onu detail-info ${type}-onu_${f_p_s}:${ont_id}
 
 ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
-  Name:                 ********
+  Name:                 ${chance.string({ length: 8, casing: 'upper', alpha: true, numeric: true })}
   Splitter:             
-  Type:                 XZ000-G3
+  Type:                 ${randomOnuType()}
   Configured speed mode:auto
   Current speed mode:   ${type.toUpperCase()}
   Admin state:          ${chance.bool({ likelihood: 70 }) ? 'enable' : 'disable'}
-  Phase state:          ${chance.bool({ likelihood: 80 }) ? 'working' : chance.bool({ likelihood: 50 }) ? 'LOS' : 'DyingGasp'}
+  Phase state:          ${randomStatus()}
   Config state:         fail
   Authentication mode:  sn
   SN Bind:              enable with SN check
-  Serial number:        ${serial_number_original || `M${ont_id}Bx${board}Sr4${slot}g834r${type.toUpperCase()}${port}`}
+  Serial number:        ${serial_number_original || randomSerialNumber()}
   Password:             
-  Description:          ********
+  Description:          ${chance.string({ length: 15, casing: 'upper', alpha: true, numeric: true })}
   Vport mode:           gemport
-  DBA Mode:             Hybrid
+  DBA Mode:             ${randomDbaMode()}
   ONU Status:           ${chance.bool({ likelihood: 70 }) ? 'enable' : 'disable'}
   OMCI BW Profile:      704kbps
   OMCC Encrypt:         disable
   Line Profile:         N/A
   Service Profile:      N/A
-  ONU Distance:         1900m
+  ONU Distance:         ${chance.integer({ min: 0, max: 10000 })}m
   Online Duration:      ${chance.integer({ min: 15, max: 100 })}h ${chance.integer({ min: 0, max: 59 })}m ${chance.integer({ min: 0, max: 59 })}s
   FEC:                  disable
   FEC actual mode:      disable
@@ -52,16 +68,16 @@ ONU interface:          ${type}_onu-${f_p_s}:${ont_id}
   Multicast encryption current state:N/A
 ------------------------------------------
        Authpass Time          OfflineTime             Cause
-   1   2022-12-22 23:53:29    2022-12-25 13:19:56     LOSi     
-   2   2022-12-25 13:20:40    2022-12-25 13:30:21     LOSi     
-   3   2022-12-25 13:31:07    2022-12-27 17:14:39     DyingGasp 
-   4   2022-12-27 17:54:32    2022-12-28 07:37:40     DyingGasp 
-   5   2022-12-28 08:12:33    2023-01-07 07:57:42     DyingGasp 
-   6   2023-01-07 07:58:35    2023-01-19 22:07:53     DyingGasp 
-   7   2023-01-19 22:08:50    2023-01-30 18:32:13     LOSi     
-   8   2023-01-30 18:37:32    2023-01-30 18:38:39     DyingGasp 
-   9   2023-01-30 18:39:34    2023-02-26 06:04:58     DyingGasp 
-  10   2023-02-26 06:06:03    2023-03-08 20:12:31     DyingGasp `
+   1   2022-12-22 23:53:29    2022-12-25 13:19:56     ${randomStatus()}     
+   2   2022-12-25 13:20:40    2022-12-25 13:30:21     ${randomStatus()}     
+   3   2022-12-25 13:31:07    2022-12-27 17:14:39     ${randomStatus()} 
+   4   2022-12-27 17:54:32    2022-12-28 07:37:40     ${randomStatus()} 
+   5   2022-12-28 08:12:33    2023-01-07 07:57:42     ${randomStatus()} 
+   6   2023-01-07 07:58:35    2023-01-19 22:07:53     ${randomStatus()} 
+   7   2023-01-19 22:08:50    2023-01-30 18:32:13     ${randomStatus()}     
+   8   2023-01-30 18:37:32    2023-01-30 18:38:39     ${randomStatus()} 
+   9   2023-01-30 18:39:34    2023-02-26 06:04:58     ${randomStatus()} 
+  10   2023-02-26 06:06:03    2023-03-08 20:12:31     ${randomStatus()} `
   if (!chunk && chunk === '') return
   
   const splitted = chunk.split('\n')

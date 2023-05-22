@@ -1,15 +1,20 @@
 const { dummy2json } = require('../../../../utils/lib')
 const chance = require('chance').Chance()
 
+
 const displayUnconfiguredOnus = async (_originalOptions) => {
   const board = 1
+  const type =  chance.bool({ likelihood: 80 }) ? 'gpon' : 'epon'
   const slot = chance.integer({ min: 1, max: 4 })
   const port = chance.integer({ min: 1, max: 16 })
+  const randomOnuType = () => `MD000-${(type[0]).toUpperCase()}${chance.integer({ min: 1, max: '4' })}`
+  const randomSerialNumber = () => `MB${board}S${slot}R${type.toUpperCase()}${port.padStart(2, '0')}`
+
   const chunk = `177.128.98.246: terminal length 512
 IRARA-OLT#show pon onu uncfg
 OltIndex            Model                SN                 PW
 -------------------------------------------------------------------------
-gpon-olt_${board}/${slot}/${(port).toString().padEnd(2, ' ')}     XZ000-G3             ${chance.geohash({ length: 12 })}       N/A
+${type}-olt_${board}/${slot}/${(port).toString().padEnd(2, ' ')}     ${randomOnuType()}             ${randomSerialNumber()}       N/A
 IRARA-OLT#`
   const splitted = chunk.split('\n')
   splitted.pop()
