@@ -40,9 +40,10 @@ IRARA-OLT#`
     .filter(item => item.slot === slot && item.status === 'INSERVICE')
   if (!slots) return null
 
-  const [theSlot] = slots
+  const [theSlot] = slots || []
   const data = []  
-  for await (const [index] of Array.from({ length: theSlot.port }).entries()) {
+  const portSize = (theSlot && theSlot.port) || 0
+  for await (const [index] of Array.from({ length: portSize }).entries()) {
     const port = (index + 1)
     const chunk1 = `177.128.98.246: terminal length 512
 IRARA-OLT#show interface gpon_olt-${board}/${slot}/${port}

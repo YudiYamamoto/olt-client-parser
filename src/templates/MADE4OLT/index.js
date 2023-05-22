@@ -2,7 +2,7 @@ const generic = require('./_generic')
 
 module.exports = {
   generic,
-  'FKW_3008': {
+  'Furukawa_3008': {
     ...generic,
     options: {
       params: {
@@ -18,7 +18,7 @@ module.exports = {
       }
     }
   }, 
-  'HWI_MA4608T': {
+  'Huawei_MA4608T': {
     ...generic,
     options: {
       params: {
@@ -26,7 +26,7 @@ module.exports = {
       }
     }
   }, 
-  'VSL_V1600g1': {
+  'Vsol_V1600g1': {
     ...generic,
     options: {
       params: {
@@ -34,7 +34,7 @@ module.exports = {
       }
     }
   }, 
-  'DCM_DM4615': {
+  'Datacom_DM4615': {
     ...generic,
     options: {
       params: {
@@ -42,7 +42,7 @@ module.exports = {
       }
     }
   }, 
-  'NKA_7360FX16': {
+  'Nokia_7360FX16': {
     ...generic,
     options: {
       params: {
@@ -50,7 +50,7 @@ module.exports = {
       }
     }
   }, 
-  'FBH_AN5516P06': {
+  'FiberHome_AN5516P06': {
     ...generic,
     options: {
       params: {
