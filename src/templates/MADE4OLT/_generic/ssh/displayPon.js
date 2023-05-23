@@ -1,10 +1,14 @@
-const displayPon = async (options, { board = '1', slot = '1', port = '1' }) => {
+const chance = require('chance').Chance()
+
+const displayPon = async (options, { type = 'gpon', board = '1', slot = '1', port = '1' }) => {
+  const admin_status_string = chance.bool({ likelihood: 80 })  ? 'activate' : 'deactivate';
+  const operational_status_string = chance.bool({ likelihood: 60 })  ? 'up.' : 'down.';
 
   const chunk1 = `177.128.98.246: terminal length 512
 IRARA-OLT#show interface ${type}_olt-${board}/${slot}/${port}
-  ${type}_olt-${board}/${slot}/${port} is deactivate,line protocol is down.
+  ${type}_olt-${board}/${slot}/${port} is ${admin_status_string},line protocol is ${operational_status_string}
   The port link up/down notification is trap enable.
-Current channel num : 1 GPON
+Current channel num : 1 ${type.toUpperCase()}
 OLT statistic:
     Input rate :                  0 Bps                0 pps
     Output rate:                  0 Bps                0 pps
@@ -42,6 +46,7 @@ IRARA-OLT#`
     splitted1.shift()
     status = splitted1[0]
   }
+
   return {
     admin_status: (status || '').indexOf('deactivate') > -1 ? false : true,
     operational_status: (status || '').indexOf(' up.') > -1 ? 'up' : 'down',

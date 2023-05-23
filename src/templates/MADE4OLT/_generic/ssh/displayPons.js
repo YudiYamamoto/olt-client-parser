@@ -1,7 +1,8 @@
 const { dummy2json } = require('../../../../utils/lib')
+const  displayPon = require('./displayPon')
 const chance = require('chance').Chance()
 
-const displayPons = async (_options, { board = '1', slot = '1' }) => {
+const displayPons = async (options, { type = 'gpon', board = '1', slot = '1' }) => {
   const chunk = `
 ZXAN#show card
 Shelf Slot CfgType CardName     Port HardVer Status
@@ -45,55 +46,12 @@ IRARA-OLT#`
   const portSize = (theSlot && theSlot.port) || 0
   for await (const [index] of Array.from({ length: portSize }).entries()) {
     const port = (index + 1)
-    const chunk1 = `177.128.98.246: terminal length 512
-IRARA-OLT#show interface gpon_olt-${board}/${slot}/${port}
-  gpon_olt-${board}/${slot}/${port} is deactivate,line protocol is down.
-  The port link up/down notification is trap enable.
-Current channel num : 1 GPON
-OLT statistic:
-    Input rate :                  0 Bps                0 pps
-    Output rate:                  0 Bps                0 pps
-    Input Instantaneous bandwidth utilization : 0.0%    
-    Output Instantaneous bandwidth utilization: 0.0%    
-    Input Average bandwidth utilization : 0.0%    
-    Output Average bandwidth utilization: 0.0%    
-    Output Multicast Instantaneous rate:             N/A Bps                0 pps
-Interface peak rate:
-    Input peak rate :                  0 Bps                0 pps
-    Output peak rate:                  0 Bps                0 pps
-Total statistic:
-  Input :
-    Packets       :0                    DropPackets   :0                   
-    PassBytes     :0                    UnicastsPkts  :0                   
-    MulticastsPkts:0                    BroadcastsPkts:0                   
-    CRCAlignErrors:0                    OversizePkts  :0                   
-    UndersizePkts :0                    CollisionPkts : N/A                
-    Fragments     : N/A                 Jabbers       : N/A                
-    64B       :0                        65-127B   :0                   
-    128-255B  :0                        256-511B  :0                   
-    512-1023B :0                        1024-1518B:0                   
-  Output :
-    Packets       :0                    DropPackets   : N/A                
-    PassBytes     :0                    UnicastsPkts  :0                   
-    MulticastsPkts:0                    BroadcastsPkts:0                   
-    64B       :0                        65-127B   :0                   
-    128-255B  :0                        256-511B  :0                   
-    512-1023B :0                        1024-1518B:0                   
-IRARA-OLT#`
-    let status = ''
-    if (chunk1 && chunk1 !== '') {
-      const splitted1 = chunk1.split('\n')
-      splitted1.shift()
-      splitted1.shift()
-      status = splitted1[0]
-    }
-    
+    const pon_status = displayPon(options, { type, board, slot, port })
     data.push({
       board, 
       slot,
       port: port.toString(),
-      admin_status: (status || '').indexOf('deactivate') > -1 ? false : true,
-      operational_status: (status || '').indexOf(' up.') > -1 ? 'up' : 'down',
+      ...pon_status,
       description: '',
       min_range: 0,
       max_range: 20 * 1000,
