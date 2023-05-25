@@ -7,6 +7,7 @@ const sshDisplayBoards = require('./ssh/displayBoards')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayPons = require('./ssh/displayPons')
 const sshDisplayOnus = require('./ssh/displayOnus')
+const sshDisplayOnu = require('./ssh/displayOnu')
 
 const generic = require('../../_generic/')
 
@@ -23,6 +24,7 @@ module.exports = {
     displaySlots: sshDisplaySlots,
     displayPons: sshDisplayPons,
     displayOnus: sshDisplayOnus,
+    displayOnu: sshDisplayOnu,
     ...generic.ssh,
   }
 }
