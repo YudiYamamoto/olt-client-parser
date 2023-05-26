@@ -3,21 +3,17 @@ const OLTClientParser = require('../index')
 
 // ZTE C650
 const olt = new OLTClientParser({
-  brand: 'ZTE',
-  model: 'C650',
-  firmware: '1.2.1',
+  brand: 'Made4OLT',
+  model: 'ZTE_C650',
+  firmware: '1.0.0',
   connectionType: 'ssh',
   options: {
-    host: '177.128.98.246',
-    port: 3050,
-    username: 'madegraph',
-    password: 'Made@graph1',
-    shellPrompt: 'IRARA-OLT#',
-    __extra__: {
-      onu: {
-        size: 3
-      }
-    }
+    host: '123.0.0.1',
+    port: 2500,
+    username: 'made4olt',
+    password: 'Made4olt',
+    shellPrompt: 'XXX#',
+    __extra__: {}
   }
 });
 
@@ -45,7 +41,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data = await olt.displayPon({ board: '1', slot: '3', port: '12' })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '16' })
-  const data = await olt.displayOnu({ board: '1', slot: '1', port: '1', ont_id: '2' })
+  // const data = await olt.displayOnu({ board: '1', slot: '1', port: '16', ont_id: '1' })
   // const data = await olt.displayVlans()
   // const data = await olt.scopeVlanLanToLan()
   // const data = await olt.displayVlan('502')

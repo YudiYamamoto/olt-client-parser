@@ -98,7 +98,6 @@ const displayOnu = async (options, {
   let olt_rx_power = 0;
   const cmd3 = `show pon power attenuation ${type}_onu-${f_p_s}:${ont_id}`
   const chunckSignal = await conn.exec2(cmd3)
-  console.log(chunckSignal)
   if (chunckSignal && chunckSignal !== '') {
     const [_header0, _header1, _header2, _header3, upSignal, _header4, downSignal] = chunckSignal.split('\r\n')
     

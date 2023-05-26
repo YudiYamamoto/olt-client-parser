@@ -5,7 +5,6 @@ const enablePon = async (options, { type, board, slot, port }) => {
   const cmd = `conf t
 interface ${type}_olt-${board}/${slot}/${port}
 no shutdown`
-console.log(cmd)
   await conn.exec2(cmd)
 
   return cmd

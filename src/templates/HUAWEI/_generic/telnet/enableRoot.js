@@ -10,8 +10,7 @@ const enableRoot = async (options) => {
   const conn = await connect({ ...options, shellPrompt: '#' })
 
   const cmd = 'enable'  
-  const chunk = await conn.exec(cmd)
-  console.log(chunk)
+  await conn.exec(cmd)
   return true
 }
 
