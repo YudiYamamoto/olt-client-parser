@@ -1,20 +1,32 @@
 const { dummy2json } = require('../../../../utils/lib')
 const chance = require('chance').Chance()
 
+const numberOfOnus = chance.integer({ min: 20, max: 50 })
 
-const displayUnconfiguredOnus = async (_originalOptions) => {
+const randomOnuType = (type) => `MD000-${(type[0]).toUpperCase()}${chance.integer({ min: 1, max: '4' })}`
+const randomSerialNumber = (board, slot, type, port) => `MB${board}S${slot}R${type.toUpperCase()}${port.padStart(2, '0')}I${chance.integer({ min: 20, max: 50 })}`
+
+const generateOnu = () => {
   const board = 1
   const type =  chance.bool({ likelihood: 80 }) ? 'gpon' : 'epon'
   const slot = chance.integer({ min: 1, max: 4 })
   const port = chance.integer({ min: 1, max: 16 })
-  const randomOnuType = () => `MD000-${(type[0]).toUpperCase()}${chance.integer({ min: 1, max: '4' })}`
-  const randomSerialNumber = () => `MB${board}S${slot}R${type.toUpperCase()}${port.padStart(2, '0')}`
+
+  return `${type}-olt_${board}/${slot}/${(port).toString().padEnd(2, ' ')}     ${randomOnuType(type)}             ${randomSerialNumber(board, slot, type, port)}       N/A`
+}
+
+const displayUnconfiguredOnus = async (_originalOptions) => {
+  const onus = []
+  for(let i=0; i < numberOfOnus; i++) {
+    const onu = generateOnu()
+    onus.push(onu)
+  }
 
   const chunk = `177.128.98.246: terminal length 512
 IRARA-OLT#show pon onu uncfg
 OltIndex            Model                SN                 PW
 -------------------------------------------------------------------------
-${type}-olt_${board}/${slot}/${(port).toString().padEnd(2, ' ')}     ${randomOnuType()}             ${randomSerialNumber()}       N/A
+${onus.join('\n')}
 IRARA-OLT#`
   const splitted = chunk.split('\n')
   splitted.pop()

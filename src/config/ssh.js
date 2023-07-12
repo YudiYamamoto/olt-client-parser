@@ -1,7 +1,16 @@
 const { NodeSSH } = require('node-ssh')
 
 class SSHWrapper {
-  constructor({ host, port, username = 'root', password = 'guest', timeout = 2500, ...restOptions }) {
+  constructor({ 
+    host, 
+    port, 
+    username = 'root', 
+    password = 'guest', 
+    timeout = 0, 
+    keepaliveCountMax = 8,
+    keepaliveInterval = 300,
+    ...restOptions
+   }) {
     const connection = new NodeSSH()
     if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params_ssh' }))
 
@@ -12,8 +21,8 @@ class SSHWrapper {
       username,
       password, 
       tryKeyboard: true,
-      keepaliveInterval: 300,
-      keepaliveCountMax: 8,
+      // keepaliveInterval,
+      // keepaliveCountMax,
       // timeout, 
       authHandler: ['password'],
       algorithms: {
@@ -41,6 +50,7 @@ class SSHWrapper {
       // "debug": console.log
     }    
     this._connection = connection
+    this._timeout = timeout
   }
 
   getOptions() {
@@ -49,6 +59,10 @@ class SSHWrapper {
 
   getConnection() {
     return this._connection
+  }
+
+  getTimeout() {
+    return this._timeout || 5000
   }
 
   async exec(cmd) {
@@ -99,7 +113,7 @@ class SSHWrapper {
         })
 
         stream.end(`terminal length 512\n ${cmd}\n exit\n`, 'utf8', () => {
-          setTimeout(() => stream.close(), 5000)
+          setTimeout(() => stream.close(), this.getTimeout())
         })
       })
     })

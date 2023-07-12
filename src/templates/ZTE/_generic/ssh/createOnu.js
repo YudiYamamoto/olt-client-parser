@@ -7,13 +7,17 @@ const createOnu = async (options, {
   port = '1', 
   ont_id = '1', // TODO verificar para trazer com qualidade esse numero
   onu_type,
-  serial_number
+  serial_number,
+  name,
+  description
 }) => {
   const conn = await connect(options)
   const interface = `${board}/${slot}/${port}`
   const cmd = `configure terminal
 interface ${type}-olt_${interface}
-onu ${ont_id} type ${onu_type} sn ${serial_number}`
+onu ${ont_id} type ${onu_type} sn ${serial_number}
+name ${name || ''}
+description ${description || ''}`
   await conn.exec2(cmd)
 
   return cmd

@@ -3,7 +3,17 @@ const SSH2 = require('./ssh2')
 
 const connect = async (defaultOptions) => {
   const client = new SSH(defaultOptions)
-  const client2 = new SSH2(defaultOptions)
+  const client2 = new SSH2({ 
+    ...defaultOptions, 
+    algorithms: {
+    cipher: [
+      'aes128-cbc',
+      '3des-cbc',
+      'blowfish-cbc'
+    ],
+  }
+  })
+  const client3 = new SSH2(defaultOptions)
   const connection = client.getConnection()
   const options = client.getOptions()
   
@@ -17,8 +27,19 @@ const connect = async (defaultOptions) => {
       )
       .join('\n')
   }
+
   const exec2 = async (cmd) => {
     const chunks = await client2.exec(cmd)
+    return chunks    
+  }
+
+  const exec3 = async (cmd) => {
+    const chunks = await client3.exec(cmd)
+    return chunks    
+  }
+
+  const exec4 = async (cmd) => {
+    const chunks = await client3.exec2(cmd)
     return chunks    
   }
 
@@ -26,7 +47,9 @@ const connect = async (defaultOptions) => {
     connection,
     options,
     exec,
-    exec2
+    exec2,
+    exec3,
+    exec4,
   }
 }
 

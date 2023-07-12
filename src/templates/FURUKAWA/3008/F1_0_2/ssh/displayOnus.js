@@ -41,24 +41,32 @@ const { column2json, day2time } = require('../../../../../utils/lib')
 const regexp = /---------------------------------------------------------------\n OLT : \d+, ONU : \d+\n---------------------------------------------------------------/gmi;
 
 const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
-  const conn = await connect(options)
+  const conn = await connect({ 
+    ...options,
+    timeout: 300000000, 
+    keepaliveCountMax: 200,
+    keepaliveInterval: 300,
+  })
 
-  const cmd = `show onu detail-info ${port}` 
+  const cmd = `show onu detail-info ${port}`
+  console.warn(cmd)
   const chunkDa = await conn.exec(cmd)
   if (!chunkDa && chunkDa === '') return null
   
   const chunkIt = chunkDa.split('\n')
   chunkIt.shift()
+
   const chunk = chunkIt.join('\n')
   const match = chunk.match(regexp)
   const splitted = chunk.split(regexp)
-  splitted.shift();
+  splitted.shift()
+
   const data = splitted
     .map(item => column2json(
       item
       .split('\n')
       .map(item2 => 
-        item2
+        (item2 || '')
           .replace(':', '[$%]')
           .replace(/\:/gi, '-')
           .replace('[$%]', ':')
@@ -68,12 +76,13 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
   return data.map((item, index) => {
     const index_match = match[index].match(/ONU : \d+/gi)
     const ont_id = String(index_match)
+    const distance = parseInt((item.fiber_distance || '0').replace('m', ''), 10)
 
     return ({
       board,
       slot,
       port,
-      ont_id: ont_id.replace('ONU : ', '').trim(),
+      ont_id: (ont_id || '').replace('ONU : ', '').trim(),
       // pon_type: 'gpon',
       // capability: 'bridging_routing',
       // allow_custom_profiles: false,
@@ -83,13 +92,13 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       olt_rx_power: 0,
       catv_rx_power: 0,
       onu_type: item.model_name,
-      name: item.name,
+      name: item.name || '',
       rx_power: parseFloat((item.o_n_u_r_x_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
       onu_external_id: item.host_name,
       serial_number: item.serial_number,
       mac_address: (item.m_a_c_address || '').replace(/\-/gi, ':'),
       description: item.description,
-      distance: parseInt((item.fiber_distance || '').replace('m', ''), 10),
+      distance: isNaN(distance) ? null : distance,
       stage: item.activation_status === 'Active' ? 'online' : 'disabled',
       authorization_at: new Date(), // TODO colocar uma tag de origem importada
       uptime_at: day2time(item.activated_time),

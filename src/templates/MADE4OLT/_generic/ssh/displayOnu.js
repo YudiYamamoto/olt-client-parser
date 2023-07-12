@@ -15,8 +15,12 @@ const displayOnu = async (_options, {
   ont_id = '1', 
   serial_number: serial_number_original, 
   mac_address: mac_address_original,
+  authorization_at
 }) => {
   const f_p_s = `${board}/${slot}/${port}`
+
+  const hasData = authorization_at ? true : chance.bool({ likelihood: 55 })
+  if (!hasData) return
 
   const randomStatus = () => {
     return chance.bool({ likelihood: 80 }) 

@@ -44,8 +44,6 @@ const regexp_base = new RegExp(base, 'gmi')
 const regexp = new RegExp(`---------------------------------------------------------------\\n${base}`, 'gmi')
 
 const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
-  if (parseInt(port, 10) < 15) return null; // TODO verificar limitação
-
   const cmd = `show onu detail-info gpon ${slot}/${port}`
   const conn = await connect(options)
   const chunk = await conn.exec(cmd)
@@ -70,6 +68,8 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
   return data.map((item, index) => {
     const index_match = (match[index] || '').match(/ONU : \d+/gi)
     const ont_id = String(index_match)
+    const distance = parseInt((item.fiber_distance || '0').replace('m', ''), 10)
+
     return ({
       board,
       slot,
@@ -90,7 +90,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       serial_number: item.serial_number,
       mac_address: (item.m_a_c_address || '').replace(/\-/gi, ':'),
       description: item.description,
-      distance: parseInt((item.fiber_distance || '').replace('m', ''), 10),
+      distance: isNaN(distance) ? null : distance,
       stage: item.activation_status === 'Active' ? 'online' : 'disabled',
       authorization_at: new Date(), // TODO colocar uma tag de origem importada
       uptime_at: day2time(item.activated_time),

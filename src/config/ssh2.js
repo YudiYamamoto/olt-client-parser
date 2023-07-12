@@ -1,7 +1,7 @@
 const SSH2Shell = require ('ssh2shell')
 
 class SSHWrapper {
-  constructor({ host, port, username = 'root', password = 'guest', timeout = 2500, keepaliveInterval = 300, ...restOptions }) {
+  constructor({ host, port, username = 'root', password = 'guest', timeout = 2500, keepaliveInterval = 300, algorithms, ...restOptions }) {
     if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params_ssh2' }))
 
     this._options = {
@@ -16,11 +16,7 @@ class SSHWrapper {
       timeout, 
       authHandler: ['password'],
       algorithms: {
-        cipher: [
-          'aes128-cbc',
-          '3des-cbc',
-          'blowfish-cbc'
-        ],
+        ...algorithms,
         kex: [
           'diffie-hellman-group1-sha1',
           'curve25519-sha256@libssh.org',
@@ -61,10 +57,55 @@ class SSHWrapper {
     const connection = new SSH2Shell({
       server: options,
       // debug: true,
-      commands: ['terminal length 512', cmd ],
-      // enter: "--More-- \n",
+      commands: ['terminal length 512', cmd, 'exit' ],
+      // enter: "\n",
     })
+
+    /*
+    connection.on('commandProcessing', function onCommandProcessing( command, response, sshObj, stream ) {
+      if (command.indexOf('show onu detail-info') > -1 && response.indexOf("--More--") > -1) {
+        stream.write(sshObj.enter)
+      }
+    })
+    */
     return new Promise((resolve) => connection.connect(resolve))
+  }
+
+  async exec2(cmd) {
+    const options = this.getOptions()
+    const connection = new SSH2Shell({
+      server: options,
+      // debug: true,
+      commands: ['terminal length 512', cmd, 'exit' ],
+      // enter: "\n",
+    })
+    
+    // const test = await connection.execCommand('xeyes', { x11: true })
+    // console.error(test)
+    await connection.connect();
+
+    return new Promise((resolve, reject) => {
+      const conn = connection
+      // let test = null
+      const chunks = []
+      conn.on('pipe', function onPipe(stream){
+        console.log('XXXX')
+        let chunk;            
+        while (null !== (chunk = stream.read())) {
+          const item = Buffer.from(chunk).toString('utf-8')
+          // console.log('got %d bytes of data', chunk.length)
+          // console.log(item)
+          // chunks.push(item.replace('--More-- \r         \r', ''))
+          chunks.push(item)
+          // console.log(stream)
+        }
+      })
+      conn.on('end', function () {
+        console.log('okk')
+        const item = chunks.join('').split('\r\n').slice(6, -3)
+        resolve(item.join('\n'))
+      })
+    })
   }
 }
 
