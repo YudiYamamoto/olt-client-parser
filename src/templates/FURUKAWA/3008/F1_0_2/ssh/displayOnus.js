@@ -43,9 +43,9 @@ const regexp = /---------------------------------------------------------------\
 const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
   const conn = await connect({ 
     ...options,
-    timeout: 300000000, 
-    keepaliveCountMax: 200,
-    keepaliveInterval: 300,
+    timeout: 30000, 
+    keepaliveCountMax: 2,
+    keepaliveInterval: 3000,
   })
 
   const cmd = `show onu detail-info ${port}`

@@ -8,6 +8,7 @@ const sshDisplayVlan = require('./ssh/displayVlan')
 const sshDisplayTraffic = require('./ssh/displayTraffic')
 const sshScopeVlanInternet = require('./ssh/scopeVlanInternet')
 const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
+const sshCheckStage = require('./ssh/checkStage')
 
 module.exports = {
   ssh: {
@@ -21,5 +22,6 @@ module.exports = {
     scopeVlanInternet: sshScopeVlanInternet,
     scopeVlanLanToLan: sshScopeVlanLanToLan,
     displayTraffic: sshDisplayTraffic,
+    checkStage: sshCheckStage,
   }
 }

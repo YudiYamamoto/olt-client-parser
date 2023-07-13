@@ -7,7 +7,7 @@ class SSHWrapper {
     username = 'root', 
     password = 'guest', 
     timeout = 0, 
-    keepaliveCountMax = 8,
+    keepaliveCountMax = 2,
     keepaliveInterval = 300,
     ...restOptions
    }) {
@@ -21,9 +21,9 @@ class SSHWrapper {
       username,
       password, 
       tryKeyboard: true,
-      // keepaliveInterval,
-      // keepaliveCountMax,
-      // timeout, 
+      keepaliveInterval,
+      keepaliveCountMax,
+      timeout, 
       authHandler: ['password'],
       algorithms: {
         kex: [
