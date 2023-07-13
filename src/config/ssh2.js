@@ -57,7 +57,7 @@ class SSHWrapper {
     const connection = new SSH2Shell({
       server: options,
       // debug: true,
-      commands: ['terminal length 512', cmd, 'exit' ],
+      commands: ['terminal length 0', cmd, 'exit' ],
       // enter: "\n",
     })
 
