@@ -41,12 +41,7 @@ const { column2json, day2time } = require('../../../../../utils/lib')
 const regexp = /---------------------------------------------------------------\n OLT : \d+, ONU : \d+\n---------------------------------------------------------------/gmi;
 
 const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
-  const conn = await connect({ 
-    ...options,
-    timeout: 30000, 
-    keepaliveCountMax: 2,
-    keepaliveInterval: 3000,
-  })
+  const conn = await connect(options)
 
   const cmd = `show onu detail-info ${port}`
   console.warn(cmd)
