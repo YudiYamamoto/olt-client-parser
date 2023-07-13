@@ -6,9 +6,9 @@ class SSHWrapper {
     port, 
     username = 'root', 
     password = 'guest', 
-    timeout = 0, 
-    keepaliveCountMax = 2,
-    keepaliveInterval = 300,
+    timeout = 30000, 
+    keepaliveCountMax = 8,
+    keepaliveInterval = 1500,
     ...restOptions
    }) {
     const connection = new NodeSSH()
@@ -21,9 +21,9 @@ class SSHWrapper {
       username,
       password, 
       tryKeyboard: true,
-      keepaliveInterval,
+      // timeout, 
       keepaliveCountMax,
-      timeout, 
+      keepaliveInterval,
       authHandler: ['password'],
       algorithms: {
         kex: [
@@ -80,6 +80,17 @@ class SSHWrapper {
       conn.shell((err, stream) => {
         // if (err) reject(err)
         if (err) resolve(null) // TODO 
+        /*
+        if (connection.keepAliveInterval) clearInterval(connection.keepAliveInterval);
+
+        connection.keepAliveInterval = setInterval(() => {
+          if (stream.writable) {
+            stream.write('\b');
+            console.log(`KeepAlive ping`);
+          }
+        }, 1500);
+        */
+
         stream
           /*
           .on('data', (data) => {
@@ -103,16 +114,14 @@ class SSHWrapper {
             }
             // if (!chunk) stream.close()
           })
-
-        stream.on('end', function () {
+          .on('end', function () {
           const item = chunks.join('').split('\r\n').slice(6, -3)
           // chunks.shift()
           // chunks.pop()
           // console.table(item)
           resolve(item.join('\n'))
         })
-
-        stream.end(`terminal length 512\n ${cmd}\n exit\n`, 'utf8', () => {
+        .end(`terminal length 0\n ${cmd}\n exit\n`, 'utf8', () => {
           setTimeout(() => stream.close(), this.getTimeout())
         })
       })
