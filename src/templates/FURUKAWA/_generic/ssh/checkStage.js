@@ -4,7 +4,7 @@ const checkStage = async (options) => {
   const conn = await connect(options)
 
   const cmd = `show clock`
-  const chunkDa = await conn.exec(cmd)
+  const chunkDa = await conn.exec3(cmd)
   if (!chunkDa && chunkDa === '') return null
   
   const chunkIt = chunkDa.split('\r\n')
