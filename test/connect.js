@@ -41,21 +41,8 @@ const olt = new OLTClientParser({
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data = await olt.displayPon({ board: '1', slot: '3', port: '12' })
-  const data1 = await olt.displayOnus({ board: '1', slot: '1', port: '3' })
-  await sleep(3000);
-  const data2 = await olt.displayOnus({ board: '1', slot: '1', port: '8' })
-  await sleep(3000);
-  const data3 = await olt.displayOnus({ board: '1', slot: '1', port: '5' })
-  await sleep(3000);
-  const data4 = await olt.displayOnus({ board: '1', slot: '1', port: '1' })
-  await sleep(3000);
-  const data5 = await olt.displayOnus({ board: '1', slot: '1', port: '3' })
-  await sleep(3000);
-  const data6 = await olt.displayOnus({ board: '1', slot: '1', port: '8' })
-  await sleep(3000);
-  const data7 = await olt.displayOnus({ board: '1', slot: '1', port: '5' })
-  await sleep(3000);
-  const data8 = await olt.displayOnus({ board: '1', slot: '1', port: '1' })
+  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '3' })
+  const data = await olt.displayOnu({ board: '1', slot: '1', port: '1', ont_id: '24' })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '16', ont_id: '1' })
   // const data = await olt.displayVlans()
   // const data = await olt.scopeVlanLanToLan()
@@ -93,5 +80,5 @@ const olt = new OLTClientParser({
     name: 'teste_comandos@made4it.com.br'
   })
   */
-  console.table([...data1, ...data2, ...data3, ...data4, ...data5, ...data6, ...data7, ...data8 ])  
+  console.table(data)  
 })()

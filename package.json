@@ -1,6 +1,6 @@
 {
   "name": "@thiago.zampieri/olt-client-parser",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Biblioteca para acessar OLTs multimarcas e transformar em JSON",
   "main": "index.js",
   "scripts": {
