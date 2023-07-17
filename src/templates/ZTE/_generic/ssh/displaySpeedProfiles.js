@@ -11,7 +11,7 @@ traffic-profile SMARTOLT-1G-DOWN cir 1024000 cbs 1023 pir 1024000 pbs 1023 color
 */
 
 const displaySpeedProfiles = async (originalOptions) => {
-  const conn = await connect({ ...originalOptions, timeout: 0, keepaliveInterval: 60000 })
+  const conn = await connect(originalOptions)
   const cmd = 'show running-config | include traffic-profile'
   const chunk = await conn.exec2(cmd)
  

@@ -6,9 +6,9 @@ class SSHWrapper {
     port, 
     username = 'root', 
     password = 'guest', 
-    timeout = 30000, 
-    keepaliveCountMax = 8,
-    keepaliveInterval = 1500,
+    timeout = 30000, // Limita o tamanho da conexão
+    keepaliveCountMax = 4, // Numero de conexões concorrentes
+    keepaliveInterval = 0, // Valida a conexão com intervalo de tanto tempo entre conexões concorrentes
     ...restOptions
    }) {
     const connection = new NodeSSH()
@@ -21,7 +21,7 @@ class SSHWrapper {
       username,
       password, 
       tryKeyboard: true,
-      // timeout, 
+      timeout, 
       keepaliveCountMax,
       keepaliveInterval,
       authHandler: ['password'],
@@ -50,7 +50,7 @@ class SSHWrapper {
       // "debug": console.log
     }    
     this._connection = connection
-    this._timeout = timeout
+    this._timeout = timeout > 0 ? timeout : 5000
   }
 
   getOptions() {
@@ -73,7 +73,7 @@ class SSHWrapper {
     
     // const test = await connection.execCommand('xeyes', { x11: true })
     // console.error(test)
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const conn = connection.connection
       // let test = null
       const chunks = []
@@ -115,15 +115,76 @@ class SSHWrapper {
             // if (!chunk) stream.close()
           })
           .on('end', function () {
-          const item = chunks.join('').split('\r\n').slice(6, -3)
-          // chunks.shift()
-          // chunks.pop()
-          // console.table(item)
-          resolve(item.join('\n'))
-        })
-        .end(`terminal length 0\n ${cmd}\n exit\n`, 'utf8', () => {
-          setTimeout(() => stream.close(), this.getTimeout())
-        })
+            const item = chunks.join('').split('\r\n').slice(6, -3)
+            // chunks.shift()
+            // chunks.pop()
+            // console.table(item)
+            stream.close()
+            resolve(item.join('\n'))
+          })
+          .on('close', function () {
+            connection.dispose()
+          })
+          .end(`terminal length 0\n ${cmd}\n exit\n`, 'utf8', () => {
+            setTimeout(() => {
+              stream.close()
+            }, this.getTimeout())
+          })
+      })
+    })
+  }
+
+  async execCommand(conn, cmd) {
+    if (!conn || !cmd) return
+
+    return new Promise((resolve) => {
+      let chunks = []
+      conn.shell((err, stream) => {
+        if (err) resolve(null) 
+        /*
+        if (connection.keepAliveInterval) clearInterval(connection.keepAliveInterval);
+
+        connection.keepAliveInterval = setInterval(() => {
+          if (stream.writable) {
+            stream.write('\b');
+            console.log(`KeepAlive ping`);
+          }
+        }, 1500);
+        */
+
+        stream
+          /*
+          .on('data', (data) => {
+            // console.log(Buffer.from(data).toString('utf-8'), '>>>')
+            // resolve(Buffer.from(data).toString('utf-8'))
+            test = Buffer.from(data).toString('utf-8')
+          })          
+          .on('error', (data) => {
+            chunks = [];
+          })          
+          */
+          .on('readable', () => {
+            let chunk;            
+            while (null !== (chunk = stream.read())) {
+              const item = Buffer.from(chunk).toString('utf-8')
+              // console.log('got %d bytes of data', chunk.length)
+              // console.log(item)
+              // chunks.push(item.replace('--More-- \r         \r', ''))
+              chunks.push(item)
+            }
+          })
+          .on('end', function () {
+            const item = chunks.join('').split('\r\n').slice(6, -3)
+            // chunks.shift()
+            // chunks.pop()
+            // console.table(item)
+            stream.close()
+            resolve(item.join('\n'))
+          })
+          .end(`terminal length 0\n ${cmd}\n exit\n`, 'utf8', () => {
+            setTimeout(() => stream.close(), this.getTimeout())
+            console.log('saida')
+          })
       })
     })
   }

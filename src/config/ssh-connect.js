@@ -28,6 +28,12 @@ const connect = async (defaultOptions) => {
       .join('\n')
   }
 
+  const execCommand = async (cmd) => {
+    const conn = null
+    const chunks = await client.execCommand(conn, cmd)
+    return chunks
+  }
+
   const exec2 = async (cmd) => {
     const chunks = await client2.exec(cmd)
     return chunks    

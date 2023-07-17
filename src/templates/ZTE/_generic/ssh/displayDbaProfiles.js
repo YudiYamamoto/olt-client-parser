@@ -9,7 +9,7 @@ IRARA-OLT#show running-config | include profile tcont
 */
 
 const displayDbaProfiles = async (originalOptions) => {
-   const conn = await connect({ ...originalOptions, timeout: 0, keepaliveInterval: 60000 })
+   const conn = await connect(originalOptions)
   const cmd = 'show running-config | include profile tcont'
   const chunk = await conn.exec2(cmd)
   
