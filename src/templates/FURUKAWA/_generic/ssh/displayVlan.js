@@ -34,13 +34,13 @@ show vlan ${name}`
   ]
   
   const data = dummy2json(splitted.join('\n'), columns, 1)
-
-  return data.map((item) => ({ 
+  const [vlan] = data.map((item) => ({ 
     name: item.vid, 
     description: item.name,
     custom_fields: {
       ...item
     }
   }))
+  return vlan
 }
 module.exports = displayVlans

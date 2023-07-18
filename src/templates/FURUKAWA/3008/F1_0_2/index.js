@@ -1,6 +1,7 @@
 const displayBoards = require('./ssh/displayBoards')
 const displaySlots = require('./ssh/displaySlots')
 const displayPons = require('./ssh/displayPons')
+const displayPon = require('./ssh/displayPon')
 const displayOnus = require('./ssh/displayOnus')
 const displayOnu = require('./ssh/displayOnu')
 
@@ -11,6 +12,7 @@ module.exports = {
     displayBoards,
     displaySlots,
     displayPons,
+    displayPon,
     displayOnus,
     displayOnu,
     ...generic.ssh,
