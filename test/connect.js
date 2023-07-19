@@ -77,7 +77,7 @@ const olt = new OLTClientParser({
     port: '15', 
     ont_id: 4, 
     serial_number: '9AC29F6496FB', 
-    line_profile: 'PLANO-100U-100D-ONT420-10R',
+    onu_profile: 'PLANO-100U-100D-ONT420-10R',
     name: 'teste_comandos@made4it.com.br'
   })
   */

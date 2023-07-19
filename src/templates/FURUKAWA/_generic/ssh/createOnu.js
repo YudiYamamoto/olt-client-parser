@@ -6,7 +6,7 @@ const createOnu = async (options, {
   port = '1', 
   ont_id = '1',
   name,
-  line_profile,
+  onu_profile,
   serial_number,
 }) => {
   const conn = await connect(options)
@@ -14,7 +14,7 @@ const createOnu = async (options, {
 ${type}
   ${type}-olt ${slot}/${port}
   onu add ${ont_id} ${serial_number} auto-learning
-  onu-profile ${ont_id} ${line_profile}
+  onu-profile ${ont_id} ${onu_profile}
   onu description ${ont_id} ${name || ''}`
   const data = await conn.exec3(cmd)
 
