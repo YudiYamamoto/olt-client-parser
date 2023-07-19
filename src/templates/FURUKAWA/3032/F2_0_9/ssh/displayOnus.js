@@ -43,7 +43,7 @@ const regexp_base = new RegExp(base, 'gmi')
 // const regexp = /---------------------------------------------------------------\n regexp_base/gmi;
 const regexp = new RegExp(`---------------------------------------------------------------\\n${base}`, 'gmi')
 
-const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
+const displayOnus = async (options, { board = '1', slot = '1', port = '1', authorization_at = new Date() }) => {
   const cmd = `show onu detail-info gpon ${slot}/${port}`
   const conn = await connect(options)
   const chunk = await conn.exec(cmd)
@@ -92,7 +92,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       description: item.description,
       distance: isNaN(distance) ? null : distance,
       stage: item.activation_status === 'Active' ? 'online' : 'disabled',
-      authorization_at: new Date(), // TODO colocar uma tag de origem importada
+      authorization_at,
       uptime_at: day2time(item.activated_time),
       custom_fields: {
         source: 'import_onu'

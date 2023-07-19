@@ -40,7 +40,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
-  const data = await olt.displayPon({ board: '1', slot: '1', port: '8' })
+  // const data = await olt.displayPon({ board: '1', slot: '1', port: '8' })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '3' })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '1', ont_id: '24' })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '16', ont_id: '1' })
@@ -59,6 +59,7 @@ const olt = new OLTClientParser({
   // const data = await olt.disableAutoNegotiation('xgei-1/5/2')
   // const data = await olt.enableTrunkMode('xgei-1/5/2')
   // const data = await olt.displayDbaProfiles()
+  const data = await olt.displayLineProfiles()
   // const data = await olt.displaySpeedProfiles()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.disableUplink('10')
@@ -80,5 +81,5 @@ const olt = new OLTClientParser({
     name: 'teste_comandos@made4it.com.br'
   })
   */
-  console.table(data)  
+  console.log(JSON.stringify(data, null, 11))  
 })()

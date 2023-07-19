@@ -40,11 +40,10 @@ const { column2json, day2time } = require('../../../../../utils/lib')
 
 const regexp = /---------------------------------------------------------------\n OLT : \d+, ONU : \d+\n---------------------------------------------------------------/gmi;
 
-const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => {
+const displayOnus = async (options, { board = '1', slot = '1', port = '1', authorization_at = new Date() }) => {
   const conn = await connect(options)
 
   const cmd = `show onu detail-info ${port}`
-  console.warn(cmd)
   const chunkDa = await conn.exec(cmd)
   if (!chunkDa && chunkDa === '') return null
   
@@ -95,7 +94,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1' }) => 
       description: item.description,
       distance: isNaN(distance) ? null : distance,
       stage: item.activation_status === 'Active' ? 'online' : 'disabled',
-      authorization_at: new Date(), // TODO colocar uma tag de origem importada
+      authorization_at,
       uptime_at: day2time(item.activated_time),
       custom_fields: {
         source: 'import_onu'
