@@ -53,7 +53,7 @@ Temperature-Upper: 90 (c)            Temperature-Lower: -45(c)
 Module-Class     : default                      
 */
 
-const showOpticalModuleInfo = async (options, interface) => {
+const showInterfaceOpticalModuleInfo = async (options, interface) => {
   const conn = await connect(options)
   const cmd = `show optical-module-info ${interface}`
   const chunk = await conn.exec2(cmd)
@@ -88,4 +88,4 @@ const showOpticalModuleInfo = async (options, interface) => {
   return data
 }
 
-module.exports = showOpticalModuleInfo
+module.exports = showInterfaceOpticalModuleInfo

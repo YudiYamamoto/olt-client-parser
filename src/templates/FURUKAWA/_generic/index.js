@@ -12,6 +12,8 @@ const sshCheckStage = require('./ssh/checkStage')
 const sshRunCommand = require('./ssh/runCommand')
 const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
 const sshDisplayLineProfiles = require('./ssh/displayLineProfiles')
+const sshDisplayOnuProfiles = require('./ssh/displayOnuProfiles')
+const sshDisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
 
 module.exports = {
   ssh: {
@@ -29,5 +31,7 @@ module.exports = {
     runCommand: sshRunCommand,
     displayDbaProfiles: sshDisplayDbaProfiles,
     displayLineProfiles: sshDisplayLineProfiles,
+    displayOnuProfiles: sshDisplayOnuProfiles,
+    displayOLTServiceProfiles: sshDisplayOLTServiceProfiles,
   }
 }

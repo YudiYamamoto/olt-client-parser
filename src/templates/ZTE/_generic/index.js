@@ -3,7 +3,7 @@ const sshDisplayVlan = require('./ssh/displayVlan')
 const sshCreateVlan = require('./ssh/createVlan')
 const sshVlanTag = require('./ssh/vlanTag')
 const sshVlanUntag = require('./ssh/vlanUntag')
-const sshshowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
+const sshShowInterfaceOpticalModuleInfo = require('./ssh/showInterfaceOpticalModuleInfo')
 const sshremoveVlanUplink = require('./ssh/removeVlanUplink')
 const sshshowVlanPort = require('./ssh/showVlanPort')
 const sshEnableAutoNegotiation = require('./ssh/enableAutoNegotiation')
@@ -44,7 +44,7 @@ module.exports = {
     createVlan: sshCreateVlan,
     vlanTag: sshVlanTag,
     vlanUntag: sshVlanUntag,
-    showOpticalModuleInfo: sshshowOpticalModuleInfo,
+    showInterfaceOpticalModuleInfo: sshShowInterfaceOpticalModuleInfo,
     showVlanPort: sshshowVlanPort,
     removeVlanUplik: sshremoveVlanUplink,
     enableAutoNegotiation: sshEnableAutoNegotiation,

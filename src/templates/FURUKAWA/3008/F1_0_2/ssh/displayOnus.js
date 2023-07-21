@@ -1,5 +1,6 @@
 const { connect } = require('../../../../../config/ssh-connect')
-const { column2json, day2time } = require('../../../../../utils/lib')
+const { column2json, day2time } = require('../../../../../utils/lib');
+const showOpticalModuleInfo = require('./showOpticalModuleInfo');
 
 /*
 >>> Coletar os dados da ONU POR PON
@@ -67,40 +68,50 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1', autho
         )
       .splice(1))
     )
-  return data.map((item, index) => {
-    const index_match = match[index].match(/ONU : \d+/gi)
-    const ont_id = String(index_match)
-    const distance = parseInt((item.fiber_distance || '0').replace('m', ''), 10)
 
-    return ({
+  const values = []
+  for await (const [index, item] of data.entries()) {
+    const index_match = match[index].match(/ONU : \d+/gi)
+    const distance = parseInt((item.fiber_distance || '0').replace('m', ''), 10)
+    const ont_id = (String(index_match) || '').replace('ONU : ', '').trim()
+
+    const additionals = await showOpticalModuleInfo(options, { port, ont_id })
+    const { temperature = 0, tx_power = 0, olt_rx_power = 0, custom_fields } = additionals || {}
+
+    values.push({
       board,
       slot,
       port,
-      ont_id: (ont_id || '').replace('ONU : ', '').trim(),
+      ont_id,
       // pon_type: 'gpon',
       // capability: 'bridging_routing',
       // allow_custom_profiles: false,
       // catv: false,
-      temperature: 0,
-      tx_power: 0,
-      olt_rx_power: 0,
+      temperature,
+      tx_power,
+      olt_rx_power,
       catv_rx_power: 0,
       onu_type: item.model_name,
       name: item.name || '',
-      rx_power: parseFloat((item.o_n_u_r_x_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+      rx_power: parseFloat((item.o_n_u_r_x_power || '').toLowerCase().trim().replace(/[ ,a-z]/gi, ''), 10),
       onu_external_id: item.host_name,
       serial_number: item.serial_number,
       mac_address: (item.m_a_c_address || '').replace(/\-/gi, ':'),
       description: item.description,
+      onu_profile: item['onu-profile'],
       distance: isNaN(distance) ? null : distance,
       stage: item.activation_status === 'Active' ? 'online' : 'disabled',
       authorization_at,
       uptime_at: day2time(item.activated_time),
       custom_fields: {
+        ...item,
+        ...custom_fields,
         source: 'import_onu'
       }
     })
-  })
+  }
+
+  return values
 }
 
 module.exports = displayOnus
