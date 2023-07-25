@@ -1,5 +1,5 @@
-const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../utils/lib')
+const { connect } = require('../../../../../config/ssh-connect')
+const { dummy2json } = require('../../../../../utils/lib')
 
 /*
 OLT-SERRA-GRANDE-3008(bridge)# show vlan
@@ -33,8 +33,6 @@ OLT-SERRA-GRANDE-3008(bridge)#
 const displayVlans = async (options) => {
   const conn = await connect(options)
   const cmd = `enable
-conf t
-bridge
 show vlan`  
   const chunk = await conn.exec3(cmd)
   
@@ -57,7 +55,7 @@ show vlan`
   ]
 
   const data = dummy2json(splitted.join('\n'), columns, 1)
-  const list = [];
+  const list = []
 
   for (const item of data) {
     list.push(item.vid)

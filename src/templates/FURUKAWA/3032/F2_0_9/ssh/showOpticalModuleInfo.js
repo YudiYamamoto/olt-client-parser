@@ -14,9 +14,9 @@ const { line2json } = require('../../../../../utils/lib')
 ---------------------------------------------------------------             
 */
 
-const showOpticalModuleInfo = async (options, { slot, port, ont_id }) => {
+const showOpticalModuleInfo = async (options, { slot, port, pon_type: type = 'gpon', ont_id }) => {
   const conn = await connect(options)
-  const cmd = `show onu ani optic-module-info gpon ${slot}/${port} ${ont_id}`
+  const cmd = `show onu ani optic-module-info ${type} ${slot}/${port} ${ont_id}`
   const chunk = await conn.exec2(cmd)
   const lines = chunk.split('\r\n')
   lines.pop()

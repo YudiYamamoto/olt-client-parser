@@ -1,5 +1,5 @@
-const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../utils/lib')
+const { connect } = require('../../../../../config/ssh-connect')
+const { dummy2json } = require('../../../../../utils/lib')
 
 /*
 OLT-3008-DATACIT-RET# show vlan 866

@@ -1,5 +1,5 @@
-const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../utils/lib')
+const { connect } = require('../../../../../config/ssh-connect')
+const { dummy2json } = require('../../../../../utils/lib')
 
 /* >>> Coletar os numero de ports
 OLT-3008-DATACIT-RET# show port

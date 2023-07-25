@@ -33,18 +33,10 @@ const displayPons = async (options, { board = '1', slot = '1' }) => {
     [36, 46],
     [48, 64],
   ]
-
   
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
   return data
-    /*
-    .filter(item => {
-      const [item0] = (item.olt || '').replace(/(EPON)|(GPON)/gi, '').split('/')
-      const slot_test = (item0 || item.olt || '').toString()
-      return slot_test === slot.toString()
-    })
-    */
     .map((item) =>  {
       const hasIndex = (item.olt || '').toLowerCase().indexOf('pon') > -1
       const [type_port] = hasIndex ? (item.olt || '').split('pon') : ['G']

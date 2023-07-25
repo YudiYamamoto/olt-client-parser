@@ -44,8 +44,14 @@ const regexp_base = new RegExp(base, 'gmi')
 // const regexp = /---------------------------------------------------------------\n regexp_base/gmi;
 const regexp = new RegExp(`---------------------------------------------------------------\\n${base}`, 'gmi')
 
-const displayOnus = async (options, { board = '1', slot = '1', port = '1', authorization_at = new Date() }) => {
-  const cmd = `show onu detail-info gpon ${slot}/${port}`
+const displayOnus = async (options, { 
+  board = '1', 
+  slot = '1', 
+  pon_type: type = 'gpon', 
+  port = '1', 
+  authorization_at = new Date() 
+}) => {
+  const cmd = `show onu detail-info ${type} ${slot}/${port}`
   const conn = await connect(options)
   const chunk = await conn.exec(cmd)
   if (!chunk && chunk === '') return null
@@ -72,7 +78,7 @@ const displayOnus = async (options, { board = '1', slot = '1', port = '1', autho
     const ont_id = String(index_match)
     const distance = parseInt((item.fiber_distance || '0').replace('m', ''), 10)
 
-    const additionals = await showOpticalModuleInfo(options, { port, ont_id })
+    const additionals = await showOpticalModuleInfo(options, { slot, port, pon_type: type, ont_id })
     const { temperature = 0, tx_power = 0, olt_rx_power = 0, custom_fields } = additionals || {}
 
     values.push({

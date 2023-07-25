@@ -42,9 +42,9 @@ FKW-AVANZA-3032[A]#
 */
 
 
-const displayPons = async (options, { board = '1', slot = '1' }) => {  
+const displayPon = async (options, { board = '1', slot = '1', pon_type: type = 'gpon', port = '1' }) => {  
   const conn = await connect(options)
-  const cmd = `show olt status`  
+  const cmd = `show olt status ${type} ${slot}/${port}`  
   
   const chunk = await conn.exec3(cmd)
   const splitted = chunk.split('\r\n')
@@ -66,7 +66,7 @@ const displayPons = async (options, { board = '1', slot = '1' }) => {
 ${splitted.join('\n')}`
 
   const data = dummy2json(chunkMaster, columns, 2)
-  
+
   return data
     .filter(item => {
       const [item0] = (item.olt || '').replace(/(EPON)|(GPON)/gi, '').split('/')
@@ -101,4 +101,4 @@ ${splitted.join('\n')}`
     })
 }
 
-module.exports = displayPons
+module.exports = displayPon

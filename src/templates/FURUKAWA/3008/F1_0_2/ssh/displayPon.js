@@ -17,7 +17,7 @@ OLT-3008-DATACIT-RET# show olt status
 OLT-3008-DATACIT-RET#
 */
 
-const displayPons = async (options, { board = '1', slot = '1', port = '1' }) => {  
+const displayPon = async (options, { board = '1', slot = '1', port = '1' }) => {  
   const conn = await connect(options)
   const cmd = `show olt status ${port}`  
   const chunk = await conn.exec3(cmd)
@@ -38,13 +38,6 @@ const displayPons = async (options, { board = '1', slot = '1', port = '1' }) => 
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
   return data
-    /*
-    .filter(item => {
-      const [item0] = (item.olt || '').replace(/(EPON)|(GPON)/gi, '').split('/')
-      const slot_test = (item0 || item.olt || '').toString()
-      return slot_test === slot.toString()
-    })
-    */
     .map((item) =>  {
       const hasIndex = (item.olt || '').toLowerCase().indexOf('pon') > -1
       const [type_port] = hasIndex ? (item.olt || '').split('pon') : ['G']
@@ -73,4 +66,4 @@ const displayPons = async (options, { board = '1', slot = '1', port = '1' }) => 
     })
 }
 
-module.exports = displayPons
+module.exports = displayPon
