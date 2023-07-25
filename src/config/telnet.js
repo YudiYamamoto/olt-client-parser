@@ -186,7 +186,6 @@ class TelnetWrapper {
               stream.write(`${iterator}\n`)
               stream.removeListener('data', (item) => {
                 console.log('temp', item)
-
               })
             }, 100)
           }

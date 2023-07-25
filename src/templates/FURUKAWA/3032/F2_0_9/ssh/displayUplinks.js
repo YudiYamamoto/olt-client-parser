@@ -77,9 +77,9 @@ const displayUplinks = async (options) => {
       port_attribute: element.nego,
       mode: element['cur-speed'].trim().toLowerCase().split('/')[1].toLowerCase(),
       speed: element['cur-speed'].trim().toLowerCase().split('/')[0].replace('g', '000'),
-      admin_status: element.admin,
-      physical_status: element.oper,
-      prot_status: element.oper,
+      admin_status: element.admin.toLowerCase(),
+      physical_status: element.oper.toLowerCase(),
+      prot_status: element.oper.toLowerCase(),
       custom_fields: {
         ...element
       }
