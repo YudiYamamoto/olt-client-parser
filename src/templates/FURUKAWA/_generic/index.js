@@ -10,6 +10,7 @@ const sshRunCommand = require('./ssh/runCommand')
 const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
 const sshDisplayLineProfiles = require('./ssh/displayLineProfiles')
 const sshDisplayOnuProfiles = require('./ssh/displayOnuProfiles')
+const sshDisplaySpeedProfiles = require('./ssh/displaySpeedProfiles')
 
 module.exports = {
   ssh: {
@@ -25,5 +26,6 @@ module.exports = {
     displayDbaProfiles: sshDisplayDbaProfiles,
     displayLineProfiles: sshDisplayLineProfiles,
     displayOnuProfiles: sshDisplayOnuProfiles,
+    displaySpeedProfiles: sshDisplaySpeedProfiles,
   }
 }
