@@ -1,14 +1,17 @@
 const { NodeSSH } = require('node-ssh')
 
+const TIMEOUT = 15000
+
 class SSHWrapper {
   constructor({ 
     host, 
     port, 
     username = 'root', 
     password = 'guest', 
-    timeout = 30000, // Limita o tamanho da conexão
-    keepaliveCountMax = 4, // Numero de conexões concorrentes
-    keepaliveInterval = 0, // Valida a conexão com intervalo de tanto tempo entre conexões concorrentes
+    algorithms,
+    timeout = 30000,        // Limita o tamanho da conexão
+    keepaliveCountMax = 4,  // Numero de conexões concorrentes
+    keepaliveInterval = 0,  // Valida a conexão com intervalo de tanto tempo entre conexões concorrentes
     ...restOptions
    }) {
     const connection = new NodeSSH()
@@ -26,6 +29,7 @@ class SSHWrapper {
       keepaliveInterval,
       authHandler: ['password'],
       algorithms: {
+        ...algorithms,
         kex: [
           'diffie-hellman-group1-sha1',
           'curve25519-sha256@libssh.org',
@@ -50,7 +54,7 @@ class SSHWrapper {
       // "debug": console.log
     }    
     this._connection = connection
-    this._timeout = timeout > 0 ? timeout : 5000
+    this._timeout = timeout > 0 ? timeout : TIMEOUT
   }
 
   getOptions() {
@@ -62,7 +66,7 @@ class SSHWrapper {
   }
 
   getTimeout() {
-    return this._timeout || 5000
+    return this._timeout || TIMEOUT
   }
 
   async exec(cmd) {

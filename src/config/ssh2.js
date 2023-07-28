@@ -1,7 +1,17 @@
 const SSH2Shell = require ('ssh2shell')
 
 class SSHWrapper {
-  constructor({ host, port, username = 'root', password = 'guest', timeout = 2500, keepaliveInterval = 300, algorithms, ...restOptions }) {
+  constructor({ 
+    host,
+    port,
+    username = 'root',
+    password = 'guest',
+    algorithms,
+    timeout = 2500,         // Limita o tamanho da conexão
+    keepaliveCountMax = 4,  // Numero de conexões concorrentes
+    keepaliveInterval = 0,  // Valida a conexão com intervalo de tanto tempo entre conexões concorrentes
+    ...restOptions 
+  }) {
     if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params_ssh2' }))
 
     this._options = {
@@ -11,9 +21,9 @@ class SSHWrapper {
       userName: username,
       password, 
       tryKeyboard: true,
-      keepaliveInterval,
-      keepaliveCountMax: 8,
       timeout, 
+      keepaliveInterval,
+      keepaliveCountMax,
       authHandler: ['password'],
       algorithms: {
         ...algorithms,

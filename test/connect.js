@@ -23,7 +23,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data = await olt.displayPon({ board: '1', slot: '1', port: '15' })
-  // const data = await olt.displayOnus({ board: '1', slot: '2', port: '7' })
+  const data = await olt.displayOnus({ board: '1', slot: '2', port: '2' })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '1', ont_id: '24' })
   // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '2', port: '7', ont_id: '25' })
   // const data = await olt.displayVlans()
@@ -34,7 +34,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayDbaProfiles()
   // const data = await olt.displayLineProfiles()
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '3', port: '12', ont_id: '1' })
-  const data = await olt.displayOLTServiceProfiles({ board: '1', slot: '1', port: '1' })
+  // const data = await olt.displayOLTServiceProfiles({ board: '1', slot: '1', port: '1' })
 
   // const data = await olt.scopeVlanLanToLan()
   // const data = await olt.createVlan({ vlan: '666', description: 'TESTE' })

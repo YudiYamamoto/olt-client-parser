@@ -46,7 +46,7 @@ show running-config dba-profile`
     const [_4, fixed] = line.match(/sla fixed (\d*)/) || []
      
     return {
-      name,
+      name: name || speed,
       type: '1',
       speed,
       assured,

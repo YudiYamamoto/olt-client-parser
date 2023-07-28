@@ -2,6 +2,10 @@ const { connect } = require('../../../../../config/ssh-connect')
 const { column2json, day2time } = require('../../../../../utils/lib')
 const showOpticalModuleInfo = require('./showOpticalModuleInfo');
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const getChunks = (arr, size) => arr && Array
+  .from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
+
 /*
 >>> Coletar os dados da ONU POR PON
 ----------------------------------------------------------------
@@ -78,9 +82,6 @@ const displayOnus = async (options, {
     const ont_id = String(index_match)
     const distance = parseInt((item.fiber_distance || '0').replace('m', ''), 10)
 
-    const additionals = await showOpticalModuleInfo(options, { slot, port, pon_type: type, ont_id })
-    const { temperature = 0, tx_power = 0, olt_rx_power = 0, custom_fields } = additionals || {}
-
     values.push({
       board,
       slot,
@@ -90,9 +91,9 @@ const displayOnus = async (options, {
       // capability: 'bridging_routing',
       // allow_custom_profiles: false,
       // catv: false,
-      temperature,
-      tx_power,
-      olt_rx_power,
+      temperature: -1,
+      tx_power: -1,
+      olt_rx_power: -1,
       catv_rx_power: 0,
       onu_type: item.model_name,
       name: item.name,
@@ -108,13 +109,38 @@ const displayOnus = async (options, {
       uptime_at: day2time(item.activated_time),
       custom_fields: {
         ...item,
-        ...custom_fields,
         source: 'import_onu'
       }
     })
   }
 
-  return values
+  const chunksOnus = getChunks(values, 4)
+  if (!chunksOnus) return null
+
+  const dataLog = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const [index, chunk] of chunksOnus.entries()) {
+    for await (const onu of chunk) {
+      const { ont_id } = onu
+      const additionals = onu.stage === 'online' && await showOpticalModuleInfo(options, { slot, port, pon_type: type, ont_id })
+      const { temperature = 0, tx_power = 0, olt_rx_power = 0, custom_fields } = additionals || {}
+
+      dataLog.push({
+        ...onu,
+        temperature,
+        tx_power,
+        olt_rx_power,
+        custom_fields: {
+          ...onu.custom_fields,
+          ...custom_fields,
+          chunkIndex: index,
+        } 
+      })
+    }
+    sleep(10)
+  }
+
+  return dataLog
 }
 
 module.exports = displayOnus
