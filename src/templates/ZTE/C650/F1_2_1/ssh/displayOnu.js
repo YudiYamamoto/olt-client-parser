@@ -135,7 +135,7 @@ const displayOnu = async (options, {
     authorization_at: new Date(), // TODO colocar uma tag de origem importada
     uptime_at: hour2time(item.online_duration),
     custom_fields: {
-      source: 'import_onu'
+      source: 'import_onu',
     }
   }
       

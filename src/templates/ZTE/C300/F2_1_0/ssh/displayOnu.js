@@ -1,5 +1,7 @@
 const { connect } = require('../../../../../config/ssh-connect')
-const { dummy2json, column2json, hour2time, str2mac } = require('../../../../../utils/lib')
+const { column2json, hour2time } = require('../../../../../utils/lib')
+const { runCommand: runCommandMac, generateCommmand: generateCommmandMac } = require('./displayMac')
+const { runCommand: runCommandSignal, generateCommmand: generateCommmandSignal } = require('./displaySignal')
 
 /*
 ZXAN#show gpon onu detail-info gpon-onu_1/12/1:1
@@ -52,20 +54,34 @@ const STATUS = {
   'DyingGasp': 'pwr_fail',
 }
 
-const displayOnu = async (options, { 
-  pon_type: type = 'gpon', 
-  board = '1', 
-  slot = '1', 
-  port = '1',
-  ont_id = '1' 
-}) => {
+const displayOnu = async (options, params) => {
+  const { 
+    pon_type: type = 'gpon', 
+    board = '1', 
+    slot = '1', 
+    port = '1',
+    ont_id = '1' 
+  } = params
   const conn = await connect(options)
   const f_p_s = `${board}/${slot}/${port}`
-  const cmd = `show ${type} onu detail-info ${type}-onu_${f_p_s}`
-  const chunk = await conn.exec2(`${cmd}:${ont_id}`)
+  const cmdMac = generateCommmandMac(type, f_p_s, ont_id)
+  const cmdSignal = generateCommmandSignal(type, f_p_s, ont_id)
+  const cmd = `show ${type} onu detail-info ${type}-onu_${f_p_s}:${ont_id}
+${cmdMac}
+${cmdSignal}`
+  const chunk = await conn.exec2(cmd)
   if (!chunk && chunk === '') return null
+
+  const [chunkA, chunkRest] = chunk.split(cmdMac)
+  const [chunkB, chunkC] = chunkRest.split(cmdSignal)
+
+  const chunkB1 = chunkB.split('\r\n')
+  const chunkMA = ['', ...chunkB1].join('\r\n')
+
+  const chunkC1 = chunkC.split('\r\n')
+  const chunkSignal = ['', ...chunkC1].join('\r\n')
   
-  const splitted = chunk.split('\r\n')
+  const splitted = chunkA.split('\r\n')
   splitted.pop()
   splitted.shift()
   splitted.shift()
@@ -82,39 +98,10 @@ const displayOnu = async (options, {
       )
     .splice(1))
 
-  let element = {}
-  const cmd2 = `show mac ${type} onu ${type}-onu_${f_p_s}:${ont_id}`
-  const chunkMA = await conn.exec2(cmd2)
-  if (chunkMA && chunkMA !== '') {
-    const [_line1, _line2, _line3, _line4, ...splitted1] = chunkMA.split('\r\n')
-    const columns = [
-      [0, 17],
-      [17, 23],
-      [23, 33],
-      [33, 58],
-      [58, 79],
-    ]
-    splitted1.pop()
-    const elements = dummy2json(splitted1.join('\n'), columns, 1)
-    element = elements[0] || {}
-  }
-  
-  let tx_power = 0;
-  let rx_power = 0;
-  let olt_rx_power = 0;
-  const chunckSignal = await conn.exec2(`show pon power attenuation ${type}-onu_${f_p_s}:${ont_id}`)
-  if (chunckSignal && chunckSignal !== '') {
-    const [_header0, _header1, _header2, _header3, upSignal, _header4, downSignal] = chunckSignal.split('\r\n')
-    
-    if (downSignal) {
-      tx_power = downSignal.trim().substring(12, 27);
-      rx_power = downSignal.trim().substring(33, 47);
-    }
-    if (upSignal) olt_rx_power = upSignal.trim().substring(12, 27);
-  }
-
   const distance = (item.o_n_u_distance || '-').replace('-', '').replace('m', '')
-
+  const { mac_address } = runCommandMac(chunkMA)
+  const { tx_power, rx_power, olt_rx_power, catv_rx_power } = runCommandSignal(chunkSignal)
+  
   const data = {
     board,
     slot,
@@ -125,22 +112,22 @@ const displayOnu = async (options, {
     // allow_custom_profiles: false,
     // catv: false,
     temperature: 0,
-    tx_power: parseFloat((tx_power || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
-    olt_rx_power: parseFloat((olt_rx_power || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
-    catv_rx_power: 0,
+    tx_power,
+    rx_power,
+    olt_rx_power,
+    catv_rx_power,
     onu_type: item.type,
     name: item.name,
-    rx_power: parseFloat((rx_power || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
     onu_external_id: item.serialnumber,
     serial_number: item.serialnumber,
-    mac_address: str2mac((element.macaddress || element || '').replace(/\./gi, '')).replace(/\-/gi, ':'),
+    mac_address,
     description: item.description,
     distance: parseInt(distance !== '' ? distance : '0', 10),
     stage: STATUS[item.phasestate] || 'disabled',
     authorization_at: new Date(), // TODO colocar uma tag de origem importada
     uptime_at: hour2time(item.online_duration),
     custom_fields: {
-      source: 'import_onu'
+      source: 'import_onu',
     }
   }
       

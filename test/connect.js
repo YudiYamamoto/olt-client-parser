@@ -4,27 +4,28 @@ const OLTClientParser = require('../index')
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const olt = new OLTClientParser({
-  brand: 'Furukawa',
-  model: '3032',
-  firmware: '2.0.9',
+  brand: 'ZTE',
+  model: 'C300',
+  firmware: '2.1.0',
   connectionType: 'ssh',
   options: {
-    host: '10.124.167.198',
+    host: '172.16.29.6',
     port: 22,
     username: 'made4olt',
-    password: '0ltm@ad&@2023FKW',
-    shellPrompt: 'OLT-DATACIT-TN01[A]>',
+    password: '0ltm@ad&@2023',
+    shellPrompt: 'SQUINTO-OLT-C320#',
   }
 });
 
 (async () => {
+  console.log(new Date().getTime())
   // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data = await olt.displayPon({ board: '1', slot: '1', port: '15' })
-  const data = await olt.displayOnus({ board: '1', slot: '2', port: '2' })
-  // const data = await olt.displayOnu({ board: '1', slot: '1', port: '1', ont_id: '24' })
+  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '15' })
+  const data = await olt.displayOnu({ board: '1', slot: '1', port: '15', ont_id: '13' })
   // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '2', port: '7', ont_id: '25' })
   // const data = await olt.displayVlans()
   // const data = await olt.displayVlan('2431')
@@ -66,5 +67,6 @@ const olt = new OLTClientParser({
     name: 'teste_comandos@made4it.com.br'
   })
   */
-  console.log(JSON.stringify(data, null, 11))  
+  console.table(data) 
+  console.log(new Date().getTime())
 })()

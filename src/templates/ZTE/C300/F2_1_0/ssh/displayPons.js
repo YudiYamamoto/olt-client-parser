@@ -19,7 +19,7 @@ Rack Shelf Slot CfgType RealType Port  HardVer SoftVer         Status
  1    1     20   HUVQ    HUVQ     4     V1.0.0  V2.1.0          INSERVICE
  
 */
-const displaySlots = async (options, { board = '1', slot = '1' }) => {
+const displayPons = async (options, { board = '1', slot = '1' }) => {
   const conn = await connect(options)
   const cmd = 'show card'
   const chunk = await conn.exec2(cmd)
@@ -93,4 +93,4 @@ const displaySlots = async (options, { board = '1', slot = '1' }) => {
   return data
 }
 
-module.exports = displaySlots
+module.exports = displayPons

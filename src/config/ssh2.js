@@ -1,5 +1,7 @@
 const SSH2Shell = require ('ssh2shell')
 
+const TIMEOUT = 90000
+
 class SSHWrapper {
   constructor({ 
     host,
@@ -7,7 +9,7 @@ class SSHWrapper {
     username = 'root',
     password = 'guest',
     algorithms,
-    timeout = 2500,         // Limita o tamanho da conexão
+    timeout = TIMEOUT,      // Limita o tamanho da conexão
     keepaliveCountMax = 4,  // Numero de conexões concorrentes
     keepaliveInterval = 0,  // Valida a conexão com intervalo de tanto tempo entre conexões concorrentes
     ...restOptions 
@@ -49,7 +51,9 @@ class SSHWrapper {
       },*/
       // "debug": console.log
     }    
+
     // this._connection = connection
+    this._timeout = timeout > 0 ? timeout : TIMEOUT
   }
 
   getOptions() {
@@ -60,17 +64,20 @@ class SSHWrapper {
     return this._connection
   }
 
+  getTimeout() {
+    return this._timeout || TIMEOUT
+  }
+
   async exec(cmd) {
     // const connection = this.getConnection()
     const options = this.getOptions()
-    
     const connection = new SSH2Shell({
       server: options,
       // debug: true,
       commands: ['terminal length 0', cmd, 'exit' ],
       // enter: "\n",
     })
-
+  
     /*
     connection.on('commandProcessing', function onCommandProcessing( command, response, sshObj, stream ) {
       if (command.indexOf('show onu detail-info') > -1 && response.indexOf("--More--") > -1) {
@@ -81,25 +88,36 @@ class SSHWrapper {
     return new Promise((resolve) => connection.connect(resolve))
   }
 
-  async exec2(cmd) {
+  async exec3(cmds) {
+    // const connection = this.getConnection()
     const options = this.getOptions()
     const connection = new SSH2Shell({
       server: options,
       // debug: true,
-      commands: ['terminal length 512', cmd, 'exit' ],
+      commands: ['terminal length 0', ...cmds, 'exit' ],
+      // enter: "\n",
+    })
+    return new Promise((resolve) => connection.connect(resolve))
+  }
+
+  async exec2(cmd) {
+    const options = this.getOptions()
+    const connection = new SSH2Shell({
+      server: { ...options, timeout: 5000 },
+      // debug: true,
+      commands: ['terminal length 0', cmd, 'exit' ],
       // enter: "\n",
     })
     
     // const test = await connection.execCommand('xeyes', { x11: true })
     // console.error(test)
-    await connection.connect();
-
-    return new Promise((resolve, reject) => {
+    await connection.connect()
+    
+    return new Promise((resolve) => {
       const conn = connection
       // let test = null
       const chunks = []
       conn.on('pipe', function onPipe(stream){
-        console.log('XXXX')
         let chunk;            
         while (null !== (chunk = stream.read())) {
           const item = Buffer.from(chunk).toString('utf-8')
@@ -110,9 +128,9 @@ class SSHWrapper {
           // console.log(stream)
         }
       })
-      conn.on('end', function () {
-        console.log('okk')
+      conn.on('end', function (stream) {
         const item = chunks.join('').split('\r\n').slice(6, -3)
+        // if (stream) stream.close()
         resolve(item.join('\n'))
       })
     })

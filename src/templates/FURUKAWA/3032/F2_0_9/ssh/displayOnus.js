@@ -1,10 +1,10 @@
 const { connect } = require('../../../../../config/ssh-connect')
+const { getChunks } = require('../../../../../config/chunks')
 const { column2json, day2time } = require('../../../../../utils/lib')
-const showOpticalModuleInfo = require('./showOpticalModuleInfo');
+const { commandOpticalModuleInfo, generateOpticalModuleInfo } = require('./execOpticalModuleInfo')
+const runCommand = require('../../../_generic/ssh/runCommand')
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const getChunks = (arr, size) => arr && Array
-  .from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
+
 
 /*
 >>> Coletar os dados da ONU POR PON
@@ -82,6 +82,9 @@ const displayOnus = async (options, {
     const ont_id = String(index_match)
     const distance = parseInt((item.fiber_distance || '0').replace('m', ''), 10)
 
+    const onu_profile = item['onu-profile']
+    const authorization_at_final = !onu_profile ? null : authorization_at
+
     values.push({
       board,
       slot,
@@ -102,30 +105,44 @@ const displayOnus = async (options, {
       serial_number: item.serial_number,
       mac_address: (item.m_a_c_address || '').replace(/\-/gi, ':'),
       description: item.description,
-      onu_profile: item['onu-profile'],
+      onu_profile,
       distance: isNaN(distance) ? null : distance,
       stage: item.activation_status === 'Active' ? 'online' : 'disabled',
-      authorization_at,
+      authorization_at: authorization_at_final,
       uptime_at: day2time(item.activated_time),
       custom_fields: {
         ...item,
-        source: 'import_onu'
+        source: 'import_onu',
       }
     })
   }
 
-  const chunksOnus = getChunks(values, 4)
+  const chunksOnus = getChunks(values, 50)
   if (!chunksOnus) return null
+  
+  const onus = []
+  for await (const [_index, chunks] of chunksOnus.entries()) {
+    const commandAdditionals = []
+    for await (const onu of chunks) {
+      if (onu && onu.ont_id && onu.ont_id !== '') commandAdditionals.push(commandOpticalModuleInfo(type, slot, port, onu.ont_id))
+    }
 
-  const dataLog = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for await (const [index, chunk] of chunksOnus.entries()) {
-    for await (const onu of chunk) {
-      const { ont_id } = onu
-      const additionals = onu.stage === 'online' && await showOpticalModuleInfo(options, { slot, port, pon_type: type, ont_id })
+    const chunksCommand = await runCommand(options, commandAdditionals.join('\n'))
+    const arrayChunksCommand = (chunksCommand || '').split('\r\n')
+    arrayChunksCommand.pop()
+    arrayChunksCommand.shift()
+
+    const blocks = arrayChunksCommand.join('\n').split('show onu ani optic-module-info').map(block => block.trim())
+    for await (const [index, block] of blocks.entries()) {
+      const lines = block.split('\n')
+      lines.shift()
+      lines.pop()
+  
+      const additionals = generateOpticalModuleInfo(lines)
       const { temperature = 0, tx_power = 0, olt_rx_power = 0, custom_fields } = additionals || {}
 
-      dataLog.push({
+      const onu = { ...chunks[index] }
+      onus.push({
         ...onu,
         temperature,
         tx_power,
@@ -137,10 +154,9 @@ const displayOnus = async (options, {
         } 
       })
     }
-    sleep(10)
   }
 
-  return dataLog
+  return onus
 }
 
 module.exports = displayOnus

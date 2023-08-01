@@ -178,7 +178,7 @@ c83a.3529.9ea0   2501   Dynamic   vport-1/1/1.2:1                  `
       authorization_at: new Date(), // TODO colocar uma tag de origem importada
       uptime_at: hour2time(item.online_duration),
       custom_fields: {
-        source: 'import_onu'
+        source: 'import_onu',
       }
     })
   }

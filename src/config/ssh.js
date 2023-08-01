@@ -1,6 +1,6 @@
 const { NodeSSH } = require('node-ssh')
 
-const TIMEOUT = 15000
+const TIMEOUT = 150000
 
 class SSHWrapper {
   constructor({ 
@@ -9,13 +9,14 @@ class SSHWrapper {
     username = 'root', 
     password = 'guest', 
     algorithms,
-    timeout = 30000,        // Limita o tamanho da conexão
+    timeout = TIMEOUT,        // Limita o tamanho da conexão
     keepaliveCountMax = 4,  // Numero de conexões concorrentes
     keepaliveInterval = 0,  // Valida a conexão com intervalo de tanto tempo entre conexões concorrentes
     ...restOptions
    }) {
-    const connection = new NodeSSH()
     if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params_ssh' }))
+    
+    const connection = new NodeSSH()
 
     this._options = {
       ...restOptions,
@@ -53,6 +54,7 @@ class SSHWrapper {
       */
       // "debug": console.log
     }    
+
     this._connection = connection
     this._timeout = timeout > 0 ? timeout : TIMEOUT
   }

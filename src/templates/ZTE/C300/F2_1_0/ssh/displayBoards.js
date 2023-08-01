@@ -28,6 +28,7 @@ const displayBoards = async (originalOptions) => {
 
   const splitted = chunk.split('\r\n')
   splitted.pop()
+  splitted.pop()
   splitted.shift()
   splitted.shift()
   

@@ -1,5 +1,5 @@
 const { connect } = require('../../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../../utils/lib')
+const { dummy2json, line2json } = require('../../../../../utils/lib')
 
 /*
 Rack Shelf Slot CfgType RealType Port  HardVer SoftVer         Status
@@ -19,45 +19,43 @@ Rack Shelf Slot CfgType RealType Port  HardVer SoftVer         Status
  1    1     20   HUVQ    HUVQ     4     V1.0.0  V2.1.0          INSERVICE
  
 */
-const displaySlots = async (options, { board = '1' }) => {
+const displayPon = async (options, { board = '1', slot = '1', port = '1' }) => {
   const conn = await connect(options)
-  const cmd = 'show card'
-  const chunk = await conn.exec2(cmd)
-  const splitted = chunk.split('\r\n')
-  splitted.pop()
-  splitted.shift()
-  splitted.shift()
 
-  const columns = [
-    [0, 5],
-    [5, 10],
-    [10, 16],
-    [16, 23],
-    [23, 32],
-    [32, 38],
-    [38, 46],
-    [46, 54],
-    [54, 76],
-  ]
-  const elements = dummy2json(splitted.join('\n'), columns, 1)
-  
-  const boards = {}
-  elements.forEach(item => {
-    const key = `B${item.shelf}`
-    if (!boards[key]) boards[key] = []
-    boards[key].push(item)
-  })
-  const items = boards[`B${board}`]
-  return items.map(({ slot, cfg_type: type, real_type, soft_ver: software_version, status, ...custom_fields }) => ({ 
-    board,
+  const cmd1 = `show interface gpon-olt_${board}/${slot}/${port}`    
+  const chunk1 = await conn.exec2(cmd1)
+  let status = ''
+  if (chunk1 && chunk1 !== '') {
+    const splitted1 = chunk1.split('\r\n')
+    splitted1.shift()
+    splitted1.shift()
+    status = splitted1[0]
+  }
+  const cmd2 = `show interface optical-module-info gpon-olt_${board}/${slot}/${port}`
+  const chunk2 = await conn.exec2(cmd2)
+  let min_range = '20'    
+  if (chunk2 && chunk2 !== '') {
+    const lines = chunk2.split('\r\n')
+    lines.shift()
+    lines.shift()
+    lines.shift()
+    const column = line2json(lines)
+    min_range = column['trans-_distance'].replace('(km)', '').trim()
+  }
+  const max_range = min_range
+
+  return {
+    board, 
     slot,
-    type,
-    real_type,
-    software_version,
-    available: status === 'INSERVICE',
-    role: 'main',
-    custom_fields,
-  }))
+    port: port.toString(),
+    admin_status: (status || '').indexOf('deactivate') > -1 ? false : true,
+    operational_status: (status || '').indexOf(' up.') > -1 ? 'up' : 'down',
+    description: '',
+    min_range: 0,
+    max_range: parseInt(max_range, 10) * 1000,
+    scope: [],
+    default_for_pon_ports: [],
+  }
 }
 
-module.exports = displaySlots
+module.exports = displayPon

@@ -166,7 +166,7 @@ IRARA-OLT#`
     authorization_at: new Date(),
     uptime_at: hour2time(item.online_duration),
     custom_fields: {
-      source: 'import_onu'
+      source: 'import_onu',
     }
   }
 }

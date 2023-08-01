@@ -1,5 +1,5 @@
 const { connect } = require('../../../../../config/ssh-connect')
-const { line2json } = require('../../../../../utils/lib')
+const { commandOpticalModuleInfo, generateOpticalModuleInfo } = require('./execOpticalModuleInfo')
 
 /*
 ---------------------------------------------------------------
@@ -16,7 +16,7 @@ const { line2json } = require('../../../../../utils/lib')
 
 const showOpticalModuleInfo = async (options, { port, ont_id }) => {
   const conn = await connect(options)
-  const cmd = `show onu ani optic-module-info ${port} ${ont_id}`
+  const cmd = commandOpticalModuleInfo(null, null, port, ont_id)
   const chunk = await conn.exec3(cmd)
   const lines = chunk.split('\r\n')
   lines.pop()
@@ -28,22 +28,7 @@ const showOpticalModuleInfo = async (options, { port, ont_id }) => {
   lines.shift()
   lines.shift()
 
-  const column = line2json(lines, 100)
-
-  const data = {}
-  Object
-    .keys(column)
-    .forEach((item) => { 
-      const [value] = column[item].split('(Alarm')
-      return data[item] = parseFloat((value || '').toLowerCase().replace(/[ ,a-z]/gi, ''))
-    })
-
-  return {
-    temperature: data['d_m_i_temperature'] || 0,
-    tx_power: data['d_m_i_txpower'] || 0,
-    olt_rx_power: data['d_m_i_rxpower'] || 0,
-    custom_fields: data
-  }
+  return generateOpticalModuleInfo(lines)
 }
 
 module.exports = showOpticalModuleInfo
