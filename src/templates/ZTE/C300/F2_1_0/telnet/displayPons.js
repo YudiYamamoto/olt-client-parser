@@ -65,6 +65,8 @@ Rack Shelf Slot CfgType RealType Port  HardVer SoftVer         Status
 
   const [theSlot] = slots
   const data = []  
+  if (!theSlot) return data
+
   for await (const [index] of Array.from({ length: theSlot.port }).entries()) {
     const port = (index + 1)
     const cmd1 = `show interface gpon-olt_${board}/${slot}/${port}`
@@ -77,7 +79,7 @@ Rack Shelf Slot CfgType RealType Port  HardVer SoftVer         Status
   const lines = chunk2.split('\n')
     const column = line2json(lines)
     const min_range = column['trans-_distance'].replace('(km)', '').trim()
-    const max_range = min_range
+    const max_range = String(min_range || '0')
 
     data.push({
       board, 

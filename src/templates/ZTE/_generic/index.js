@@ -33,8 +33,11 @@ const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
 
 const sshDisplayUnconfiguredOnus = require('./ssh/displayUnconfiguredOnus')
 
-const sshRunCommand = require('./ssh/runCommand')
+const sshDisplayTraffic = require('./ssh/displayTraffic')
+
 const sshCheckStage = require('./ssh/checkStage')
+
+const sshRunCommand = require('./ssh/runCommand')
 
 module.exports = {
   ssh: {
@@ -70,8 +73,9 @@ module.exports = {
 
     displayUnconfiguredOnus: sshDisplayUnconfiguredOnus,
 
-    runCommand: sshRunCommand,
-
     checkStage: sshCheckStage,
+    displayTraffic: sshDisplayTraffic,
+
+    runCommand: sshRunCommand,
   }
 }

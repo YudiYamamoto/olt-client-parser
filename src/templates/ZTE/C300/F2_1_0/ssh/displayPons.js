@@ -25,6 +25,7 @@ const displayPons = async (options, { board = '1', slot = '1' }) => {
   const chunk = await conn.exec2(cmd)
   const splitted = chunk.split('\r\n')
   splitted.pop()
+  splitted.pop()
   splitted.shift()
   splitted.shift()
 
@@ -51,8 +52,10 @@ const displayPons = async (options, { board = '1', slot = '1' }) => {
   if (!slots) return null
 
   const [theSlot] = slots
-  const data = []  
-  for await (const [index] of Array.from({ length: theSlot.port }).entries()) {
+  const data = []
+  if (!theSlot) return data
+
+  for await (const [index] of Array.from({ length: parseInt(theSlot.port, 10) }).entries()) {
     const port = (index + 1)
     const cmd1 = `show interface gpon-olt_${board}/${slot}/${port}`    
     const chunk1 = await conn.exec2(cmd1)
@@ -65,16 +68,16 @@ const displayPons = async (options, { board = '1', slot = '1' }) => {
     }
     const cmd2 = `show interface optical-module-info gpon-olt_${board}/${slot}/${port}`
     const chunk2 = await conn.exec2(cmd2)
-    let min_range = '20'    
+    let min_range = '0'    
     if (chunk2 && chunk2 !== '') {
       const lines = chunk2.split('\r\n')
       lines.shift()
       lines.shift()
       lines.shift()
       const column = line2json(lines)
-      min_range = column['trans-_distance'].replace('(km)', '').trim()
+      min_range = (column['trans-_distance'] || '').replace('(km)', '').trim()
     }
-    const max_range = min_range
+    const max_range = String(min_range || '0')
 
     data.push({
       board, 

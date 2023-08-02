@@ -46,6 +46,8 @@ const displayPons = async (options, { board = '1', slot = '1' }) => {
 
   const [theSlot] = slots
   const data = []  
+  if (!theSlot) return data
+  
   for await (const [index] of Array.from({ length: theSlot.port }).entries()) {
     const port = (index + 1)
     const cmd1 = `show interface gpon_olt-${board}/${slot}/${port}`

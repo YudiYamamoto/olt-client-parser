@@ -25,6 +25,7 @@ const displaySlots = async (options, { board = '1' }) => {
   const chunk = await conn.exec2(cmd)
   const splitted = chunk.split('\r\n')
   splitted.pop()
+  splitted.pop()
   splitted.shift()
   splitted.shift()
 
