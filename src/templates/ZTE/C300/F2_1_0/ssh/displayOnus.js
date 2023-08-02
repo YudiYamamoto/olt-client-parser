@@ -60,7 +60,10 @@ const displayOnus = async (options, params) => {
   const data = []
   // const { size: length = 128 } = options && options.__extra__ && options.__extra__.onu || {}
   for await (const ont of elements) {
-    const [_, ont_id] = ont.onu_index.split(':')
+    if (!ont) continue
+    const [_, ont_id] = (ont.onu_index || '').split(':') || []
+    if (!ont_id) continue
+    
     const onu = await displayOnu(options, { ...params, ont_id })
     if (onu) data.push(onu)
   }      
