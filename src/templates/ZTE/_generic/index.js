@@ -31,6 +31,8 @@ const sshDisplaySpeedProfiles = require('./ssh/displaySpeedProfiles')
 
 const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
 
+const sshDisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
+
 const sshDisplayUnconfiguredOnus = require('./ssh/displayUnconfiguredOnus')
 
 const sshDisplayTraffic = require('./ssh/displayTraffic')
@@ -75,6 +77,8 @@ module.exports = {
 
     checkStage: sshCheckStage,
     displayTraffic: sshDisplayTraffic,
+
+    displayOLTServiceProfiles: sshDisplayOLTServiceProfiles,
 
     runCommand: sshRunCommand,
   }

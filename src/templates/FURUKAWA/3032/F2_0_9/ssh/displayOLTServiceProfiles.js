@@ -11,7 +11,7 @@ OLT-SERRA-GRANDE-3008#
 const regex = /olt service-profile model-name (\S+) (\S+)/;
 
 const displayOLTServiceProfiles = async (originalOptions, { slot = '1', port = '1' }) => {
-   const conn = await connect(originalOptions)
+  const conn = await connect(originalOptions)
   const cmd = `enable
   show running-config interface gpon ${slot}/${port} | include service-profile`
   const chunk = await conn.exec3(cmd)
