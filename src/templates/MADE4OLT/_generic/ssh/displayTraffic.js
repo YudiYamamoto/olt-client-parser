@@ -20,7 +20,7 @@ IRARA-OLT#`
   
   const [uploadString] = chunk1.match(new RegExp((`Input rate(.*)Bps`), 'gmi')) || []
   const [downloadString] = chunk1.match(new RegExp((`Output rate(.*)Bps`), 'gmi')) || []
-  const upload = parseInt((uploadString || []).split(':')[1].split('Bps')[0].trim(), 10) / 1e+6
+  const upload = parseInt((uploadString || '').split(':')[1].split('Bps')[0].trim(), 10) / 1e+6
   const download = parseInt((downloadString || ':0').split(':')[1].split('Bps')[0], 10) / 1e+6
 
   return [
