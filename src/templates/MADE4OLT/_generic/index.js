@@ -42,8 +42,13 @@ const sshDisplayUnconfiguredOnus = require('./ssh/displayUnconfiguredOnus')
 
 const sshDisplayTraffic = require('./ssh/displayTraffic')
 
+const sshCheckStage = require('./ssh/checkStage')
+
+const sshDisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
+
 module.exports = {
   ssh: {
+    checkStage: sshCheckStage,
     displayBoards: sshDisplayBoards,
     displaySlots: sshDisplaySlots,
     displayPons: sshDisplayPons,
@@ -52,6 +57,7 @@ module.exports = {
     displayOnu: sshDisplayOnu,
     displayDbaProfiles: sshDisplayDbaProfiles,
     displaySpeedProfiles: sshDisplaySpeedProfiles,
+    displayOLTServiceProfiles: sshDisplayOLTServiceProfiles,
     displayVlans: sshDisplayVlans,
     displayVlan: sshDisplayVlan,
     createVlan: sshCreateVlan,

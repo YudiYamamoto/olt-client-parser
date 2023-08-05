@@ -1,8 +1,6 @@
 'use strict'
 const OLTClientParser = require('../index')
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 const olt = new OLTClientParser({
   brand: 'ZTE',
   model: 'C300',
