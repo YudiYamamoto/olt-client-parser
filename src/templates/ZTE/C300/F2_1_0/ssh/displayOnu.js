@@ -73,12 +73,12 @@ ${cmdSignal}`
   if (!chunk && chunk === '') return null
 
   const [chunkA, chunkRest] = chunk.split(cmdMac)
-  const [chunkB, chunkC] = chunkRest.split(cmdSignal)
+  const [chunkB, chunkC] = (chunkRest || cmdSignal).split(cmdSignal)
 
-  const chunkB1 = chunkB.split('\r\n')
+  const chunkB1 = (chunkB || '').split('\r\n')
   const chunkMA = ['', ...chunkB1].join('\r\n')
 
-  const chunkC1 = chunkC.split('\r\n')
+  const chunkC1 = (chunkC || '').split('\r\n')
   const chunkSignal = ['', ...chunkC1].join('\r\n')
   
   const splitted = chunkA.split('\r\n')
