@@ -15,7 +15,7 @@ const displayOnu = async (_options, {
   ont_id = '1', 
   serial_number: serial_number_original, 
   mac_address: mac_address_original,
-  authorization_at
+  authorization_at,
 }) => {
   const f_p_s = `${board}/${slot}/${port}`
 
@@ -141,6 +141,8 @@ IRARA-OLT#`
 
   const distance = chance.integer({ min: 0, max: 10000 })
 
+  const authorization_at_final = authorization_at || new Date()
+
   return {
     board,
     slot,
@@ -163,7 +165,7 @@ IRARA-OLT#`
     description: item.description,
     distance: parseInt(distance !== '' ? distance : '0', 10),
     stage: STATUS[item.phasestate] || 'disabled',
-    authorization_at: new Date(),
+    authorization_at: authorization_at_final,
     uptime_at: hour2time(item.online_duration),
     custom_fields: {
       source: 'import_onu',

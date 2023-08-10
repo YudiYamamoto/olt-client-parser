@@ -53,7 +53,13 @@ const STATUS = {
   'DyingGasp': 'pwr_fail',
 }
 
-const displayOnus = async (options, { pon_type: type = 'gpon', board = '1', slot = '1', port = '1' }) => {
+const displayOnus = async (options, { 
+  pon_type: type = 'gpon', 
+  board = '1', 
+  slot = '1', 
+  port = '1',
+  authorization_at = new Date(),
+}) => {
   const conn = await connect(options)
   const f_p_s = `${board}/${slot}/${port}`
   const cmd = `show gpon onu detail-info ${type}-onu_${f_p_s}`  
@@ -96,6 +102,8 @@ const displayOnus = async (options, { pon_type: type = 'gpon', board = '1', slot
     const rx_power = downSignal.trim().substring(33, 47);
     const olt_rx_power = upSignal.trim().substring(12, 27);
 
+    const authorization_at_final = authorization_at || new Date()
+
     data.push({
       board,
       slot,
@@ -118,7 +126,7 @@ const displayOnus = async (options, { pon_type: type = 'gpon', board = '1', slot
       description: item.description,
       distance: parseInt((item.o_n_u_distance || '').replace('m', ''), 10),
       stage: STATUS[item.phasestate] || 'disabled',
-      authorization_at: new Date(), // TODO colocar uma tag de origem importada
+      authorization_at: authorization_at_final,
       uptime_at: hour2time(item.online_duration),
       custom_fields: {
         source: 'import_onu',

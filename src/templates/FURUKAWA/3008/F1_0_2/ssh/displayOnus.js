@@ -44,7 +44,12 @@ const runCommand = require('../../../_generic/ssh/runCommand')
 
 const regexp = /---------------------------------------------------------------\n OLT : \d+, ONU : \d+\n---------------------------------------------------------------/gmi;
 
-const displayOnus = async (options, { board = '1', slot = '1', port = '1', authorization_at = new Date() }) => {
+const displayOnus = async (options, { 
+  board = '1',
+  slot = '1',
+  port = '1',
+  authorization_at = new Date(),
+}) => {
   const conn = await connect(options)
 
   const cmd = `show onu detail-info ${port}`

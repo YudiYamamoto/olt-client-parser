@@ -58,7 +58,8 @@ const displayOnu = async (options, {
   board = '1', 
   slot = '1', 
   port = '1', 
-  ont_id = '1' 
+  ont_id = '1',
+  authorization_at = new Date(),
 }) => {
   const conn = await connect(options)
   const f_p_s = `${board}/${slot}/${port}`
@@ -110,6 +111,8 @@ const displayOnu = async (options, {
 
   const distance = (item.o_n_u_distance || '-').replace('-', '').replace('m', '')
 
+  const authorization_at_final = authorization_at || new Date()
+
   const data = {
     board,
     slot,
@@ -132,7 +135,7 @@ const displayOnu = async (options, {
     description: item.description,
     distance: parseInt(distance !== '' ? distance : '0', 10),
     stage: STATUS[item.phasestate] || 'disabled',
-    authorization_at: new Date(), // TODO colocar uma tag de origem importada
+    authorization_at: authorization_at_final,
     uptime_at: hour2time(item.online_duration),
     custom_fields: {
       source: 'import_onu',
