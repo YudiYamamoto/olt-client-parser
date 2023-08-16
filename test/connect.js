@@ -2,16 +2,16 @@
 const OLTClientParser = require('../index')
 
 const olt = new OLTClientParser({
-  brand: 'ZTE',
-  model: 'C300',
-  firmware: '2.1.0',
+  brand: 'HUAWEI',
+  model: 'MA5608T',
+  firmware: '1.9.0',
   connectionType: 'ssh',
   options: {
-    host: '172.16.29.6',
-    port: 22,
-    username: 'made4olt',
-    password: '0ltm@ad&@2023',
-    shellPrompt: 'SQUINTO-OLT-C320#',
+    host: '170.254.216.17',
+    port: 22222,
+    username: 'made4it',
+    password: 'Kg2]n8:5.&',
+    shellPrompt: 'OLT-MINGA-PORA>',
   }
 });
 
@@ -19,9 +19,9 @@ const olt = new OLTClientParser({
   console.log(new Date().getTime())
   // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
-  // const data = await olt.displaySlots({ board: '1' })
+  const data = await olt.displaySlots({ board: '0' })
   // const data = await olt.displayPons({ board: '1', slot: '3' })
-  const data = await olt.displayPon({ board: '1', slot: '3', port: '1' })
+  // const data = await olt.displayPon({ board: '1', slot: '3', port: '1' })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '15' })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '15', ont_id: '13' })
   // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '2', port: '7', ont_id: '25' })

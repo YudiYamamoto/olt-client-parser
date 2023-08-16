@@ -23,6 +23,7 @@ const displaySlots = async (options, { board = '1' }) => {
   const conn = await connect(options)
   const cmd = 'show card'
   const chunk = await conn.exec2(cmd)
+  console.log(chunk)
   const splitted = chunk.split('\r\n')
   splitted.pop()
   splitted.pop()
@@ -48,8 +49,15 @@ const displaySlots = async (options, { board = '1' }) => {
     if (!boards[key]) boards[key] = []
     boards[key].push(item)
   })
-  const items = boards[`B${board}`]
-  return items.map(({ slot, cfg_type: type, real_type, soft_ver: software_version, status, ...custom_fields }) => ({ 
+  const items = boards[`B${board}`] || []
+  return items.map(({ 
+    slot, 
+    cfg_type: type, 
+    real_type, 
+    soft_ver: software_version, 
+    status, 
+    ...custom_fields
+  }) => ({ 
     board,
     slot,
     type,

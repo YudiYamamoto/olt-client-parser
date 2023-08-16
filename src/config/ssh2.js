@@ -100,6 +100,18 @@ class SSHWrapper {
     return new Promise((resolve) => connection.connect(resolve))
   }
 
+  async exec4(cmds) {
+    // const connection = this.getConnection()
+    const options = this.getOptions()
+    const connection = new SSH2Shell({
+      server: options,
+      // debug: true,
+      commands: ['undo smart', ...cmds],
+      // enter: "\n",
+    })
+    return new Promise((resolve) => connection.connect(resolve))
+  }
+
   async exec2(cmd) {
     const options = this.getOptions()
     const connection = new SSH2Shell({

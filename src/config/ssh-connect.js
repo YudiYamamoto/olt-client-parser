@@ -60,6 +60,12 @@ const connect = async (defaultOptions) => {
     return chunks    
   }
 
+  const exec7 = async (cmd) => {
+    const cmds = (cmd || '').split('\n')
+    const chunks = await client2.exec4(cmds)
+    return chunks    
+  }
+
   return {
     connection,
     options,
@@ -69,6 +75,7 @@ const connect = async (defaultOptions) => {
     exec4,
     exec5,
     exec6,
+    exec7,
   }
 }
 
