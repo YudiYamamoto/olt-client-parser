@@ -23,6 +23,7 @@ module.exports = {
     displayOnus,
   },
   ssh: {
+    ...generic.ssh,
     displayBoards: sshDisplayBoards,
     displaySlots: sshDisplaySlots,
     displayPons: sshDisplayPons,
@@ -31,6 +32,5 @@ module.exports = {
     displayOnu: sshDisplayOnu,
     displayMac: sshDisplayMac,
     displaySignal: sshDisplaySignal,
-    ...generic.ssh,
   }
 }

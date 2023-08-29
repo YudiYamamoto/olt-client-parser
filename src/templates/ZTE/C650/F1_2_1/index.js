@@ -4,6 +4,7 @@ const displayPons = require('./telnet/displayPons')
 const displayPon = require('./telnet/displayPon')
 const displayOnus = require('./telnet/displayOnus')
 
+const sshCheckStage = require('./ssh/checkStage')
 const sshDisplayBoards = require('./ssh/displayBoards')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayPons = require('./ssh/displayPons')
@@ -22,12 +23,13 @@ module.exports = {
     displayOnus,
   },
   ssh: {
+    ...generic.ssh,
+    checkStage: sshCheckStage,
     displayBoards: sshDisplayBoards,
     displaySlots: sshDisplaySlots,
     displayPons: sshDisplayPons,
     displayPon: sshDisplayPon,
     displayOnus: sshDisplayOnus,
     displayOnu: sshDisplayOnu,
-    ...generic.ssh,
   }
 }

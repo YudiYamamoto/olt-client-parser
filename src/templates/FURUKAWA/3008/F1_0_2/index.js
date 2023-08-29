@@ -14,6 +14,7 @@ const generic = require('../../_generic')
 
 module.exports = {
   ssh: {
+    ...generic.ssh,
     displayBoards,
     displaySlots,
     displayPons,
@@ -25,7 +26,5 @@ module.exports = {
     displayVlan,
     displayUplinks,
     displayOLTServiceProfiles,
-    
-    ...generic.ssh,
   }
 }
