@@ -2,16 +2,23 @@
 const OLTClientParser = require('../index')
 
 const olt = new OLTClientParser({
-  brand: 'HUAWEI',
-  model: 'MA5608T',
-  firmware: '1.9.0',
+  id: '55074fbe-e9c6-4e2a-9361-bb7ea81908bf',
+  name: 'TESTE DATACOM',
+  brand: 'Made4OLT',
+  model: 'Datacom_DM4615',
+  firmware: '1.0.0',
   connectionType: 'ssh',
-  options: {
-    host: '170.254.216.17',
-    port: 22222,
-    username: 'made4it',
-    password: 'Kg2]n8:5.&',
-    shellPrompt: 'OLT-MINGA-PORA>',
+  "options": {
+    "host": "172.16.29.5",
+    "port": "22",
+    "username": "made4olt",
+    "password": "0ltm@ad&@2023",
+    "shellPrompt": "OLT-ADUSTINA-320",
+    "__extra__": {
+      "onu": {
+        "size": 128
+      }
+    }
   }
 });
 
@@ -19,10 +26,10 @@ const olt = new OLTClientParser({
   console.log(new Date().getTime())
   // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
-  const data = await olt.displaySlots({ board: '0' })
+  // const data = await olt.displaySlots({ board: '0' })
   // const data = await olt.displayPons({ board: '1', slot: '3' })
   // const data = await olt.displayPon({ board: '1', slot: '3', port: '1' })
-  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '15' })
+  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '15', custom_fields: { onus_count: 10 } })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '15', ont_id: '13' })
   // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '2', port: '7', ont_id: '25' })
   // const data = await olt.displayVlans()

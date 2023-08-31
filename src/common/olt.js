@@ -35,7 +35,6 @@ class OLT {
     const model = modelOriginal.toString().toUpperCase()
     const connectionType = connectionTypeOriginal.toString().toLowerCase()
     const firmware = `F${firmwareOriginal.toString().replace(/\./gi, '_')}`.toUpperCase()
-
     
     const brandTemplate = templates[brand]
     const modelTemplate = brandTemplate[model] || brandTemplate.generic
