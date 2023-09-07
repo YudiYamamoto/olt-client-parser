@@ -7,11 +7,11 @@ const olt = new OLTClientParser({
   firmware: '1.9.0',
   connectionType: 'ssh',
   options: {
-    host: '170.254.216.17',
-    port: 22222,
-    username: 'made4it',
-    password: 'Kg2]n8:5.&',
-    shellPrompt: 'OLT-MINGA-PORA>',
+    host: '138.97.70.10',
+    port: 2822,
+    username: 'made4ont',
+    password: 'made4olt',
+    shellPrompt: 'MA5608T>',
   }
 });
 
@@ -22,7 +22,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displaySlots({ board: '0' })
   // const data = await olt.displayPons({ board: '0', slot: '2' })
   // const data = await olt.displayPon({ board: '1', slot: '3', port: '1' })
-  const data = await olt.displayOnus({ board: '0', slot: '2', port: '1' })
+  // const data = await olt.displayOnus({ board: '0', slot: '2', port: '1' })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '15', ont_id: '13' })
   // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '2', port: '7', ont_id: '25' })
   // const data = await olt.displayVlans()
@@ -33,7 +33,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayDbaProfiles()
   // const data = await olt.displayLineProfiles()
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' })
-  // const data = await olt.displayOLTServiceProfiles({ board: '1', slot: '1', port: '1' })
+  const data = await olt.displayOLTServiceProfiles()
 
   // const data = await olt.scopeVlanLanToLan()
   // const data = await olt.createVlan({ vlan: '666', description: 'TESTE' })

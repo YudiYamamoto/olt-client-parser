@@ -3,6 +3,8 @@ const sshDisplayBoards = require('./ssh/displayBoards')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayPons = require('./ssh/displayPons')
 const sshDisplayOnus = require('./ssh/displayOnus')
+const sshDisplayUplinks = require('./ssh/displayUplinks')
+const sshdisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
 
 const telnetEnableRoot = require('./telnet/enableRoot')
 const telnetDisplayPermissionByUser = require('./telnet/displayPermissionByUser')
@@ -16,6 +18,8 @@ module.exports = {
     displaySlots: sshDisplaySlots,
     displayPons: sshDisplayPons,
     displayOnus: sshDisplayOnus,
+    displayUplinks: sshDisplayUplinks,
+    displayOLTServiceProfiles: sshdisplayOLTServiceProfiles,
   },
   telnet: {
     enableRoot: telnetEnableRoot,

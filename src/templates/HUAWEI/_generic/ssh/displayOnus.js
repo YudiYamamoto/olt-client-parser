@@ -45,6 +45,8 @@ const displayOnus = async (options, params) => {
   const splitted = chunk.split('\r\n')
   splitted.pop()
   splitted.pop()
+  splitted.pop()
+  splitted.shift()
   splitted.shift()
   splitted.shift()
 
