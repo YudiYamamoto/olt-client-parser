@@ -44,15 +44,11 @@ const displayOLTServiceProfiles = async (originalOptions) => {
   console.log(data)
 
   return data.map((item) => ({ 
-    profile_id: item['profile-_i_d'],
-    profile_name: item['profile-name'],
-    binding_times: item.bindingtimes,
-    
-    /*
+    onu_type: item['profile-_i_d'],
+    onu_profile: item['profile-name'],
     custom_fields: {
       ...item,
     }
-    */
 
   }))
 
