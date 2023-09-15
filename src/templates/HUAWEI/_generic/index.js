@@ -7,6 +7,7 @@ const sshDisplayUplinks = require('./ssh/displayUplinks')
 const sshdisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
 const sshshowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
 const sshdisplayDbaProfiles = require ('./ssh/displayDbaProfiles')
+const sshdisplayLineProfiles = require ('./ssh/displayLineProfiles')
 
 const telnetEnableRoot = require('./telnet/enableRoot')
 const telnetDisplayPermissionByUser = require('./telnet/displayPermissionByUser')
@@ -24,6 +25,7 @@ module.exports = {
     displayOLTServiceProfiles: sshdisplayOLTServiceProfiles,
     showOpticalModuleInfo: sshshowOpticalModuleInfo,
     displayDbaProfiles: sshdisplayDbaProfiles,
+    displayLineProfiles: sshdisplayLineProfiles,
   },
   telnet: {
     enableRoot: telnetEnableRoot,

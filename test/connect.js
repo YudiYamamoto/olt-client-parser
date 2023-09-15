@@ -30,8 +30,8 @@ const olt = new OLTClientParser({
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayOnuProfiles()
-  const data = await olt.displayDbaProfiles()
-  // const data = await olt.displayLineProfiles()
+  // const data = await olt.displayDbaProfiles()
+  const data = await olt.displayLineProfiles()
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' })
   // const data = await olt.displayOLTServiceProfiles()
 
