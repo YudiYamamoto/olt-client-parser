@@ -9,6 +9,7 @@ const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
 const sshDisplayDbaProfiles = require ('./ssh/displayDbaProfiles')
 const sshDisplayLineProfiles = require ('./ssh/displayLineProfiles')
 const sshDisplayVlans = require ('./ssh/displayVlans')
+const sshDisplayVlan = require ('./ssh/displayVlan')
 
 const telnetEnableRoot = require('./telnet/enableRoot')
 const telnetDisplayPermissionByUser = require('./telnet/displayPermissionByUser')
@@ -28,6 +29,7 @@ module.exports = {
     displayDbaProfiles: sshDisplayDbaProfiles,
     displayLineProfiles: sshDisplayLineProfiles,
     displayVlans: sshDisplayVlans,
+    displayVlan: sshDisplayVlan,
   },
   telnet: {
     enableRoot: telnetEnableRoot,
