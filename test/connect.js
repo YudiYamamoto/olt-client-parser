@@ -8,17 +8,12 @@ const olt = new OLTClientParser({
   model: 'Datacom_DM4615',
   firmware: '1.0.0',
   connectionType: 'ssh',
-  "options": {
-    "host": "172.16.29.5",
-    "port": "22",
-    "username": "made4olt",
-    "password": "0ltm@ad&@2023",
-    "shellPrompt": "OLT-ADUSTINA-320",
-    "__extra__": {
-      "onu": {
-        "size": 128
-      }
-    }
+  options: {
+    host: '138.97.70.10',
+    port: 2822,
+    username: 'made4ont',
+    password: 'made4olt',
+    shellPrompt: 'MA5608T>',
   }
 });
 
@@ -27,20 +22,20 @@ const olt = new OLTClientParser({
   // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '0' })
-  // const data = await olt.displayPons({ board: '1', slot: '3' })
+  // const data = await olt.displayPons({ board: '0', slot: '2' })
   // const data = await olt.displayPon({ board: '1', slot: '3', port: '1' })
-  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '15', custom_fields: { onus_count: 10 } })
+  // const data = await olt.displayOnus({ board: '0', slot: '2', port: '1' })
   // const data = await olt.displayOnu({ board: '1', slot: '1', port: '15', ont_id: '13' })
-  // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '2', port: '7', ont_id: '25' })
+  // const data = await olt.showOpticalModuleInfo()
   // const data = await olt.displayVlans()
   // const data = await olt.displayVlan('2431')
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayOnuProfiles()
   // const data = await olt.displayDbaProfiles()
-  // const data = await olt.displayLineProfiles()
+  const data = await olt.displayLineProfiles()
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' })
-  // const data = await olt.displayOLTServiceProfiles({ board: '1', slot: '1', port: '1' })
+  // const data = await olt.displayOLTServiceProfiles()
 
   // const data = await olt.scopeVlanLanToLan()
   // const data = await olt.createVlan({ vlan: '666', description: 'TESTE' })
