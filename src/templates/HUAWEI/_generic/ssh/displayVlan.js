@@ -53,8 +53,8 @@ const displayVlans = async (originalOptions, vlan) => {
   ]
 
   const data = dummy2json(splitted.join('\n'), columns, 2)
-  
-  console.log(data)
+
+  //TODO Verificar
   return data.map((item) => ({
     f: item.f.replace(/\//g, ''),
     s: item.s.replace(/\//g, ''),

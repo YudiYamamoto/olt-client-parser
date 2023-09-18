@@ -6,6 +6,8 @@ const displayOnus = async (options, params) => {
   const data = []
   for await (const [index] of Array.from({ length }).entries()) {
     const ont_id = index + 1
+
+    // TODO Verificar
     const onu = await displayOnu(options, { ...params, ont_id })
     if (onu) data.push(onu)
   }

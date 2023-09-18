@@ -40,9 +40,11 @@ const displayLineProfiles = async (originalOptions) => {
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
   return data.map((item) => ({
-    profile_id: item['profile-_i_d'], 
-    profile_name: item['profile-name'],
-    binding_times: item.binding
+    name: item['profile-_i_d'], 
+    dba_profile: item['profile-name'],
+    custom_fields: {
+      ...item,
+    }
   }))
 }
 

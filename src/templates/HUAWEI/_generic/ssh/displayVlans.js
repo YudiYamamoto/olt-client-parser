@@ -34,7 +34,6 @@ const displayVlans = async (originalOptions) => {
   if (!chunk && chunk === '') return null
   const splitted = chunk.split('\r\n')
 
- 
   splitted.shift()
   splitted.shift()
   splitted.shift()
@@ -55,6 +54,7 @@ const displayVlans = async (originalOptions) => {
 
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
+  //TODO Verificar
   return data.map((item) => ({
     vlan: item.vlan, 
     type: item.type,

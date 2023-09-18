@@ -27,7 +27,6 @@ const displayDbaProfiles = async (originalOptions) => {
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
   const splitted = chunk.split('\r\n')
-
  
   splitted.shift()
   splitted.shift()
@@ -36,8 +35,6 @@ const displayDbaProfiles = async (originalOptions) => {
 	splitted.shift()
 	splitted.shift()
 	splitted.pop()
-
-  console.log(splitted)
 
 	const columns = [
     [0, 15],
@@ -51,8 +48,6 @@ const displayDbaProfiles = async (originalOptions) => {
   
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
-  console.log(data)
-
   return data.map((item) => ({
     profile_id: item['profile-_i_d'], 
     type: item.type,
@@ -61,13 +56,9 @@ const displayDbaProfiles = async (originalOptions) => {
     assure_kbps: item['assure_(kbps)'],
     max_kbps: item['max_(kbps)'],
     bind_times: item.bind_times,
-    
-    /*
     custom_fields: {
       ...item,
     }
-    */
-
   }))
   
 }

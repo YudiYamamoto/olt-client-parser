@@ -37,7 +37,7 @@ const displayOnus = async (options, params) => {
   const f_p_s = `${board}/${slot}/${port}`
   const conn = await connect(options)
   const cmd = `scroll 512
-  display board 0/2`
+  display board ${f_p_s}`
   const chunk = await conn.exec7(cmd)
 
   if (!chunk && chunk === '') return null
@@ -49,8 +49,6 @@ const displayOnus = async (options, params) => {
   splitted.shift()
   splitted.shift()
   splitted.shift()
-
-  console.log(splitted)
 
   const columns = [
     [0, 11],
@@ -70,6 +68,7 @@ const displayOnus = async (options, params) => {
     const [_, ont_id] = (ont.onu_index || '').split(':') || []
     if (!ont_id) continue
     
+    // TODO Verificar
     const onu = await displayOnu(options, { ...params, ont_id })
     if (onu) data.push(onu)
   }      

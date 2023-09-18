@@ -20,7 +20,7 @@ const { dummy2json } = require('../../../../utils/lib')
  1 | 16 | Active | auto | FRKW4b0067d3 | 00000000000000000000 | 0:00:01:24
 */
 
-const displayUnconfiguredOnus = async (originalOptions) => {
+const displayUnconfiguredOnus = async (originalOptions, { custom_fields = {}, authorization_at = null }) => {
   const conn = await connect(originalOptions)
   const cmd = 'display ont autofind all'
   const chunk = await conn.exec3(cmd)
@@ -50,7 +50,10 @@ const displayUnconfiguredOnus = async (originalOptions) => {
       onu_type: item.model,
       serial_number: item.sn,
       description: item.pw,
-      authorization_at: null,
+      authorization_at,
+      custom_fields: {
+        ...custom_fields,
+      }
     }
   })
 }

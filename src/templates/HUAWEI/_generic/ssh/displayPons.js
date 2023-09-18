@@ -17,15 +17,16 @@ const { dummy2json } = require('../../../../utils/lib')
   -------------------------------------------------------------
 */
 
-const displayPons = async ({ params, ...options }, { board: boardNumber, pon }) => {
-  const { numberPort } = params // VALIDAR NECESSIDADE
-
-  const cmd = `display board ${boardNumber}/${pon}}`
+//TODO Verificar
+const displayPons = async (options, { board, slot }) => {
+  const cmd = `scroll 512
+display board ${board}/${slot}}`
   const conn = await connect(options)
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
   
   const splitted = chunk.split('\r\n')
+  splitted.shift()
   splitted.shift()
   splitted.shift()
   splitted.pop()

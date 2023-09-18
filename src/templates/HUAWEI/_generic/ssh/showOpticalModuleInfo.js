@@ -34,8 +34,6 @@ const showOpticalModuleInfo = async (options) => {
   lines.pop()
   lines.pop()
 
-  console.log(lines)
-
   const columns = [
     [0, 7],
     [7, 17],
@@ -49,8 +47,7 @@ const showOpticalModuleInfo = async (options) => {
   
   const data = dummy2json(lines.join('\n'), columns, 2)
 
-  console.log(data)
-
+  // TODO Verificar
   return data.map((item) => ({
     ont_id: item.ont_id, 
     rx_power: item['rxpower_(d_bm)'],
@@ -60,13 +57,9 @@ const showOpticalModuleInfo = async (options) => {
     voltage_v: item['voltage_(_v)'],
     current_ma: item['current_(m_a)'],
     distance_m: item['distance_(m)'],
-    
-    /*
     custom_fields: {
       ...item,
     }
-    */
-
   }))
 }
 

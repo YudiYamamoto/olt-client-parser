@@ -64,6 +64,7 @@ const displayOnus = async (options, params) => {
     const [_, ont_id] = (ont.onu_index || '').split(':') || []
     if (!ont_id) continue
     
+    // TODO Verificar
     const onu = await displayOnu(options, { ...params, ont_id })
     if (onu) data.push(onu)
   }      
