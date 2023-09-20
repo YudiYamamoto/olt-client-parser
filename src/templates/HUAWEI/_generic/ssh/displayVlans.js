@@ -54,15 +54,12 @@ const displayVlans = async (originalOptions) => {
 
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
-  //TODO Verificar
-  return data.map((item) => ({
-    vlan: item.vlan, 
-    type: item.type,
-    attribute: item.attribute,
-    STND_Port_NUM: item['s_t_n_d-_port_n_u_m'],
-    SERV_Port_NUM: item['s_e_r_v-_port_n_u_m'],
-    VLAN_Con_NUM: item['v_l_a_n-_con_n_u_m'],
-  }))
+  const list = []
+
+  for (const item of data) {
+    list.push(item.vlan)
+  }
+  return list
 }
 
 module.exports = displayVlans
