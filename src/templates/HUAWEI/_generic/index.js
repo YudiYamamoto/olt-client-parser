@@ -3,6 +3,7 @@ const sshDisplayBoards = require('./ssh/displayBoards')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayPons = require('./ssh/displayPons')
 const sshDisplayOnus = require('./ssh/displayOnus')
+const sshDisplayOnu = require('./ssh/displayOnu')
 const sshDisplayUplinks = require('./ssh/displayUplinks')
 const sshDisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
 const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
@@ -23,6 +24,7 @@ module.exports = {
     displaySlots: sshDisplaySlots,
     displayPons: sshDisplayPons,
     displayOnus: sshDisplayOnus,
+    displayOnu: sshDisplayOnu,
     displayUplinks: sshDisplayUplinks,
     displayOLTServiceProfiles: sshDisplayOLTServiceProfiles,
     showOpticalModuleInfo: sshShowOpticalModuleInfo,

@@ -56,7 +56,6 @@ const displayVlan = async (options, vlan) => {
       ...item
     }
   }
-  console.log(data)
   return data
 }
 
