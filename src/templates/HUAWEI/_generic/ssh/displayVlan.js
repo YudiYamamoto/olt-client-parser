@@ -51,10 +51,8 @@ const displayVlan = async (options, vlan) => {
   const data = {
     name: vlan,
     type: item.v_l_a_ntype,
-    description: item.description || '',
-    custom_fields: {
-      ...item
-    }
+    description: item.v_l_a_ndescription || '',
+    ...item.custom_fields
   }
   return data
 }

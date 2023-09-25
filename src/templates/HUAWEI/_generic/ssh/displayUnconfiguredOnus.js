@@ -52,7 +52,7 @@ const displayUnconfiguredOnus = async (originalOptions, { custom_fields = {}, au
       description: item.pw,
       authorization_at,
       custom_fields: {
-        ...custom_fields,
+        ...item,
       }
     }
   })
