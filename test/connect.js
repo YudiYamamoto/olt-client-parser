@@ -18,8 +18,8 @@ const olt = new OLTClientParser({
 });
 
 (async () => {
-  // console.log(new Date().getTime())
-  // const data = await olt.checkStage()
+  console.log(new Date().getTime())
+  const data = await olt.checkStage()
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '0' })
   // const data = await olt.displayPons({ board: '0', slot: '0' })

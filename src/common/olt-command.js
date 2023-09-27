@@ -8,6 +8,7 @@ class OLTCommand extends OLT {
     super(props)
     const container = this.getContainer()
     const options = this.getOptions()
+    console.log(options)
     const keys = Object.keys(container)
     const instance = keys.map((cmd) => ([cmd, (params) => container[cmd](options, params) ]))
     const entries = new Map(instance)
