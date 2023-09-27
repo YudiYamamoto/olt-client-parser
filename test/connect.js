@@ -2,11 +2,11 @@
 const OLTClientParser = require('../index')
 
 const olt = new OLTClientParser({
-  id: '55074fbe-e9c6-4e2a-9361-bb7ea81908bf',
-  name: 'TESTE DATACOM',
-  brand: 'Made4OLT',
-  model: 'Datacom_DM4615',
-  firmware: '1.0.0',
+  name: 'TESTE',
+  brand: 'Huawei',
+  model: 'Huawei_MA5608T',
+  firmware: 'MA5600V800R018C10', // 1.9.0
+  // firmware: 'MA5600V800R015C00', // 1.9.0
   connectionType: 'ssh',
   options: {
     host: '138.97.70.10',
@@ -22,19 +22,19 @@ const olt = new OLTClientParser({
   // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '0' })
-  // const data = await olt.displayPons({ board: '0', slot: '2' })
-  // const data = await olt.displayPon({ board: '1', slot: '3', port: '1' })
-  // const data = await olt.displayOnus({ board: '0', slot: '2', port: '1' })
-  // const data = await olt.displayOnu({ board: '1', slot: '1', port: '15', ont_id: '13' })
-  // const data = await olt.showOpticalModuleInfo()
+  // const data = await olt.displayPons({ board: '0', slot: '0' })
+  // const data = await olt.displayPon({ board: '0', slot: '0', port: '7' })
+  // const data = await olt.displayOnus({ board: '0', slot: '0', port: '0' })
+  // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })
+  // const data = await olt.showOpticalModuleInfo() 
   // const data = await olt.displayVlans()
-  // const data = await olt.displayVlan('2431')
+  // const data = await olt.displayVlan('109')
   // const data = await olt.displayUplinks()
-  // const data = await olt.displayUnconfiguredOnus()
+  const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayOnuProfiles()
   // const data = await olt.displayDbaProfiles()
-  const data = await olt.displayLineProfiles()
-  // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' })
+  // const data = await olt.displayLineProfiles()
+  // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' }) // *
   // const data = await olt.displayOLTServiceProfiles()
 
   // const data = await olt.scopeVlanLanToLan()
@@ -67,6 +67,6 @@ const olt = new OLTClientParser({
     name: 'teste_comandos@made4it.com.br'
   })
   */
-  console.table(data) 
+  console.log(data) 
   console.log(new Date().getTime())
 })()
