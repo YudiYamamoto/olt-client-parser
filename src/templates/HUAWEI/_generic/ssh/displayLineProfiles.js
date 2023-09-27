@@ -39,9 +39,9 @@ const displayLineProfiles = async (originalOptions) => {
 
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
+  // TODO Felix Verificar T-CONT / GEM
   return data.map((item) => ({
     name: item['profile-_i_d'], 
-    dba_profile: item['profile-name'],
     custom_fields: {
       ...item,
     }

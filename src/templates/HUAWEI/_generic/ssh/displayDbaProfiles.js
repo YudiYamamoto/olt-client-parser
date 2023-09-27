@@ -20,10 +20,10 @@ const { dummy2json } = require('../../../../utils/lib')
   ----------------------------------------------------------------------------
 */
 
-const displayDbaProfiles = async (originalOptions) => {
-  const conn = await connect(originalOptions)
+const displayDbaProfiles = async (options) => {
+  const conn = await connect(options)
   const cmd = `enable
-	display dba-profile all`
+display dba-profile all`
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
   const splitted = chunk.split('\r\n')
@@ -49,13 +49,11 @@ const displayDbaProfiles = async (originalOptions) => {
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
   return data.map((item) => ({
-    profile_id: item['profile-_i_d'], 
+    name: item['profile-_i_d'], 
     type: item.type,
-    bandwidth_compensation: item.bandwidth_compensation,
-    fix_kbps: item['fix_(kbps)'],
-    assure_kbps: item['assure_(kbps)'],
-    max_kbps: item['max_(kbps)'],
-    bind_times: item.bind_times,
+    fixed: item['fix_(kbps)'],
+    assured: item['assure_(kbps)'],
+    speed: item['max_(kbps)'],
     custom_fields: {
       ...item,
     }

@@ -20,17 +20,24 @@ const { dummy2json } = require('../../../../utils/lib')
  1 | 16 | Active | auto | FRKW4b0067d3 | 00000000000000000000 | 0:00:01:24
 */
 
-const displayUnconfiguredOnus = async (originalOptions, { custom_fields = {}, authorization_at = null }) => {
-  const conn = await connect(originalOptions)
-  const cmd = 'display ont autofind all'
-  const chunk = await conn.exec3(cmd)
-
-  console.log(chunk)
+const displayUnconfiguredOnus = async (options) => {
+  const conn = await connect(options)
+  const cmd = `enable
+display ont autofind all`
+  const chunk = await conn.exec7(cmd)
+  if (!chunk && chunk === '') return null
   
-  const splitted = chunk.split('\n')
+  const splitted = chunk.split('\r\n')
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
   splitted.pop()
-  splitted.shift()
-  splitted.shift()
+  splitted.pop()
+
+  if (splitted[0].indexOf('Failure') > -1) return null
 
   const columns = [
     [0, 20],
@@ -41,9 +48,9 @@ const displayUnconfiguredOnus = async (originalOptions, { custom_fields = {}, au
 
   const elements = dummy2json(splitted.join('\n'), columns, 1)
   return elements.map((item) => {
-    const [pon_type, rest] = item.olt_index.split('-')
-    const [_, physical] = rest.split('_')
-    const [board, slot, port] = physical.split('/')
+    const [pon_type, rest] = (item.olt_index || '').split('-')
+    const [_, physical] = (rest || ' ').split('_')
+    const [board, slot, port] = (physical || '').split('/')
     return {
       pon_type,
       board,
@@ -52,7 +59,6 @@ const displayUnconfiguredOnus = async (originalOptions, { custom_fields = {}, au
       onu_type: item.model,
       serial_number: item.sn,
       description: item.pw,
-      authorization_at,
       custom_fields: {
         ...item,
       }
