@@ -11,12 +11,18 @@ const { dummy2json } = require('../../../../utils/lib')
   -----------------------------------------------------------------------------           
 */
 
-const showOpticalModuleInfo = async (options) => {
+const showOpticalModuleInfo = async (options, params) => {
+  const { 
+    pon_type: type = 'gpon', 
+    board = '0', 
+    slot = '2', 
+    port = '1',
+  } = params
   const conn = await connect(options)
   const cmd = `enable
   config
-  interface gpon 0/0
-  display ont optical-info 0 all`
+  interface ${type} ${board}/${slot}
+  display ont optical-info ${port} all`
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
   const lines = chunk.split('\r\n')

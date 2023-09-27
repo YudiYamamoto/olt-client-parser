@@ -64,7 +64,7 @@ const day2time = (period) => {
 }
 
 const hour2time = (period) => {
-  const [hour, min, sec] = (period || '').split(' ')
+  const [hour = '', min = '', sec = ''] = (period || '').split(' ')
   return period && moment()
     .subtract(hour.replace('h', ''), 'hours')
     .subtract(min.replace('m', ''), 'minutes')

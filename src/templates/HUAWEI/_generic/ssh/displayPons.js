@@ -14,51 +14,87 @@ const { dummy2json } = require('../../../../utils/lib')
     5     GPON        0              20             Online
     6     GPON        0              20             Online
     7     GPON        0              20             Online
+    8     GPON        0              20             Online
+    9     GPON        0              20             Online
+   10     GPON        0              20             Online
+   11     GPON        0              20             Online
+   12     GPON        0              20             Online
+   13     GPON        0              20             Online
+   14     GPON        0              20             Online
+   15     GPON        0              20             Online
   -------------------------------------------------------------
+
 */
+
+function sliceLastIndex(arr, val) {
+  const indexes = []
+  arr.forEach((element, index) => {
+    if (element.trim() === val) {
+      indexes.push(index)
+    }
+  })
+  const [lastIndex] = indexes.reverse()
+  return arr.slice(0, lastIndex)
+}
 
 //TODO Verificar
 const displayPons = async (options, { board, slot }) => {
   const cmd = `scroll 512
-display board ${board}/${slot}}`
+display board ${board}/${slot}`
   const conn = await connect(options)
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
+  if (chunk.indexOf('min-distance') <= -1) return null
   
   const splitted = chunk.split('\r\n')
   splitted.shift()
   splitted.shift()
   splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
   splitted.pop()
 
+  const splittedFilterd = sliceLastIndex(splitted, '-------------------------------------------------------------')
+
   const columns = [
-    [0, 10],
-    [12, 23],
-    [24, 35],
-    [36, 46],
-    [48, 64],
+    [0, 8],
+    [8, 16],
+    [16, 31],
+    [31, 46],
+    [46, 64],
   ]
   
-  const data = dummy2json(splitted.join('\n'), columns, 2)
-  let min_range = '0'
-  const max_range = String(min_range || '')
+  const data = dummy2json(splittedFilterd.join('\n'), columns, 2)
 
   return data
-    .map((item) =>  {
-      const hasIndex = (item.olt || '').toLowerCase().indexOf('pon') > -1
-      const [type_port] = hasIndex ? (item.olt || '').split('pon') : ['G']
-      const type_port_default = (`${type_port || 'g'}pon`).toLowerCase()
-        .toLowerCase()
-        .replace('km', '')
-        .trim()
-        .split('/')
-
+    .map((item) =>  {      
       return {
-      type: type_port_default,
-      min_range: 0,
-      max_range: parseInt(max_range, 10) * 1000,
-      operational_status: item.status === 'Online' ? 'Online' : 'Offline',
-      description: '',
+        board,
+        slot,
+        type: (item.port_type || '').toLowerCase(),
+        port: item.port,
+        admin_status: false,
+        operational_status: item['optical-module_status'] === 'Online' ? 'up' : 'down',
+        description: '',
+        min_range: parseInt(item['min-distance_(km)'], 10) * 1000,
+        max_range: parseInt(item['max-distance_(km)'], 10) * 1000,
+        scope: [],
+        default_for_pon_ports: [],
+        custom_fields: {
+          ...item
+        }
       }
     })
 }

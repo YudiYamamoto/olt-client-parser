@@ -2,41 +2,26 @@ const { connect } = require('../../../../config/ssh-connect')
 const { dummy2json } = require('../../../../utils/lib')
 
 /*
-------------------------------------------------------------------------------
-  Port  Port Optic   Native  MDI    Speed     Duplex    Flow-  Active   Link
-        Type Status  VLAN           (Mbps)              Ctrl   State
-  ------------------------------------------------------------------------------
-     0  GE   absence      1  -      auto      auto      off    active   offline
-     1  GE   absence      1  -      auto      auto      off    active   offline
-     2  GE   absence      1  -      auto      auto      off    active   offline
-     3  GE   absence      1  -      auto      auto      off    active   offline
-  ------------------------------------------------------------------------------
+
+MA5608T#display current-configuration section public-config | include "monitor uplink-port"
+  It will take a long time if the content you search is too much or the string  you input is too long, you can press CTRL_C to break
+ monitor uplink-port traffic port 0/2/0
+ monitor uplink-port traffic port 0/2/1
+ monitor uplink-port traffic port 0/2/2
+ monitor uplink-port traffic port 0/2/3
+
+MA5608T# 
+
 */
 
-const displayUplinks = async (originalOptions, board = '2') => {
-  const conn = await connect(originalOptions)
-  const cmd = `enable 
-  undo smart
-  display board  0/${board}`
+const displayUplinks = async (options) => {
+  const conn = await connect(options)
+  const cmd = `enable
+display current-configuration section public-config | include "monitor uplink-port"`
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
 
   const splitted = chunk.split('\r\n')
-
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
   splitted.shift()
   splitted.shift()
   splitted.shift()
@@ -47,33 +32,10 @@ const displayUplinks = async (originalOptions, board = '2') => {
   splitted.pop()
   splitted.pop()
 
-  const columns = [
-    [0, 8],
-    [8, 13],
-    [13, 21],
-    [21, 29],
-    [29, 36],
-    [36, 46],
-    [46, 56],
-    [56, 63],
-    [63, 72],
-    [72, 80],
-  ]
-  
-  const data = dummy2json(splitted.join('\n'), columns, 2)
-
-  return data.map((item) => ({ 
-    name: item.port,
+  return splitted.map((item) => ({ 
+    name: item.replace('monitor uplink-port traffic port ', '').trim(),
     description: '',
-    port_attribute: item.optic__status,
-    mode: item.duplex,
-    speed: item['speed_(_mbps)'],
-    admin_status: item.active__state,
-    physical_status: item.link,
-    prot_status: item.port__type,
-    custom_fields: {
-      ...item,
-    }
+    mode: 'auto'
   }))
 }
 

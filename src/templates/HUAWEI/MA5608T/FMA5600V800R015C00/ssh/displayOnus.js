@@ -1,6 +1,5 @@
-const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json, hour2time } = require('../../../../utils/lib')
-
+const { connect } = require('../../../../../config/ssh-connect')
+const { dummy2json, hour2time } = require('../../../../../utils/lib')
 
 // TODO Verificar os dados
 const STATUS = {
@@ -47,29 +46,33 @@ config
 interface ${type} ${board}/${slot}
 display ont optical-info ${port} all
 quit
-display ont info summary ${port}`
-  const conn = await connect(options) 
+display ont info ${board} ${slot} ${port} all
+display ont version ${board} ${slot} ${port} all`  
+  
+  const conn = await connect(options)
   const chunk = await conn.exec7(cmd)
-  
-  if (!chunk && chunk === '') return null
-  
-  const splitted = chunk.split('\r\n')
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.pop()
-  splitted.pop()
-  splitted.pop()
-  
-  const indexLast = splitted.findIndex(item => item.trim().indexOf('display ont info summary') > -1)
 
+  if (!chunk && chunk === '') return null
+
+  const splitted = chunk.split('\r\n')
+  
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.pop()
+  splitted.pop()
+  splitted.pop()
+  splitted.pop()
+  
+  const indexLast = splitted.findIndex(item => item.trim().indexOf(`display ont info ${board} ${slot} ${port} all`) > -1)
+  
   const part1 = splitted.slice(0, indexLast)
   part1.pop()
   part1.pop()
@@ -77,10 +80,7 @@ display ont info summary ${port}`
 
   const part2 = splitted.slice(indexLast)
   part2.shift()
-  part2.shift()
-  part2.shift()
-  part2.shift()
-
+  
   const columns = [
     [0, 7],
     [7, 17],
@@ -111,26 +111,76 @@ display ont info summary ${port}`
     }
   }))
 
-  const indexNextLevel = part2.findIndex(item => item.trim().indexOf('Rx/Tx power') > -1)
-
-  const part2_1 = part2.slice(0, indexNextLevel-1)
   const columns2_1 = [
-    [0, 7],
-    [7, 15],
-    [15, 35],
-    [35, 55],
-    [55, 80],
+    [0, 10],
+    [10, 14],
+    [14, 32],
+    [32, 44],
+    [44, 53],
+    [53, 62],
+    [62, 71],
+    [71, 80],
   ]
-  const elements2_1 = dummy2json(part2_1.join('\n'), columns2_1, 2).map(item => ({
+
+  const indexModelLast = part2.findIndex(item => item.trim().indexOf(`display ont version ${board} ${slot} ${port} all`) > -1)
+  const part2_1 = part2.slice(0, indexModelLast)
+  part2_1.pop()
+  part2_1.pop()
+  part2_1.pop()
+
+  const part2_2 = part2.slice(indexModelLast)
+  part2_2.shift()
+  part2_2.shift()
+
+  const indexDescriptionLast = part2_1.findIndex(item => item.trim().indexOf('F/S/P   ONT-ID   Description') > -1)
+  const part2_1_1 = part2_1.slice(0, indexDescriptionLast)
+  const part2_1_2 = part2_1.slice(indexDescriptionLast-1) // DESCRICAO
+  part2_1_2.shift()
+  part2_1_2.shift()
+  part2_1_2.shift()
+  part2_1_2.pop()
+
+  const item = []
+  let anterior = -1
+  part2_1_2.forEach(x => {
+    const xy = x.slice(0, 19).trim()
+    if (xy !== '') ++anterior
+    item[anterior] += x.trim()
+  })
+  
+  const descritions = item.map(item => {
+    return {
+      ont_id: item.slice(19, 23).trim(),
+      description: item.slice(23).trim()
+    }
+  })
+
+  const data0 = elements.map((item) => {
+    const merge = descritions
+      .find(item1 => item1.ont_id === item.ont_id)
+    return {
+      ...item,
+      ...merge,
+      custom_fields: {
+        ...item.custom_fields,
+        ...merge.custom_fields,
+      }
+    }
+  })
+
+  const elements2_1 = dummy2json(part2_1_1.join('\n'), columns2_1, 2).map(item => ({
     ont_id: item.ont_id,
-    stage: STATUS[item.run__state],
-    uptime_at: hour2time(item.last__up_time),
+    stage: STATUS[item.run_state],
+    serial_number: item.sn,
+    mac_address: '',
+    onu_external_id: '',
+    authorization_at: new Date(), 
     custom_fields: {
       ...item,
     }
   }))
 
-  const data0 = elements.map((item) => {
+  const data1 = data0.map((item) => {
     const merge = elements2_1
       .find(item1 => item1.ont_id === item.ont_id)
     return {
@@ -143,31 +193,24 @@ display ont info summary ${port}`
     }
   })
 
-  const part2_2 = part2.slice(indexNextLevel-1)
   const columns2_2 = [
-    [0, 6],
-    [6, 23],
-    [23, 37],
-    [37, 46],
-    [46, 59],
-    [59, 80],
+    [0, 10],
+    [10, 16],
+    [16, 24],
+    [24, 50],
+    [50, 68],
+    [68, 80]
   ]
+
   const elements2_2 = dummy2json(part2_2.join('\n'), columns2_2, 2).map(item => ({
-    ont_id: item.ont_id,
-    serial_number: item.sn,
-    onu_type: item.type,
-    description: item.description,
-    // TODO validar como colocar a info correta
-    name: '',
-    mac_address: '',
-    onu_external_id: '',
-    authorization_at: new Date(), 
+    ont_id: item['t-id'],
+    onu_type: item.o_n_t_model,
     custom_fields: {
       ...item,
     }
   }))
 
-  const data = data0.map((item) => {
+  const data = data1.map((item) => {
     const merge = elements2_2
       .find(item1 => item1.ont_id === item.ont_id)
     return {

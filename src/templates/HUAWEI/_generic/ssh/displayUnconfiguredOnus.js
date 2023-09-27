@@ -24,6 +24,8 @@ const displayUnconfiguredOnus = async (originalOptions, { custom_fields = {}, au
   const conn = await connect(originalOptions)
   const cmd = 'display ont autofind all'
   const chunk = await conn.exec3(cmd)
+
+  console.log(chunk)
   
   const splitted = chunk.split('\n')
   splitted.pop()

@@ -29,7 +29,7 @@ const { dummy2json } = require('../../../../utils/lib')
 const displayVlans = async (originalOptions) => {
   const conn = await connect(originalOptions)
   const cmd = `enable
-	display vlan all`
+display vlan all`
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
   const splitted = chunk.split('\r\n')
@@ -55,7 +55,6 @@ const displayVlans = async (originalOptions) => {
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
   const list = []
-
   for (const item of data) {
     list.push(item.vlan)
   }

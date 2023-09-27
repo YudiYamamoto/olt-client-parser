@@ -1,5 +1,9 @@
 const F1_9_0 = require('./F1_9_0')
+const FMA5600V800R015C00 = require('./FMA5600V800R015C00')
+const FMA5600V800R018C10 = require('./FMA5600V800R018C10')
 
 module.exports = {
-  F1_9_0
+  F1_9_0,
+  FMA5600V800R015C00,
+  FMA5600V800R018C10
 }

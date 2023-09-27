@@ -22,7 +22,7 @@ const { column2json } = require('../../../../utils/lib')
 const displayVlan = async (options, vlan) => {
   const conn = await connect(options)
   const cmd = `enable
-  display vlan ${vlan}
+display vlan ${vlan}
   `
   const chunk = await conn.exec7(cmd)
 
@@ -36,7 +36,7 @@ const displayVlan = async (options, vlan) => {
   splitted.pop()
   splitted.pop()
   
-  if (splitted.length === 0) return null;
+  if (splitted.length === 0) return null
 
   const item = column2json(
     splitted
@@ -50,8 +50,7 @@ const displayVlan = async (options, vlan) => {
   
   const data = {
     name: vlan,
-    type: item.v_l_a_ntype,
-    description: item.description || '',
+    description: item.v_l_a_nname || '',
     custom_fields: {
       ...item
     }
