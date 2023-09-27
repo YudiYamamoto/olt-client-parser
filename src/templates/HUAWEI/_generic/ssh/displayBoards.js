@@ -33,7 +33,8 @@ const displayBoards = async (options) => {
   ]
   
   const data = dummy2json(splitted.join('\n'), columns, 2)
-  return data.map((item) => ({ board: item.frame__i_d }))
+  return data.map((item) => ({ board: item.frame_i_d }))
 }
+
 
 module.exports = displayBoards
