@@ -12,6 +12,8 @@ const sshDisplayDbaProfiles = require ('./ssh/displayDbaProfiles')
 const sshDisplayLineProfiles = require ('./ssh/displayLineProfiles')
 const sshDisplayVlans = require ('./ssh/displayVlans')
 const sshDisplayVlan = require ('./ssh/displayVlan')
+const sshScopeVlanInternet = require('./ssh/scopeVlanInternet')
+const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
 const sshdisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
 
 const telnetEnableRoot = require('./telnet/enableRoot')
@@ -35,6 +37,8 @@ module.exports = {
     displayLineProfiles: sshDisplayLineProfiles,
     displayVlans: sshDisplayVlans,
     displayVlan: sshDisplayVlan,
+    scopeVlanInternet: sshScopeVlanInternet,
+    scopeVlanLanToLan: sshScopeVlanLanToLan,
     displayUnconfiguredOnus: sshdisplayUnconfiguredOnus,
   },
   telnet: {
