@@ -137,8 +137,8 @@ display ont info summary ${port}`
       ...item,
       ...merge,
       custom_fields: {
-        ...item.custom_fields,
-        ...merge.custom_fields,
+        ...item && item.custom_fields,
+        ...merge && merge.custom_fields,
       }
     }
   })
@@ -174,8 +174,8 @@ display ont info summary ${port}`
       ...item,
       ...merge,
       custom_fields: {
-        ...item.custom_fields,
-        ...merge.custom_fields,
+        ...item && item.custom_fields,
+        ...merge && merge.custom_fields,
         source: 'import_onu',
       }
     }
