@@ -2,18 +2,22 @@ const SSH = require('./ssh')
 const SSH2 = require('./ssh2')
 
 const connect = async (defaultOptions) => {
-  const client = new SSH(defaultOptions)
-  const client3 = new SSH2(defaultOptions)
-  const client2 = new SSH2({ 
+  const { cipher = [
+    'aes128-cbc',
+    '3des-cbc',
+    'blowfish-cbc'
+  ] } = (defaultOptions && defaultOptions.algorithms) || {}
+  const defaultOptionsWithAlgorithms = { 
     ...defaultOptions, 
     algorithms: {
-      cipher: [
-        'aes128-cbc',
-        '3des-cbc',
-        'blowfish-cbc'
-      ],
+      ...defaultOptions.algorithms,
+      cipher
     }
-  })
+  }
+
+  const client = new SSH(defaultOptions)
+  const client3 = new SSH2(defaultOptions)
+  const client2 = new SSH2(defaultOptionsWithAlgorithms)
 
   const connection = client.getConnection()
   const options = client.getOptions()

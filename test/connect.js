@@ -5,7 +5,8 @@ const olt = new OLTClientParser({
   name: 'TESTE',
   brand: 'Huawei',
   model: 'Huawei_MA5608T',
-  firmware: 'MA5600V800R018C10', // 1.9.0
+  firmware: 'MA5600V800R017C10', // 1.9.0
+  // firmware: 'MA5600V800R018C10', // 1.9.0
   // firmware: 'MA5600V800R015C00', // 1.9.0
   connectionType: 'ssh',
   options: {

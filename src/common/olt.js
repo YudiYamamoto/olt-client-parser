@@ -42,7 +42,7 @@ class OLT {
       ...(modelTemplate && modelTemplate[connectionType]),
       ...(modelTemplate && modelTemplate[firmware] && modelTemplate[firmware][connectionType])
     }
-
+    
     return {
       container: {
         ...Object.assign(brandTemplate.generic, container),
