@@ -15,6 +15,8 @@ const sshDisplayVlan = require ('./ssh/displayVlan')
 const sshScopeVlanInternet = require('./ssh/scopeVlanInternet')
 const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
 const sshdisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
+// actions
+const sshCreateVlan = require('./ssh/createVlan')
 
 const telnetEnableRoot = require('./telnet/enableRoot')
 const telnetDisplayPermissionByUser = require('./telnet/displayPermissionByUser')
@@ -40,6 +42,8 @@ module.exports = {
     scopeVlanInternet: sshScopeVlanInternet,
     scopeVlanLanToLan: sshScopeVlanLanToLan,
     displayUnconfiguredOnus: sshdisplayUnconfiguredOnus,
+    // actions
+    createVlan: sshCreateVlan,
   },
   telnet: {
     enableRoot: telnetEnableRoot,
