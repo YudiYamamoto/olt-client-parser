@@ -17,6 +17,17 @@ const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
 const sshdisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
 // actions
 const sshCreateVlan = require('./ssh/createVlan')
+const sshDeleteVlan = require('./ssh/deleteVlan')
+const sshVlanTag = require('./ssh/vlanTag')
+const sshVlanUntag = require('./ssh/vlanUntag')
+const sshEnableAutoNegotiation = require('./ssh/enableAutoNegotiation')
+const sshDisableAutoNegotiation = require('./ssh/disableAutoNegotiation')
+const sshEnableUplink = require('./ssh/enableUplink')
+const sshDisableUplink = require('./ssh/disableUplink')
+const sshEnablePon = require('./ssh/enablePon')
+const sshDisablePon = require('./ssh/disablePon')
+const sshCreateDbaProfile = require('./ssh/createDbaProfile')
+const sshCreateSrvProfile = require('./ssh/createSrvProfile')
 
 const telnetEnableRoot = require('./telnet/enableRoot')
 const telnetDisplayPermissionByUser = require('./telnet/displayPermissionByUser')
@@ -44,6 +55,17 @@ module.exports = {
     displayUnconfiguredOnus: sshdisplayUnconfiguredOnus,
     // actions
     createVlan: sshCreateVlan,
+    deleteVlan: sshDeleteVlan,
+    vlanTag: sshVlanTag,
+    vlanUntag: sshVlanUntag,
+    enableAutoNegotiation: sshEnableAutoNegotiation,
+    disableAutoNegotiation: sshDisableAutoNegotiation,
+    enableUplink: sshEnableUplink,
+    disableUplink: sshDisableUplink,
+    enablePon: sshEnablePon,
+    disablePon: sshDisablePon,
+    createDbaProfile: sshCreateDbaProfile,
+    createSrvProfile: sshCreateSrvProfile,
   },
   telnet: {
     enableRoot: telnetEnableRoot,
