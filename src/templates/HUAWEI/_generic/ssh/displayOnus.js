@@ -51,6 +51,8 @@ quit
 display ont info summary ${port}`
   const conn = await connect(options) 
   const chunk = await conn.exec7(cmd)
+console.log(cmd)
+console.log(chunk)
   
   if (!chunk && chunk === '') return null
   
