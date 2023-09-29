@@ -10,28 +10,29 @@ const STATUS = {
 }
 
 /*
------------------------------------------------------------------------------
-  F/S/P   ONT         SN         Control     Run      Config   Match    Protect
-          ID                     flag        state    state    state    side
-  -----------------------------------------------------------------------------
-  0/ 2/1    0  4D4F4E55005CED01  active      online   failed   match    no
-  0/ 2/1    1  4D4F4E5500D4E019  active      online   failed   match    no
-  0/ 2/1    2  4D4F4E5500D4E069  active      online   failed   match    no
-  0/ 2/1    3  4D4F4E5500D526A9  active      online   failed   match    no
-  0/ 2/1    4  54504C47E55624AD  active      online   normal   match    no
-  0/ 2/1    5  485754430514429D  active      online   normal   match    no
-  0/ 2/1    6  4D4F4E55005CFF89  active      offline  initial  initial  no
-  0/ 2/1    7  48575443AEB8075B  active      online   normal   match    no
-  0/ 2/1    8  56534F4C00B21439  active      online   failed   match    no
-  0/ 2/1    9  4D4F4E5500D72031  active      online   failed   match    no
-  0/ 2/1   10  56534F4C00B203E9  active      online   failed   match    no
-  0/ 2/1   11  32303131350361BD  active      online   normal   match    no
-  0/ 2/1   12  47504F4E0008EB38  active      online   normal   match    no
-  0/ 2/1   13  3230313135038105  active      offline  initial  initial  no
-  0/ 2/1   14  323031303502FD4B  active      online   normal   match    no
-  0/ 2/1   15  32303130350351CB  active      online   normal   match    no
-  0/ 2/1   16  323031313503782B  active      offline  initial  initial  no
-  0/ 2/1   17  323031303502FBD7  active      online   normal   match    no
+MA5603T(config-if-gpon-0/3)#display ont info summary 10
+Command is being executed. Please wait
+------------------------------------------------------------------------------
+In port 0/3/10, the total of ONTs are: 5, online: 5
+------------------------------------------------------------------------------
+ONT  Run     Last                Last                Last
+ID   State   UpTime              DownTime            DownCause
+------------------------------------------------------------------------------
+0    online  28/09/2023 15:43:18 28/09/2023 15:42:18 dying-gasp
+1    online  27/09/2023 19:27:05 27/09/2023 18:21:51 dying-gasp
+2    online  27/09/2023 18:48:53 27/09/2023 18:01:40 dying-gasp
+3    online  27/09/2023 18:20:23 27/09/2023 18:18:18 dying-gasp
+4    online  27/09/2023 18:20:23 27/09/2023 18:18:04 dying-gasp
+------------------------------------------------------------------------------
+ONT        SN        Type          Distance Rx/Tx power  Description
+ID                                    (m)      (dBm)
+------------------------------------------------------------------------------
+0   48575443AA7F1D38 310M             2867  -23.87/1.98  alexandrenetofibra
+1   48575443847A874E 310M             2982  -26.99/2.20  calcadossocorrensepom
+2   485754439B5A0D4E 310M             2720  -23.37/1.96  giovaniolianifibra
+3   48575443D578D64E 310M             2799  -24.81/2.21  larissahelenafibra
+4   4857544342382B4E 310M             2514  -25.85/2.20  michelecristianesilve
+------------------------------------------------------------------------------
 
 */
 
@@ -50,6 +51,8 @@ quit
 display ont info summary ${port}`
   const conn = await connect(options) 
   const chunk = await conn.exec7(cmd)
+console.log(cmd)
+console.log(chunk)
   
   if (!chunk && chunk === '') return null
   
@@ -143,16 +146,20 @@ display ont info summary ${port}`
     }
   })
 
-  const part2_2 = part2.slice(indexNextLevel-1)
+  const part2_2 = part2.slice(indexNextLevel-1).map(item => item.trim())
   const columns2_2 = [
-    [0, 6],
-    [6, 23],
-    [23, 37],
-    [37, 46],
-    [46, 59],
-    [59, 80],
+    [0, 4],
+    [4, 21],
+    [21, 35],
+    [35, 44],
+    [44, 57],
+    [57, 80],
   ]
-  const elements2_2 = dummy2json(part2_2.join('\n'), columns2_2, 2).map(item => ({
+
+  const test = dummy2json(part2_2.join('\n'), columns2_2, 2)
+  console.log(part2_2, test)
+
+  const elements2_2 = test.map(item => ({
     ont_id: item.ont_id,
     serial_number: item.sn,
     onu_type: item.type,
