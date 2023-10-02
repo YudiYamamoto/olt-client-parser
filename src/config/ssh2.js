@@ -16,41 +16,51 @@ class SSHWrapper {
   }) {
     if (!host || !port) throw new Error(JSON.stringify({ code: '0001', error: true, message: 'without_params_ssh2' }))
 
-    this._options = {
-      ...restOptions,
-      host,
-      port, 
-      userName: username,
-      password, 
-      tryKeyboard: true,
-      timeout, 
-      keepaliveInterval,
-      keepaliveCountMax,
-      authHandler: ['password'],
-      algorithms: {
-        ...algorithms,
-        kex: [
-          'diffie-hellman-group1-sha1',
-          'curve25519-sha256@libssh.org',
-          'ecdh-sha2-nistp256',
-          'ecdh-sha2-nistp384',
-          'ecdh-sha2-nistp521',
-          'diffie-hellman-group-exchange-sha256',
-          'diffie-hellman-group14-sha1'
-        ],
-        // cipher?: AlgorithmList<CipherAlgorithm>,
-        serverHostKey: ['ssh-dss','ssh-rsa'],
-        // hmac?: AlgorithmList<MacAlgorithm>,
-        // compress?: AlgorithmList<CompressionAlgorithm>,
-      },
-      /*tryKeyboard: true,
-      onKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
-        if (prompts.length > 0 && prompts[0].prompt.toLowerCase().includes('password')) {
-          finish([password])
-        }
-      },*/
-      // "debug": console.log
-    }    
+    if (typeof restOptions.minimal !== 'undefined' && restOptions.minimal === true) {
+      this._options = {
+        host,
+        port, 
+        userName: username,
+        password, 
+        ...restOptions,
+      }
+    } else {
+      this._options = {
+        ...restOptions,
+        host,
+        port, 
+        userName: username,
+        password, 
+        tryKeyboard: true,
+        timeout, 
+        keepaliveInterval,
+        keepaliveCountMax,
+        authHandler: ['password'],
+        algorithms: {
+          ...algorithms,
+          kex: [
+            'diffie-hellman-group1-sha1',
+            'curve25519-sha256@libssh.org',
+            'ecdh-sha2-nistp256',
+            'ecdh-sha2-nistp384',
+            'ecdh-sha2-nistp521',
+            'diffie-hellman-group-exchange-sha256',
+            'diffie-hellman-group14-sha1'
+          ],
+          // cipher?: AlgorithmList<CipherAlgorithm>,
+          serverHostKey: ['ssh-dss','ssh-rsa'],
+          // hmac?: AlgorithmList<MacAlgorithm>,
+          // compress?: AlgorithmList<CompressionAlgorithm>,
+        },
+        /*tryKeyboard: true,
+        onKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
+          if (prompts.length > 0 && prompts[0].prompt.toLowerCase().includes('password')) {
+            finish([password])
+          }
+        },*/
+        // "debug": console.log
+      }    
+    }
 
     // this._connection = connection
     this._timeout = timeout > 0 ? timeout : TIMEOUT
@@ -109,6 +119,16 @@ class SSHWrapper {
       commands: ['undo smart', ...cmds],
       // enter: "\n",
     })
+    return new Promise((resolve) => connection.connect(resolve))
+  }
+
+  async execParks(cmds) {
+    const connection = new SSH2Shell({
+      server: this.getOptions(),
+      commands: ['terminal length 0', ...cmds, 'exit'],
+      msg: message => !message.includes(['Connected', 'Ready', 'Closed'])
+    })
+
     return new Promise((resolve) => connection.connect(resolve))
   }
 
