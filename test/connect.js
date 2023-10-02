@@ -33,9 +33,9 @@ const olt = new OLTClientParser({
 });
 
 (async () => {
-  const data = await olt.checkStage()
+  // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
-  // const data = await olt.displaySlots({ board: '0' })
+  const data = await olt.displaySlots()
   // const data = await olt.displayPons({ board: '0', slot: '0' })
   // const data = await olt.displayPon({ board: '0', slot: '0', port: '7' })
   // const data = await olt.displayOnus({ board: '0', slot: '0', port: '0' })
