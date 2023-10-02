@@ -6,6 +6,7 @@ const STATUS = {
   'online': 'online',
   'los': 'los',
   'dying-gasp': 'pwr_fail',
+  'offline': 'disabled'
 }
 
 /*
@@ -42,6 +43,7 @@ const displayOnus = async (options, params) => {
     port = '1',
   } = params
   const cmd = `enable
+scroll 512
 config
 interface ${type} ${board}/${slot}
 display ont optical-info ${port} all
@@ -55,21 +57,22 @@ display ont version ${board} ${slot} ${port} all`
   if (!chunk && chunk === '') return null
 
   const splitted = chunk.split('\r\n')
-  
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.pop()
-  splitted.pop()
-  splitted.pop()
-  splitted.pop()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.pop()
+    splitted.pop()
+    splitted.pop()
+    splitted.pop()
   
   const indexLast = splitted.findIndex(item => item.trim().indexOf(`display ont info ${board} ${slot} ${port} all`) > -1)
   
