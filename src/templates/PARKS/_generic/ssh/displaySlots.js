@@ -29,13 +29,13 @@ mgmt1.100               up      unknown
 mgmt1.4020              up      unknown
 */
 
-const displaySlots = async (options) => {  
-  const cmd = `show interface description`
-  const conn = await connect(options)
-  const chunk = await conn.execParks(cmd)
-  if (!chunk && chunk === '') return null
+module.exports = async (options) => {
+  const response = await (await connect(options))
+    .execParks('show interface description')
 
-  const splitted = chunk.split('\r')
+  if (!response) return null
+
+  const splitted = response.split('\r')
   splitted.shift() // remove: 10.12.13.2: terminal length 0
   splitted.shift() // remove: PARKS#show interface description
   splitted.pop()   // remove: PARKS#
@@ -65,5 +65,3 @@ const displaySlots = async (options) => {
     };
   });
 }
-
-module.exports = displaySlots
