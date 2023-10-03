@@ -112,12 +112,15 @@ class SSHWrapper {
     return new Promise((resolve) => connection.connect(resolve))
   }
 
-  async exec2(cmd) {
+  async exec2(cmd, isTerminal=true) {
+    const commands = [isTerminal ? 'terminal length 0' : null, cmd, 'exit']
+
     const options = this.getOptions()
     const connection = new SSH2Shell({
       server: { ...options, timeout: 5000 },
       // debug: true,
-      commands: ['terminal length 0', cmd, 'exit' ],
+      commands: commands
+        .filter(item => !!item),
       // enter: "\n",
     })
     
