@@ -33,7 +33,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayDbaProfiles()
-  const data = await olt.displayLineProfiles('2') /** Verificar ZTE e Huawei */
+  const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayOLTServiceProfiles()
   
   // const data = await olt.displayOnuProfiles() /** Verificar ZTE e Huawei */

@@ -47,51 +47,70 @@ const displayLineProfiles = async (originalOptions) => {
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
 
-  const splitted1 = chunk.split('\n')
+  const splitted = chunk.split('\n')
 
-  console.log(splitted1)
-
-  splitted1.shift()
-  splitted1.shift()
-  splitted1.shift()
-  splitted1.shift()
-  splitted1.shift()
-  splitted1.shift()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
-  splitted1.pop()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
+  splitted.pop()
+  splitted.pop()
+  splitted.pop()
+  splitted.pop()
 
 const columns = [
   [0, 14],
+  [14, 58],
+  [58, 80]
 ]
 
-const data = dummy2json(splitted1.join('\n'), columns, 2)
+const data = dummy2json(splitted.join('\n'), columns, 2).map(item => ({
+  name: item['profile-_i_d'],
+  custom_fields: {
+    ...item
+  }
+}))
 
-console.log(splitted1)
+
+let cmd1 = `enable
+scroll 512
+`
+for (const item of data) {
+  cmd1 += `display ont-lineprofile gpon profile-id ${item.name}
+  `
+}
+const chunk1 = await conn.exec7(cmd1)
+if (!chunk1 && chunk1 === '') return data
+
+const splitted1 = chunk1.split('\r\n')
+splitted1.shift()
+splitted1.shift()
+splitted1.shift()
+splitted1.shift()
+splitted1.shift()
+splitted1.shift()
+splitted1.shift()
+
+const [_, ...joined] = splitted1
+  .join('\n')
+  .split('display ont-lineprofile')
+  .map(item => item.split('\n').slice(1))
+  .map(item => {
+    item.pop()
+    item.pop()
+    return item.map(item2 => item2.trim())
+  })
+  .map(item => item.join('\n').split('------------------------------------------------------------------------------'))
+
+
+
+console.log(joined);
+return
 
 // return data.map (async(item) => {
 // const cmd = `display ont-lineprofile gpon profile-id ${item}`
-//   const chunk = await conn.exec7(cmd)
-//   if (!chunk && chunk === '') return null
 
 //   const splitted1 = chunk.split('\n')
 
