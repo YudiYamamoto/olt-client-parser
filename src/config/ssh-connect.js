@@ -39,8 +39,8 @@ const connect = async (defaultOptions) => {
     return chunks
   }
 
-  const exec2 = async (cmd) => {
-    const chunks = await client2.exec(cmd)
+  const exec2 = async (cmd, isTerminal=true) => {
+    const chunks = await client2.exec(cmd, isTerminal)
     return chunks    
   }
 

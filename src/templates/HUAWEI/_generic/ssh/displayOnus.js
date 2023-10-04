@@ -7,6 +7,7 @@ const STATUS = {
   'online': 'online',
   'los': 'los',
   'dying-gasp': 'pwr_fail',
+  'offline': 'disabled'
 }
 
 /*
@@ -44,33 +45,38 @@ const displayOnus = async (options, params) => {
     port = '1',
   } = params
   const cmd = `enable
+scroll 512
 config
 interface ${type} ${board}/${slot}
 display ont optical-info ${port} all
 quit
-display ont info summary ${port}`
+display ont info summary ${board}/${slot}/${port}`
   const conn = await connect(options) 
   const chunk = await conn.exec7(cmd)
-console.log(cmd)
-console.log(chunk)
-  
+  console.log(cmd)
+  console.log(chunk)
+
   if (!chunk && chunk === '') return null
-  
+
   const splitted = chunk.split('\r\n')
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.pop()
-  splitted.pop()
-  splitted.pop()
-  
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.pop()
+    splitted.pop()
+    splitted.pop()
+
+  console.log(splitted)
+
   const indexLast = splitted.findIndex(item => item.trim().indexOf('display ont info summary') > -1)
 
   const part1 = splitted.slice(0, indexLast)
