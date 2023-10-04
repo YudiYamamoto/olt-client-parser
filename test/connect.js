@@ -1,36 +1,51 @@
 'use strict'
 const OLTClientParser = require('../index')
 
+const olt = new OLTClientParser({
+  name: 'TESTE',
+  brand: 'Huawei',
+  model: 'Huawei_MA5608T',
+  firmware: 'MA5600V800R017C10', // 1.9.0
+  // firmware: 'MA5600V800R018C10', // 1.9.0
+  // firmware: 'MA5600V800R015C00', // 1.9.0
+  connectionType: 'ssh',
+  options: {
+    host: '138.97.70.10',
+    port: 2822,
+    username: 'made4ont',
+    password: 'made4olt',
+    shellPrompt: 'MA5608T>',
+  }
+});
+
 // const olt = new OLTClientParser({
 //   name: 'TESTE',
-//   brand: 'Huawei',
-//   model: 'Huawei_MA5608T',
-//   firmware: 'MA5600V800R017C10', // 1.9.0
-//   // firmware: 'MA5600V800R018C10', // 1.9.0
-//   // firmware: 'MA5600V800R015C00', // 1.9.0
+//   brand: 'Furukawa',
+//   model: 'Furukawa_3032',
+//   firmware: '2.0.9',
 //   connectionType: 'ssh',
 //   options: {
-//     host: '138.97.70.10',
-//     port: 2822,
-//     username: 'made4ont',
-//     password: 'made4olt',
-//     shellPrompt: 'MA5608T>',
+//     host: '10.232.69.34',
+//     port: 22,
+//     username: 'made4olt',
+//     password: '0ltm@ad&@2023FKW',
+//     shellPrompt: 'OLT-3032-CJP-JP-006[A]>',
 //   }
 // });
 
-const olt = new OLTClientParser({
-  name: 'TESTE',
-  brand: 'Parks',
-  model: 'Parks_CGP802',
-  firmware: '6_0_6',
-  connectionType: 'ssh',
-  options: {
-    host: '10.12.13.2',
-    port: 22,
-    username: 'made4it',
-    password: 'mudar@123',
-  }
-});
+// const olt = new OLTClientParser({
+//   name: 'TESTE',
+//   brand: 'Parks',
+//   model: 'Parks_CGP802',
+//   firmware: '6_0_6',
+//   connectionType: 'ssh',
+//   options: {
+//     host: '10.12.13.2',
+//     port: 22,
+//     username: 'made4it',
+//     password: 'mudar@123',
+//   }
+// });
 
 (async () => {
   // const data = await olt.checkStage()
@@ -41,12 +56,12 @@ const olt = new OLTClientParser({
   // const data = await olt.displayOnus({ board: '0', slot: '0', port: '0' })
   // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })
   // const data = await olt.showOpticalModuleInfo() 
-  const data = await olt.displayVlans()
+  // const data = await olt.displayVlans()
   // const data = await olt.displayVlan('109')
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayDbaProfiles()
-  // const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
+  const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayOLTServiceProfiles()
   
   // const data = await olt.displayOnuProfiles() /** Verificar ZTE e Huawei */
@@ -73,17 +88,5 @@ const olt = new OLTClientParser({
   // const data = await olt.createDbaProfile({ name: 'DBA_TEST_TYPE_4', type: 4, speed: 51200 });
   // const data = await olt.createSrvProfile({ profile_name: 'SRV_PROFILE_TEST_3', vlan: '669' });
 
-  /*
-  const data = await olt.createOnu({ 
-    pon_type: 'gpon', 
-    board: '1', 
-    slot: '2', 
-    port: '15', 
-    ont_id: 4, 
-    serial_number: '9AC29F6496FB', 
-    onu_profile: 'PLANO-100U-100D-ONT420-10R',
-    name: 'teste_comandos@made4it.com.br'
-  })
-  */
-  console.log(data);
+  console.log(JSON.stringify(data));
 })()
