@@ -37,7 +37,9 @@ const displayBoards = async (originalOptions) => {
     if (!boards[key]) boards[key] = 0
   })
   const items = Object.keys(boards)
-  return items.map(item => ({ board: item.replace(/B/gi, '') }))
+  return items
+    .map(item => ({ board: item.replace(/B/gi, '') }))
+    .filter(item => !!item.board)
 }
 
 module.exports = displayBoards

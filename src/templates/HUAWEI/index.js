@@ -1,5 +1,6 @@
 const generic = require('./_generic')
 const MA5608T = require('./MA5608T')
+const MA5603T = require('./MA5608T')
 
 module.exports = {
   generic,
@@ -12,13 +13,12 @@ module.exports = {
       }
     }
   },
-  // FAKE
-  MA5608B: {
-    ...generic,
+  MA5603T: {
+    ...Object.assign(generic, MA5603T),
     options: {
-      // shellPrompt: 'MA5608T>',
+      // shellPrompt: 'MA5603T>',
       params: {
-        numberPort: 10
+        numberPort: 16
       }
     }
   },
