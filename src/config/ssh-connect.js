@@ -64,6 +64,14 @@ const connect = async (defaultOptions) => {
     return chunks    
   }
 
+  const execParks = async (commands) => {
+    if (typeof commands === 'string') {
+      commands = (commands || '').split('\n')
+    }
+
+    return await client2.execParks(commands)
+  }
+
   const exec7 = async (cmd) => {
     const cmds = (cmd || '').split('\n')
     const chunks = await client2.exec4(cmds)
@@ -80,6 +88,7 @@ const connect = async (defaultOptions) => {
     exec5,
     exec6,
     exec7,
+    execParks,
   }
 }
 
