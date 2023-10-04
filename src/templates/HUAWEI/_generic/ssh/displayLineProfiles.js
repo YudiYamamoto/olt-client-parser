@@ -104,10 +104,9 @@ const [_, ...joined] = splitted1
   })
   .map(item => item.join('\n').split('------------------------------------------------------------------------------'))
 
-
+//  const tcont = (item['<T-CONT   0>'] || '-').replace('-', '').replace('m', '')
 
 console.log(joined);
-return
 
 // return data.map (async(item) => {
 // const cmd = `display ont-lineprofile gpon profile-id ${item}`
@@ -120,12 +119,12 @@ return
 
 
 
-return data.map((item) => ({
-    profileNumber: item['profile-_i_d'], 
-    custom_fields: {
-      ...item,
-    }
-}))
+// return data.map((item) => ({
+//     profileNumber: item['profile-_i_d'], 
+//     custom_fields: {
+//       ...item,
+//     }
+// }))
 
 // const data = column2json(
 //     splitted1
