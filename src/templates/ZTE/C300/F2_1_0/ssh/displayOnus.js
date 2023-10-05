@@ -1,4 +1,5 @@
 const { connect } = require('../../../../../config/ssh-connect')
+const { getChunks } = require('../../../../../config/chunks')
 const { dummy2json } = require('../../../../../utils/lib')
 const { runCommand: runCommandOnu, generateCommmand: generateCommmandOnu } = require('../common/onu')
 const { generateCommmand: generateCommmandMac } = require('../common/mac')
@@ -75,30 +76,41 @@ const displayOnus = async (options, params) => {
     commands.push(cmdSignal)
   }
 
-  const chunkData = await conn.exec2(commands.join('\n'))
-  if (!chunkData && chunkData === '') return null
-
-  const dataSplitted = chunkData.split('\r\n')
-  dataSplitted.shift()
-  dataSplitted.pop()
-
-  const filtered = dataSplitted.join('\r\n')    
-    .split('show gpon onu detail-info')
-    .map(item => {
-      const data = item.trim().split('\r\n')
-      data.shift()
-      data.shift()
-      return data.join('\r\n')
-    })
-    .filter(item => !!item)
-    .map(data => {
-      const [line] = data.split(`${f_p_s}:`).reverse()
-      const [ont_id] = line.split('\r\n')
-      return runCommandOnu(data, board, slot, port, ont_id)
-
-    })
+  let data = []
+  const chunkCommands = getChunks(commands, 90)
+  for await (const [_index, chunkRecords] of chunkCommands.entries()) {
+    const chunkData = await conn.exec2(chunkRecords.join('\n'))
+    if (!chunkData && chunkData === '') continue
+  
+    const dataSplitted = chunkData.split('\r\n')
+    dataSplitted.shift()
+    dataSplitted.pop()
     
-  return filtered
+    const filtered = dataSplitted.join('\r\n')    
+      .split('show gpon onu detail-info')
+      .map(item => {
+        const data = item.trim().split('\r\n')
+        data.shift()
+        data.shift()
+        return data.join('\r\n')
+      })
+      .filter(item => !!item)
+      .map(data => {
+        const [line] = data.split(`${f_p_s}:`).reverse()
+        const [ont_id] = line.split('\r\n')
+        const onu = runCommandOnu(data, board, slot, port, ont_id)
+        return {
+          ...onu,
+          custom_fields: {
+            ...onu && onu.custom_fields,
+            element: elements.find(item => item.onu_index.indexOf(`${f_p_s}:${ont_id}`))
+          }
+        }
+      })
+      
+    data = [...data, ...filtered]
+  }
+  return data
 }
 
 module.exports = displayOnus
