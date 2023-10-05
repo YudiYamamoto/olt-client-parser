@@ -1,5 +1,6 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { expandVlans, flatten, CHAR_NOT_FOUND } = require('../../../../utils/lib')
+const { expandVlans } = require('../../../../utils/parks')
+const { flatten, CHAR_NOT_FOUND } = require('../../../../utils/lib')
 
 // Tudo que tiver na frente de "switchport trunk allowed vlan",
 // são as vlans que estão na porta

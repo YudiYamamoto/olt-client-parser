@@ -111,20 +111,17 @@ const filterLine = (lines, start, end) => {
     .filter(item => item)
 }
 
-// Example: 10-13 => 10, 11, 12, 13
-const expandVlans = function* (range) {
-  const [initial, final] = range.split('-');
-  for (let index = initial; index <= final; index++) {
-    yield Number(index);
-  }
-}
-
 // Example: [[10],[11],[[12, 13]]] => [10, 11, 12, 13]
 function flatten(arr) {
   return arr.reduce(function (flat, toFlatten) {
     return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
   }, []);
 }
+
+const getNextValueFromObject = (target_object, current_key) => {
+  var keys = Object.keys(target_object), i = keys.indexOf(current_key);
+  return (i !== -1 && keys[i + 1] && target_object[keys[i + 1]]) || '';
+};
 
 module.exports = {
   CHAR_NOT_FOUND,
@@ -137,6 +134,6 @@ module.exports = {
   hour2time,
   hidrateInfo,
   filterLine,
-  expandVlans,
   flatten,
+  getNextValueFromObject,
 }

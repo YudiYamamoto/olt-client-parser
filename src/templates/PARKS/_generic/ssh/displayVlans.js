@@ -1,5 +1,6 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { expandVlans, CHAR_NOT_FOUND } = require('../../../../utils/lib')
+const { expandVlans } = require('../../../../utils/parks')
+const { CHAR_NOT_FOUND } = require('../../../../utils/lib')
 
 // Quando estiver com "virgula", é numero unico, quando estiver com "traço (-)", é um range de vlan, por exemplo:
 // vlan1, vlan2 ou seja: 1, 2

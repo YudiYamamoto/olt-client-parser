@@ -1,5 +1,10 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { CHAR_NOT_FOUND } = require('../../../../utils/lib')
+const { column2json } = require('../../../../utils/lib')
+const {
+  removeJunksFromResponse,
+  splitResponseByCommands,
+  ONU_STATUS,
+} = require('../../../../utils/parks')
 
 // O Summary mostra informações resumidas,
 // mas tem outras coisas que daria pra pegar com outras
@@ -87,69 +92,58 @@ Last Update      :  1 minute ago
 IPHOST           :
 */
 
-const junks = [
-  '-----------------------------------------------------',
-]
-
 module.exports = async (options, { serial_number }) => {
   const commands = {
     'config-errors': `show gpon onu ${serial_number} config-errors`,
     'dot1x-statistics': `show gpon onu ${serial_number} dot1x-statistics`,
-    'information': `show gpon onu ${serial_number} information`,
-    'model': `show gpon onu ${serial_number} model`,
-    'performance': `show gpon onu ${serial_number} performance`,
-    'rssi': `show gpon onu ${serial_number} rssi`,
-    'status': `show gpon onu ${serial_number} status`,
-    'summary': `show gpon onu ${serial_number} summary`,
+    information: `show gpon onu ${serial_number} information`,
+    model: `show gpon onu ${serial_number} model`,
+    performance: `show gpon onu ${serial_number} performance`,
+    rssi: `show gpon onu ${serial_number} rssi`,
+    status: `show gpon onu ${serial_number} status`,
+    summary: `show gpon onu ${serial_number} summary`,
   };
 
-  const response = await (await connect(options))
+  let response = await (await connect(options))
     .execParks(commands)
 
   if (!response) return null
 
-  const splitted = response.split('\r\n')
-  splitted.shift() // remove: 10.12.13.2: terminal length 0
+  response = response.split('\r\n')
+  response.shift() // remove: 10.12.13.2: terminal length 0
   // Content
-  splitted.pop()   // remove: PARKS#
+  response.pop()   // remove: PARKS#
 
-  // remove junk lines
-  let instructions = splitted.filter(line => {
-    return !junks.map(junk => line === '' || line.indexOf(junk) !== CHAR_NOT_FOUND).includes(true)
-  }).map(line => {
-    return line
-      .replaceAll('  ', '') // removes unwanted spaces
-      .replaceAll(' :', ':') // removes unwanted spaces
-      .trim()// removes blank spaces before and after
-  })
+  response = removeJunksFromResponse(response)
+  const instructions = splitResponseByCommands(response, commands)
 
-  instructions = Object.entries(commands).map(([key, command]) => {
-    let lines = []
-    if (typeof lines[key] !== 'array') lines[key] = []
+  const summary = column2json(instructions.summary)
+  const information = column2json(instructions.information)
+  const performance = column2json(instructions.performance)
 
-    lines[key].push(instructions.filter(instruction => {
-        return instruction.indexOf(command) !== CHAR_NOT_FOUND
-      }))
-
-    return lines;
-  })
-
-  console.log(instructions.information);
-  return;
-  let vlans = splitted
-    .join('') // make array of vlans
-    .replace('Existing VLANs:', '') // removes the titles
-    .trim() // removes blank spaces before and after
-    .split(', ') // split vlans
-
-  return vlans.map(vlan => {
-    // exemple: vlan117 => 117
-    // exemple: vlan1011-vlan1100 => 1011-1100
-    vlan = vlan.replaceAll('vlan', '')
-
-    if (vlan.indexOf('-') === CHAR_NOT_FOUND) return [Number(vlan)]
-    return [...expandVlans(vlan)]
-  }).reduce(function(previous, current) {
-    return previous.concat(current.sort());
-  }).sort((x, y) => x - y)
+  return {
+    board: null, // Not supported
+    slot: 0, // TODO
+    port: 0, // TODO
+    ont_id: summary.onu_index,
+    temperature: null, // Not supported
+    tx_power: 0, // TODO: esperar o zanclair pesquisar o comando
+    rx_power: summary.power_level,
+    olt_rx_power: summary.rssi,
+    catv_rx_power: 0, // TODO: esperar o zanclair pesquisar o comando
+    onu_type: summary.model,
+    name: null, // Not supported
+    onu_external_id: 0, // TODO: ?entender o campo
+    serial_number: summary.serial,
+    mac_address: null, // Not supported
+    description: null, // TODO: validar como pegar
+    distance: Number(summary.distance.replace('m', '').trim()),
+    stage: ONU_STATUS[information.state] || 'disabled',
+    authorization_at: null, // TODO: validar como pegar
+    uptime_at: null, // TODO: validar como pegar
+    custom_fields: {
+      ...information,
+      ...performance,
+    }
+  };
 }
