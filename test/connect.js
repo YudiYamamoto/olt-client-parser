@@ -56,7 +56,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayOnus({ board: '0', slot: '0', port: '0' })
   // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })
   // const data = await olt.showOpticalModuleInfo() 
-  const data = await olt.displayVlans()
+  // const data = await olt.displayVlans()
   // const data = await olt.displayVlan('109')
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
@@ -73,10 +73,11 @@ const olt = new OLTClientParser({
   // const data = await olt.deleteVlan({ vlan: 669 }); // Parks
   // const data = await olt.vlanTag({ board: '0', slot: '2', port: '0', vlan: 669 })
   // const data = await olt.vlanUntag({ board: '0', slot: '2', port: '0', vlan: 669 })
-  // const data = await olt.vlanTag({ interface: 'giga-ethernet0/0', vlan: 669 }) // Parks
+  // const data = await olt.vlanTag({ interface: 'giga-ethernet0/1', vlan: 117 }) // Parks
   // const data = await olt.vlanUntag({ interface: 'giga-ethernet0/0', vlan: 669 }) // Parks
   // const data = await olt.showInterfaceOpticalModuleInfo('xgei-1/5/1')
   // const data = await olt.showVlanPort('xgei-1/5/1')
+  const data = await olt.showVlanPort({ interface: 'giga-ethernet0/1' }) // Parks
   // const data = await olt.removeVlanUplink('xgei-1/5/2)
   // const data = await olt.enableAutoNegotiation({ type: 'mcu', board: '0', slot: '2', port: '0' })
   // const data = await olt.enableAutoNegotiation({ interface: 'giga-ethernet0/0' }) // Parks
@@ -97,5 +98,5 @@ const olt = new OLTClientParser({
   // const data = await olt.createDbaProfile({ name: 'DBA_TEST_TYPE_4', type: 4, speed: 51200 });
   // const data = await olt.createSrvProfile({ profile_name: 'SRV_PROFILE_TEST_3', vlan: '669' });
 
-  console.log(JSON.stringify(data));
+  console.log(data);
 })()

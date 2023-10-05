@@ -1,6 +1,7 @@
 const sshCheckStage = require('./ssh/checkStage')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayVlans = require('./ssh/displayVlans')
+const sshShowVlanPort = require('./ssh/showVlanPort')
 // actions
 const sshEnableTrunkMode = require('./ssh/enableTrunkMode')
 const sshCreateVlan = require('./ssh/createVlan')
@@ -21,6 +22,7 @@ module.exports = {
     checkStage: sshCheckStage,
     displaySlots: sshDisplaySlots,
     displayVlans: sshDisplayVlans,
+    showVlanPort: sshShowVlanPort,
     // actions
     enableTrunkMode: sshEnableTrunkMode,
     createVlan: sshCreateVlan,

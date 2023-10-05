@@ -1,4 +1,5 @@
 const moment = require('moment-timezone')
+const CHAR_NOT_FOUND = -1
 
 const dummy2json = (chunk, columns, skipLine = 3, delimiter = '_', delimiterHeader = '-') => {
   const header = []
@@ -110,7 +111,22 @@ const filterLine = (lines, start, end) => {
     .filter(item => item)
 }
 
-module.exports = { 
+// Example: 10-13 => 10, 11, 12, 13
+const expandVlans = function* (range) {
+  const [initial, final] = range.split('-');
+  for (let index = initial; index <= final; index++) {
+    yield Number(index);
+  }
+}
+
+function flatten(arr) {
+  return arr.reduce(function (flat, toFlatten) {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+
+module.exports = {
+  CHAR_NOT_FOUND,
   dummy2json,
   column2json,
   text2table,
@@ -120,4 +136,6 @@ module.exports = {
   hour2time,
   hidrateInfo,
   filterLine,
+  expandVlans,
+  flatten,
 }
