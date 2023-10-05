@@ -12,7 +12,9 @@ const checkStage = async (options) => {
   chunkIt.shift()
   chunkIt.pop()
   
-  const chunk = chunkIt.join('\n')
+  const chunk = chunkIt
+    .join('\n')
+    .replace('\r', '')
   return chunk
 }
 

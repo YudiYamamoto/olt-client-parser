@@ -23,7 +23,6 @@ const displaySlots = async (options, { board = '1' }) => {
   const conn = await connect(options)
   const cmd = 'show card'
   const chunk = await conn.exec2(cmd)
-  console.log(chunk)
   const splitted = chunk.split('\r\n')
   splitted.pop()
   splitted.pop()

@@ -1,6 +1,8 @@
 const { connect } = require('../../../../../config/ssh-connect')
 const { dummy2json } = require('../../../../../utils/lib')
-const displayOnu = require('./displayOnu')
+const { runCommand: runCommandOnu, generateCommmand: generateCommmandOnu } = require('../common/onu')
+const { generateCommmand: generateCommmandMac } = require('../common/mac')
+const { generateCommmand: generateCommmandSignal } = require('../common/signal')
 
 /*
 OnuIndex            Type        Mode    AuthInfo                State
@@ -57,19 +59,46 @@ const displayOnus = async (options, params) => {
   ]
   const elements = dummy2json(splitted.join('\n'), columns, 1).filter((item) => item.onu_index !== '')
 
-  const data = []
+  const commands = []
   // const { size: length = 128 } = options && options.__extra__ && options.__extra__.onu || {}
   for await (const ont of elements) {
     if (!ont) continue
     const [_, ont_id] = (ont.onu_index || '').split(':') || []
     if (!ont_id) continue
-    
-    // TODO Verificar
-    const onu = await displayOnu(options, { ...params, ont_id })
-    if (onu) data.push(onu)
-  }      
 
-  return data
+    const cmdOnu = generateCommmandOnu(type, f_p_s, ont_id)
+    const cmdMac = generateCommmandMac(type, f_p_s, ont_id)
+    const cmdSignal = generateCommmandSignal(type, f_p_s, ont_id)
+
+    commands.push(cmdOnu)
+    commands.push(cmdMac)
+    commands.push(cmdSignal)
+  }
+
+  const chunkData = await conn.exec2(commands.join('\n'))
+  if (!chunkData && chunkData === '') return null
+
+  const dataSplitted = chunkData.split('\r\n')
+  dataSplitted.shift()
+  dataSplitted.pop()
+
+  const filtered = dataSplitted.join('\r\n')    
+    .split('show gpon onu detail-info')
+    .map(item => {
+      const data = item.trim().split('\r\n')
+      data.shift()
+      data.shift()
+      return data.join('\r\n')
+    })
+    .filter(item => !!item)
+    .map(data => {
+      const [line] = data.split(`${f_p_s}:`).reverse()
+      const [ont_id] = line.split('\r\n')
+      return runCommandOnu(data, board, slot, port, ont_id)
+
+    })
+    
+  return filtered
 }
 
 module.exports = displayOnus
