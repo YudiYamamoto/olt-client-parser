@@ -119,6 +119,7 @@ const expandVlans = function* (range) {
   }
 }
 
+// Example: [[10],[11],[[12, 13]]] => [10, 11, 12, 13]
 function flatten(arr) {
   return arr.reduce(function (flat, toFlatten) {
     return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);

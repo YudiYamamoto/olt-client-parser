@@ -69,6 +69,10 @@ const connect = async (defaultOptions) => {
       commands = (commands || '').split('\n')
     }
 
+    if (typeof commands === 'object') {
+      commands = Object.values(commands)
+    }
+
     return await client2.execParks(commands)
   }
 
