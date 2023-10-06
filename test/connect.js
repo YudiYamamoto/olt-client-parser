@@ -1,20 +1,35 @@
 'use strict'
 const OLTClientParser = require('../index')
 
+// const olt = new OLTClientParser({
+//   name: 'TESTE',
+//   brand: 'Huawei',
+//   model: 'Huawei_MA5608T',
+//   firmware: 'MA5600V800R017C10', // 1.9.0
+//   // firmware: 'MA5600V800R018C10', // 1.9.0
+//   // firmware: 'MA5600V800R015C00', // 1.9.0
+//   connectionType: 'ssh',
+//   options: {
+//     host: '138.97.70.10',
+//     port: 2822,
+//     username: 'made4ont',
+//     password: 'made4olt',
+//     shellPrompt: 'MA5608T>',
+//   }
+// });
+
 const olt = new OLTClientParser({
   name: 'TESTE',
-  brand: 'Huawei',
-  model: 'Huawei_MA5608T',
-  firmware: 'MA5600V800R017C10', // 1.9.0
-  // firmware: 'MA5600V800R018C10', // 1.9.0
-  // firmware: 'MA5600V800R015C00', // 1.9.0
+  brand: 'ZTE',
+  model: 'ZTE-C320',
+  firmware: '2.1.0',
   connectionType: 'ssh',
   options: {
-    host: '138.97.70.10',
-    port: 2822,
-    username: 'made4ont',
-    password: 'made4olt',
-    shellPrompt: 'MA5608T>',
+    host: '172.16.29.2',
+    port: 22,
+    username: 'made4olt',
+    password: '0ltm@ad&@2023',
+    shellPrompt: 'OLT-ANTAS-320',
   }
 });
 
@@ -53,7 +68,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displaySlots()
   // const data = await olt.displayPons({ board: '0', slot: '0' })
   // const data = await olt.displayPon({ board: '0', slot: '0', port: '7' })
-  // const data = await olt.displayOnus({ board: '0', slot: '0', port: '0' })
+  const data = await olt.displayOnus({ board: '0', slot: '0', port: '0' })
   // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })
   // const data = await olt.showOpticalModuleInfo() 
   // const data = await olt.displayVlans()
@@ -61,7 +76,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayDbaProfiles()
-  const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
+  // const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayOLTServiceProfiles()
   
   // const data = await olt.displayOnuProfiles() /** Verificar ZTE e Huawei */
