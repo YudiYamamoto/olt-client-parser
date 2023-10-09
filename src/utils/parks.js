@@ -57,11 +57,26 @@ const splitResponseByCommands = (response = [], commands = {}) => {
   return instructions;
 }
 
+const slitInterface = interface => {
+  const match = interface.match(/(?<type>.*?)(?<slot>\d+?)\/(?<port>\d+?)/)
+
+  const type = match.groups?.type || null;
+  const slot = Number(match.groups?.slot) || null;
+  const port = Number(match.groups?.port) || null;
+
+  return [
+    type,
+    slot,
+    port,
+  ]
+}
+
 module.exports = {
   // functions
   expandVlans,
   removeJunksFromResponse,
   splitResponseByCommands,
+  slitInterface,
 
   // constants
   ONU_STATUS,

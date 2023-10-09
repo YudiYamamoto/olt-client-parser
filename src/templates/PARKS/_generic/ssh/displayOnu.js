@@ -3,6 +3,7 @@ const { column2json } = require('../../../../utils/lib')
 const {
   removeJunksFromResponse,
   splitResponseByCommands,
+  slitInterface,
   ONU_STATUS,
 } = require('../../../../utils/parks')
 
@@ -120,20 +121,21 @@ module.exports = async (options, { serial_number }) => {
   const summary = column2json(instructions.summary)
   const information = column2json(instructions.information)
   const performance = column2json(instructions.performance)
+  const [type, slot, port] = slitInterface(summary.interface)
 
   return {
     board: null, // Not supported
-    slot: 0, // TODO
-    port: 0, // TODO
+    slot,
+    port,
     ont_id: summary.onu_index,
     temperature: null, // Not supported
-    tx_power: 0, // TODO: esperar o zanclair pesquisar o comando
+    tx_power: 0, // Not supported
     rx_power: summary.power_level,
     olt_rx_power: summary.rssi,
-    catv_rx_power: 0, // TODO: esperar o zanclair pesquisar o comando
+    catv_rx_power: 0, // Not supported
     onu_type: summary.model,
     name: null, // Not supported
-    onu_external_id: 0, // TODO: ?entender o campo
+    onu_external_id: 0, // TODO: entender o campo
     serial_number: summary.serial,
     mac_address: null, // Not supported
     description: null, // TODO: validar como pegar
