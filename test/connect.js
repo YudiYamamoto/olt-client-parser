@@ -19,6 +19,22 @@ const OLTClientParser = require('../index')
 // });
 
 // const olt = new OLTClientParser({
+//  name: 'TESTE',
+//  brand: 'ZTE',
+//  model: 'ZTE-C320',
+//  firmware: '2.1.0',
+//  connectionType: 'ssh',
+//  options: {
+//    host: '172.16.29.2',
+//    port: 22,
+//    username: 'made4olt',
+//    password: '0ltm@ad&@2023',
+//    shellPrompt: 'OLT-ANTAS-320',
+//  }
+// });
+
+
+// const olt = new OLTClientParser({
 //   name: 'TESTE',
 //   brand: 'Furukawa',
 //   model: 'Furukawa_3032',

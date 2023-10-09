@@ -13,7 +13,9 @@ const checkStage = async (options) => {
   chunkIt.pop()
   chunkIt.pop()
   
-  const chunk = chunkIt.join('\n')
+  const chunk = chunkIt
+    .join('\n')
+    .replace('\r', '')
   return chunk
 }
 

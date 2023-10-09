@@ -130,7 +130,7 @@ const displayLineProfiles = async (originalOptions) => {
     return profile
   });
 
-  // TODO: cortar os gems
+  // TODO: [MO-264] cortar os gems
   return profiles.map((profile) => ({
     name: profile['profile-name'],
     tconts: profile.tconts,

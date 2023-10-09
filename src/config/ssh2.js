@@ -137,10 +137,9 @@ class SSHWrapper {
 
     const options = this.getOptions()
     const connection = new SSH2Shell({
-      server: { ...options, timeout: 5000 },
+      server: { ...options, timeout: 30000 },
       // debug: true,
-      commands: commands
-        .filter(item => !!item),
+      commands: commands.filter(item => !!item),
       // enter: "\n",
     })
     
