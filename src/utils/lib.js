@@ -1,5 +1,6 @@
 const moment = require('moment-timezone')
 const CHAR_NOT_FOUND = -1
+const BREAK_LINE = '\r\n'
 
 const dummy2json = (chunk, columns, skipLine = 3, delimiter = '_', delimiterHeader = '-') => {
   const header = []
@@ -38,7 +39,7 @@ const text2label = (name) => {
 
 const column2json = (array, delimiter = ':') => {
   return array.map(item => {
-    const [name, value] = item.trim().split(delimiter)   
+    const [name, value] = item.trim()?.split(delimiter)
     return { [text2label(name)]: (value || '-').trim() }
   }).reduce((map, item) => ({
     ...map,
@@ -125,6 +126,7 @@ const getNextValueFromObject = (target_object, current_key) => {
 
 module.exports = {
   CHAR_NOT_FOUND,
+  BREAK_LINE,
   dummy2json,
   column2json,
   text2table,

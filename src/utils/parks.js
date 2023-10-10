@@ -1,6 +1,7 @@
 const {
   getNextValueFromObject,
-  CHAR_NOT_FOUND
+  CHAR_NOT_FOUND,
+  BREAK_LINE,
 } = require('./lib')
 
 const ONU_STATUS = {
@@ -9,15 +10,34 @@ const ONU_STATUS = {
   // 'DyingGasp': 'pwr_fail', // TODO: verificar em uma ONU com power fail
 }
 
+const PON_STATUS = {
+  'Active Working': 'up',
+  // '?': 'down', // TODO: verificar como fica quando a PON ta down
+}
+
 const JUNKS = [
   '-----------------------------------------------------',
+  '----------------------------------------------',
+  'INDEXMAC ADDRESSVLANGEM PORTSTATIC',
+  '% Incomplete command.',
+  'MAC table entries:',
+  'Transceiver',
+  'Vendor',
 ]
+
+const splitResponse = response => {
+  response = response.split(BREAK_LINE)
+  response.shift() // remove: 10.12.13.2: terminal length 0
+  // Content
+  response.pop() // remove: PARKS#
+  return response
+}
 
 // Example: 10-13 => 10, 11, 12, 13
 const expandVlans = function* (range) {
   const [initial, final] = range.split('-');
   for (let index = initial; index <= final; index++) {
-      yield Number(index);
+    yield Number(index);
   }
 }
 
@@ -34,6 +54,7 @@ const removeJunksFromResponse = (splitted = []) => {
       .trim()// removes blank spaces before and after
   })
 }
+
 // split response lines by commands
 const splitResponseByCommands = (response = [], commands = {}) => {
   let instructions = {}
@@ -71,14 +92,22 @@ const slitInterface = interface => {
   ]
 }
 
+const km2meters = (km = '0 km') => {
+  const KM_TO_METERS = 1000;
+  return (Number(km.replace('km', '').trim()) || 0) * KM_TO_METERS
+}
+
 module.exports = {
   // functions
   expandVlans,
   removeJunksFromResponse,
   splitResponseByCommands,
+  splitResponse,
   slitInterface,
+  km2meters,
 
   // constants
   ONU_STATUS,
+  PON_STATUS,
   JUNKS,
 }
