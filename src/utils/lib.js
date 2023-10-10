@@ -144,4 +144,5 @@ module.exports = {
   filterLine,
   flatten,
   getNextValueFromObject,
+  text2label
 }

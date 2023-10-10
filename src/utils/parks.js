@@ -1,5 +1,6 @@
 const {
   getNextValueFromObject,
+  text2label,
   CHAR_NOT_FOUND,
   CRLF,
 } = require('./lib')
@@ -54,6 +55,8 @@ const removeJunksFromResponse = (splitted = []) => {
     return line
       .replaceAll('  ', '') // removes unwanted spaces
       .replaceAll(' :', ':') // removes unwanted spaces
+      .replaceAll(' |', '|') // removes unwanted spaces
+      .replaceAll('| ', '|') // removes unwanted spaces
       .trim()// removes blank spaces before and after
   })
 }
@@ -102,6 +105,21 @@ const km2meters = (km = '0 km') => {
   return (Number(km.replace('km', '').trim()) || 0) * KM_TO_METERS
 }
 
+const columnTraversal = (matrix, delimiter = '|') => {
+  const headers = matrix[0].split('|');
+
+  return result = matrix.slice(1).map(row => {
+    const values = row.split('|');
+    const data = {};
+  
+    headers.forEach((key, index) => {
+      data[text2label(key)] = values[index];
+    });
+
+    return data;
+  });
+}
+
 module.exports = {
   // functions
   expandVlans,
@@ -110,6 +128,7 @@ module.exports = {
   splitResponse,
   slitInterface,
   km2meters,
+  columnTraversal,
 
   // constants
   INTERFACE_SPLIT,

@@ -53,8 +53,6 @@ quit
 display ont info summary ${board}/${slot}/${port}`
   const conn = await connect(options) 
   const chunk = await conn.exec7(cmd)
-  console.log(cmd)
-  console.log(chunk)
 
   if (!chunk && chunk === '') return null
 
@@ -74,8 +72,6 @@ display ont info summary ${board}/${slot}/${port}`
     splitted.pop()
     splitted.pop()
     splitted.pop()
-
-  console.log(splitted)
 
   const indexLast = splitted.findIndex(item => item.trim().indexOf('display ont info summary') > -1)
 
@@ -163,7 +159,6 @@ display ont info summary ${board}/${slot}/${port}`
   ]
 
   const test = dummy2json(part2_2.join('\n'), columns2_2, 2)
-  console.log(part2_2, test)
 
   const elements2_2 = test.map(item => ({
     ont_id: item.ont_id,
