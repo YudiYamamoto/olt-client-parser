@@ -18,21 +18,22 @@ const OLTClientParser = require('../index')
 //   }
 // });
 
-// const olt = new OLTClientParser({
-//  name: 'TESTE',
-//  brand: 'ZTE',
-//  model: 'ZTE-C320',
-//  firmware: '2.1.0',
-//  connectionType: 'ssh',
-//  options: {
-//    host: '172.16.29.2',
-//    port: 22,
-//    username: 'made4olt',
-//    password: '0ltm@ad&@2023',
-//    shellPrompt: 'OLT-ANTAS-320',
-//  }
-// });
-
+/*
+const olt = new OLTClientParser({
+ name: 'TESTE',
+ brand: 'ZTE',
+ model: 'ZTE-C650',
+ firmware: '1.2.1',
+ connectionType: 'ssh',
+ options: {
+   host: '172.16.40.2',
+   port: 22,
+   username: 'made4olt',
+   password: '0ltm@ad&@2023ZTE',
+   shellPrompt: 'OLT-ANTAS-320',
+ }
+});
+*/
 
 // const olt = new OLTClientParser({
 //   name: 'TESTE',
@@ -69,10 +70,10 @@ const olt = new OLTClientParser({
   // const data = await olt.displaySlots()
   // const data = await olt.displayPons({ board: '0', slot: '0' })
   // const data = await olt.displayPon({ board: '0', slot: '0', port: '7' })
-  // const data = await olt.displayOnus({ board: '0', slot: '0', port: '0' })
+  // const data = await olt.displayOnus({ board: '1', slot: '1', port: '1' })
   // const data = await olt.displayOnus({ interface: 'gpon1/1' }) // Parks
   // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })
-  const data = await olt.displayOnu({ serial_number: 'prks00b80c94' }) // Parks
+  // const data = await olt.displayOnu({ serial_number: 'prks00b80c94' }) // Parks
   // const data = await olt.showOpticalModuleInfo() 
   // const data = await olt.displayVlans()
   // const data = await olt.displayVlan('109')
