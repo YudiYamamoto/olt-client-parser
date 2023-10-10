@@ -1,6 +1,7 @@
 const {
   getNextValueFromObject,
-  CHAR_NOT_FOUND
+  text2label,
+  CHAR_NOT_FOUND,
 } = require('./lib')
 
 const ONU_STATUS = {
@@ -31,6 +32,8 @@ const removeJunksFromResponse = (splitted = []) => {
     return line
       .replaceAll('  ', '') // removes unwanted spaces
       .replaceAll(' :', ':') // removes unwanted spaces
+      .replaceAll(' |', '|') // removes unwanted spaces
+      .replaceAll('| ', '|') // removes unwanted spaces
       .trim()// removes blank spaces before and after
   })
 }
@@ -71,12 +74,28 @@ const slitInterface = interface => {
   ]
 }
 
+const columnTraversal = (matrix, delimiter = '|') => {
+  const headers = matrix[0].split('|');
+
+  return result = matrix.slice(1).map(row => {
+    const values = row.split('|');
+    const data = {};
+  
+    headers.forEach((key, index) => {
+      data[text2label(key)] = values[index];
+    });
+
+    return data;
+  });
+}
+
 module.exports = {
   // functions
   expandVlans,
   removeJunksFromResponse,
   splitResponseByCommands,
   slitInterface,
+  columnTraversal,
 
   // constants
   ONU_STATUS,
