@@ -1,6 +1,7 @@
 const sshCheckStage = require('./ssh/checkStage')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayVlans = require('./ssh/displayVlans')
+const sshDisplayUplinks = require('./ssh/displayUplinks')
 const sshShowVlanPort = require('./ssh/showVlanPort')
 const sshDisplayOnu = require('./ssh/displayOnu')
 const sshDisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
@@ -24,6 +25,7 @@ module.exports = {
     checkStage: sshCheckStage,
     displaySlots: sshDisplaySlots,
     displayVlans: sshDisplayVlans,
+    displayUplinks: sshDisplayUplinks,
     showVlanPort: sshShowVlanPort,
     displayOnu: sshDisplayOnu,
     displayUnconfiguredOnus: sshDisplayUnconfiguredOnus,
