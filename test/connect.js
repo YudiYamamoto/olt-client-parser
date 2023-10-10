@@ -49,17 +49,31 @@ const OLTClientParser = require('../index')
 //   }
 // });
 
+// const olt = new OLTClientParser({
+//   name: 'TESTE',
+//   brand: 'Parks',
+//   model: 'Parks_CGP802',
+//   firmware: '6_0_6',
+//   connectionType: 'ssh',
+//   options: {
+//     host: '10.12.13.2',
+//     port: 22,
+//     username: 'made4it',
+//     password: 'mudar@123',
+//   }
+// });
+
 const olt = new OLTClientParser({
   name: 'TESTE',
   brand: 'Parks',
   model: 'Parks_CGP802',
-  firmware: '6_0_6',
+  firmware: '6_0_2',
   connectionType: 'ssh',
   options: {
-    host: '10.12.13.2',
+    host: '10.61.61.87',
     port: 22,
-    username: 'made4it',
-    password: 'mudar@123',
+    username: 'made4olt',
+    password: '0ltm@ad&@2023prks',
   }
 });
 
@@ -78,7 +92,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayVlan('109')
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
-  // const data = await olt.displayDbaProfiles()
+  const data = await olt.displayDbaProfiles()
   // const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayOLTServiceProfiles()
   
