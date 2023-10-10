@@ -39,8 +39,9 @@ const displayOnus = async (options, params) => {
     slot = '1', 
     port = '1',
   } = params
-  const f_p_s = `${board}/${slot}/${port}`
   const conn = await connect(options)
+
+  const f_p_s = `${board}/${slot}/${port}`
   const cmd = `show ${type} onu baseinfo ${type}-olt_${f_p_s}`
   const chunk = await conn.exec2(cmd)
 
@@ -87,7 +88,7 @@ const displayOnus = async (options, params) => {
     dataSplitted.pop()
     
     const filtered = dataSplitted.join('\r\n')    
-      .split('show gpon onu detail-info')
+      .split(`show ${type} onu detail-info`)
       .map(item => {
         const data = item.trim().split('\r\n')
         data.shift()

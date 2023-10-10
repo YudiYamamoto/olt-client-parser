@@ -1,12 +1,13 @@
 const sshCheckStage = require('./ssh/checkStage')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayVlans = require('./ssh/displayVlans')
+const sshDisplayUplinks = require('./ssh/displayUplinks')
 const sshShowVlanPort = require('./ssh/showVlanPort')
 const sshDisplayOnu = require('./ssh/displayOnu')
 const sshDisplayOnus = require('./ssh/displayOnus')
 const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
 const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
-
+const sshDisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
 // actions
 const sshEnableTrunkMode = require('./ssh/enableTrunkMode')
 const sshCreateVlan = require('./ssh/createVlan')
@@ -27,15 +28,13 @@ module.exports = {
     checkStage: sshCheckStage,
     displaySlots: sshDisplaySlots,
     displayVlans: sshDisplayVlans,
+    displayUplinks: sshDisplayUplinks,
     showVlanPort: sshShowVlanPort,
     displayOnu: sshDisplayOnu,
     displayOnus: sshDisplayOnus,
     showOpticalModuleInfo: sshShowOpticalModuleInfo,
     displayDbaProfiles: sshDisplayDbaProfiles,
-
-
-
-  
+    displayUnconfiguredOnus: sshDisplayUnconfiguredOnus,
     // actions
     enableTrunkMode: sshEnableTrunkMode,
     createVlan: sshCreateVlan,
