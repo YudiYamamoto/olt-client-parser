@@ -1,5 +1,5 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { expandVlans } = require('../../../../utils/parks')
+const { expandVlans, splitResponse } = require('../../../../utils/parks')
 const { CHAR_NOT_FOUND } = require('../../../../utils/lib')
 
 // Quando estiver com "virgula", é numero unico, quando estiver com "traço (-)", é um range de vlan, por exemplo:
@@ -12,18 +12,15 @@ Existing VLANs:  vlan1, vlan100, vlan1000-vlan1100, vlan4020, vlan4094
 */
 
 module.exports = async (options) => {
-  const response = await (await connect(options))
+  let response = await (await connect(options))
     .execParks('show vlan')
 
   if (!response) return null
 
-  const splitted = response.split('\r\n')
-  splitted.shift() // remove: 10.12.13.2: terminal length 0
-  splitted.shift() // remove: PARKS#show vlan
-  // Content
-  splitted.pop()   // remove: PARKS#
+  response = splitResponse(response)
+  response.shift() // remove: PARKS#show vlan
 
-  let vlans = splitted
+  let vlans = response
     .join('') // make array of vlans
     .replace('Existing VLANs:', '') // removes the titles
     .trim() // removes blank spaces before and after

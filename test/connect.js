@@ -50,40 +50,40 @@ const olt = new OLTClientParser({
 //   }
 // });
 
-// const olt = new OLTClientParser({
-//   name: 'TESTE',
-//   brand: 'Parks',
-//   model: 'Parks_CGP802',
-//   firmware: '6_0_6',
-//   connectionType: 'ssh',
-//   options: {
-//     host: '10.12.13.2',
-//     port: 22,
-//     username: 'made4it',
-//     password: 'mudar@123',
-//   }
-// });
-
 const olt = new OLTClientParser({
   name: 'TESTE',
   brand: 'Parks',
   model: 'Parks_CGP802',
-  firmware: '6_0_2',
+  firmware: '6_0_6',
   connectionType: 'ssh',
   options: {
-    host: '10.61.61.87',
+    host: '10.12.13.2',
     port: 22,
-    username: 'made4olt',
-    password: '0ltm@ad&@2023prks',
+    username: 'made4it',
+    password: 'mudar@123',
   }
 });
+
+// const olt = new OLTClientParser({
+//   name: 'TESTE',
+//   brand: 'Parks',
+//   model: 'Parks_CGP802',
+//   firmware: '6_0_2',
+//   connectionType: 'ssh',
+//   options: {
+//     host: '10.61.61.87',
+//     port: 22,
+//     username: 'made4olt',
+//     password: '0ltm@ad&@2023prks',
+//   }
+// });
 
 (async () => {
   // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots()
-  // const data = await olt.displayPons({ board: '0', slot: '0' })
-  // const data = await olt.displayPon({ board: '0', slot: '0', port: '7' })
+  // const data = await olt.displayPons()
+  // const data = await olt.displayPon({ pon_type: 'gpon', board: null, slot: 1, port: 1 })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '1' })
   // const data = await olt.displayOnus({ interface: 'gpon1/1' }) // Parks
   // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })

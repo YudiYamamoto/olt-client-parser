@@ -4,6 +4,8 @@ const sshDisplayVlans = require('./ssh/displayVlans')
 const sshDisplayUplinks = require('./ssh/displayUplinks')
 const sshShowVlanPort = require('./ssh/showVlanPort')
 const sshDisplayOnu = require('./ssh/displayOnu')
+const sshDisplayPon = require('./ssh/displayPon')
+const sshDisplayPons = require('./ssh/displayPons')
 const sshDisplayOnus = require('./ssh/displayOnus')
 const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
 const sshDisplayDbaProfiles = require('./ssh/displayDbaProfiles')
@@ -31,6 +33,8 @@ module.exports = {
     displayUplinks: sshDisplayUplinks,
     showVlanPort: sshShowVlanPort,
     displayOnu: sshDisplayOnu,
+    displayPon: sshDisplayPon,
+    displayPons: sshDisplayPons,
     displayOnus: sshDisplayOnus,
     showOpticalModuleInfo: sshShowOpticalModuleInfo,
     displayDbaProfiles: sshDisplayDbaProfiles,

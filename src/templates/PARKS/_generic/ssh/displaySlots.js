@@ -1,5 +1,6 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../utils/lib')
+const { dummy2json, CR, LF } = require('../../../../utils/lib')
+const { INTERFACE_SPLIT, splitResponse } = require('../../../../utils/parks')
 
 /*
 PARKS# show interface description
@@ -30,15 +31,13 @@ mgmt1.4020              up      unknown
 */
 
 module.exports = async (options) => {
-  const response = await (await connect(options))
+  let response = await (await connect(options))
     .execParks('show interface description')
 
   if (!response) return null
 
-  const splitted = response.split('\r')
-  splitted.shift() // remove: 10.12.13.2: terminal length 0
-  splitted.shift() // remove: PARKS#show interface description
-  splitted.pop()   // remove: PARKS#
+  response = splitResponse(response, line_feed=CR)
+  response.shift() // remove: PARKS#show interface description
 
   const columns = [
     [0, 24],  // interface
@@ -47,19 +46,18 @@ module.exports = async (options) => {
     [42, 53], // description
   ]
 
-  const data = dummy2json(splitted.join('\n'), columns, 1)
-  const regex = /^(?<type>giga-ethernet|10giga-ethernet|mgmt|gpon|loopback)(?<board>\d+?)?(?:\/|\.?)?(?<slot>\d+?)?$/;
-
-  return data.map((item) => {
-    let interface = item.interface.match(regex).groups;
+  response = dummy2json(response.join(LF), columns, 1)
+  return response.map((description) => {
+    let interface = description.interface?.match(INTERFACE_SPLIT).groups;
 
     return {
-      board: interface.board || 0,
-      slot: interface.slot || 0,
+      board: 0,
+      slot: Number(interface.slot) || 0,
+      port: Number(interface.port) || 0,
       type: interface.type,
-      real_type: item.description,
+      real_type: description.description,
       software_version: '',
-      available: item.status.toLowerCase().indexOf('up') > -1,
+      available: description.status.toLowerCase().indexOf('up') > -1,
       role: 'main',
       custom_fields: {}
     };

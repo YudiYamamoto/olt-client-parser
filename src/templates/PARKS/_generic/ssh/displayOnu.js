@@ -3,6 +3,7 @@ const { column2json } = require('../../../../utils/lib')
 const {
   removeJunksFromResponse,
   splitResponseByCommands,
+  splitResponse,
   slitInterface,
   ONU_STATUS,
 } = require('../../../../utils/parks')
@@ -110,11 +111,7 @@ module.exports = async (options, { serial_number }) => {
 
   if (!response) return null
 
-  response = response.split('\r\n')
-  response.shift() // remove: 10.12.13.2: terminal length 0
-  // Content
-  response.pop()   // remove: PARKS#
-
+  response = splitResponse(response)
   response = removeJunksFromResponse(response)
   const instructions = splitResponseByCommands(response, commands)
 

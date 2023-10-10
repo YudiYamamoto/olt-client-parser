@@ -2,7 +2,10 @@ const {
   getNextValueFromObject,
   text2label,
   CHAR_NOT_FOUND,
+  CRLF,
 } = require('./lib')
+
+const INTERFACE_SPLIT = /^(?<type>giga-ethernet|10giga-ethernet|mgmt|gpon|loopback)(?<slot>\d+?)?(?:\/|\.?)?(?<port>\d+?)?$/;
 
 const ONU_STATUS = {
   'Active': 'online',
@@ -10,15 +13,35 @@ const ONU_STATUS = {
   // 'DyingGasp': 'pwr_fail', // TODO: verificar em uma ONU com power fail
 }
 
+const PON_STATUS = {
+  'Active Working': 'up',
+  // '?': 'down', // TODO: verificar como fica quando a PON ta down
+}
+
 const JUNKS = [
   '-----------------------------------------------------',
+  '----------------------------------------------',
+  'INDEXMAC ADDRESSVLANGEM PORTSTATIC',
+  '% Incomplete command.',
+  'MAC table entries:',
+  'Transceiver',
+  'Vendor',
 ]
+
+// Transform OLT response string into array of instructions
+const splitResponse = (response, line_feed=CRLF) => {
+  response = response.split(line_feed)
+  response.shift() // remove: 10.12.13.2: terminal length 0
+  // Content
+  response.pop() // remove: PARKS#
+  return response
+}
 
 // Example: 10-13 => 10, 11, 12, 13
 const expandVlans = function* (range) {
   const [initial, final] = range.split('-');
   for (let index = initial; index <= final; index++) {
-      yield Number(index);
+    yield Number(index);
   }
 }
 
@@ -37,6 +60,7 @@ const removeJunksFromResponse = (splitted = []) => {
       .trim()// removes blank spaces before and after
   })
 }
+
 // split response lines by commands
 const splitResponseByCommands = (response = [], commands = {}) => {
   let instructions = {}
@@ -60,6 +84,7 @@ const splitResponseByCommands = (response = [], commands = {}) => {
   return instructions;
 }
 
+// Example: gpon1/1 => { type: 'gpon', slot: 1, port: 1 }
 const slitInterface = interface => {
   const match = interface.match(/(?<type>.*?)(?<slot>\d+?)\/(?<port>\d+?)/)
 
@@ -72,6 +97,12 @@ const slitInterface = interface => {
     slot,
     port,
   ]
+}
+
+// Example: 10 km => 10000
+const km2meters = (km = '0 km') => {
+  const KM_TO_METERS = 1000;
+  return (Number(km.replace('km', '').trim()) || 0) * KM_TO_METERS
 }
 
 const columnTraversal = (matrix, delimiter = '|') => {
@@ -94,10 +125,14 @@ module.exports = {
   expandVlans,
   removeJunksFromResponse,
   splitResponseByCommands,
+  splitResponse,
   slitInterface,
+  km2meters,
   columnTraversal,
 
   // constants
+  INTERFACE_SPLIT,
   ONU_STATUS,
+  PON_STATUS,
   JUNKS,
 }
