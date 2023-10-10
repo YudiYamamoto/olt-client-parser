@@ -1,8 +1,10 @@
 const {
   getNextValueFromObject,
   CHAR_NOT_FOUND,
-  BREAK_LINE,
+  CRLF,
 } = require('./lib')
+
+const INTERFACE_SPLIT = /^(?<type>giga-ethernet|10giga-ethernet|mgmt|gpon|loopback)(?<slot>\d+?)?(?:\/|\.?)?(?<port>\d+?)?$/;
 
 const ONU_STATUS = {
   'Active': 'online',
@@ -25,8 +27,9 @@ const JUNKS = [
   'Vendor',
 ]
 
-const splitResponse = response => {
-  response = response.split(BREAK_LINE)
+// Transform OLT response string into array of instructions
+const splitResponse = (response, line_feed=CRLF) => {
+  response = response.split(line_feed)
   response.shift() // remove: 10.12.13.2: terminal length 0
   // Content
   response.pop() // remove: PARKS#
@@ -78,6 +81,7 @@ const splitResponseByCommands = (response = [], commands = {}) => {
   return instructions;
 }
 
+// Example: gpon1/1 => { type: 'gpon', slot: 1, port: 1 }
 const slitInterface = interface => {
   const match = interface.match(/(?<type>.*?)(?<slot>\d+?)\/(?<port>\d+?)/)
 
@@ -92,6 +96,7 @@ const slitInterface = interface => {
   ]
 }
 
+// Example: 10 km => 10000
 const km2meters = (km = '0 km') => {
   const KM_TO_METERS = 1000;
   return (Number(km.replace('km', '').trim()) || 0) * KM_TO_METERS
@@ -107,6 +112,7 @@ module.exports = {
   km2meters,
 
   // constants
+  INTERFACE_SPLIT,
   ONU_STATUS,
   PON_STATUS,
   JUNKS,

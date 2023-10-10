@@ -1,6 +1,10 @@
 const moment = require('moment-timezone')
 const CHAR_NOT_FOUND = -1
-const BREAK_LINE = '\r\n'
+
+// Line feeds
+const CRLF = '\r\n' // New line feed with carriage return
+const CR = '\r' // (ASCII 13 (0x0D)), a carriage return.
+const LF = '\n' // (ASCII 10 (0x0A)), a new line.
 
 const dummy2json = (chunk, columns, skipLine = 3, delimiter = '_', delimiterHeader = '-') => {
   const header = []
@@ -126,7 +130,9 @@ const getNextValueFromObject = (target_object, current_key) => {
 
 module.exports = {
   CHAR_NOT_FOUND,
-  BREAK_LINE,
+  CRLF,
+  CR,
+  LF,
   dummy2json,
   column2json,
   text2table,
