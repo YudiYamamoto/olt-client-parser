@@ -4,6 +4,7 @@ const sshDisplayVlans = require('./ssh/displayVlans')
 const sshShowVlanPort = require('./ssh/showVlanPort')
 const sshDisplayOnu = require('./ssh/displayOnu')
 const sshDisplayOnus = require('./ssh/displayOnus')
+const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
 // actions
 const sshEnableTrunkMode = require('./ssh/enableTrunkMode')
 const sshCreateVlan = require('./ssh/createVlan')
@@ -27,6 +28,12 @@ module.exports = {
     showVlanPort: sshShowVlanPort,
     displayOnu: sshDisplayOnu,
     displayOnus: sshDisplayOnus,
+    showOpticalModuleInfo: sshShowOpticalModuleInfo,
+
+
+
+
+  
     // actions
     enableTrunkMode: sshEnableTrunkMode,
     createVlan: sshCreateVlan,
