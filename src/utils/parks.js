@@ -113,7 +113,7 @@ const columnTraversal = (matrix, delimiter = '|') => {
     const data = {};
   
     headers.forEach((key, index) => {
-      data[text2label(key)] = values[index];
+      data[text2label(key)] = values[index]?.trim();
     });
 
     return data;
