@@ -1,4 +1,5 @@
 const sshCheckStage = require('./ssh/checkStage')
+const sshDisplayBoards = require('./ssh/displayBoards')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayVlans = require('./ssh/displayVlans')
 const sshDisplayUplinks = require('./ssh/displayUplinks')
@@ -28,6 +29,7 @@ const sshEnablePon = require('./ssh/enablePon')
 module.exports = {
   ssh: {
     checkStage: sshCheckStage,
+    displayBoards: sshDisplayBoards,
     displaySlots: sshDisplaySlots,
     displayVlans: sshDisplayVlans,
     displayUplinks: sshDisplayUplinks,
