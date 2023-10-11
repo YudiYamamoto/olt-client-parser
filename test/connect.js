@@ -80,7 +80,7 @@ const olt = new OLTClientParser({
 
 (async () => {
   // const data = await olt.checkStage()
-  // const data = await olt.displayBoards()
+  const data = await olt.displayBoards()
   // const data = await olt.displaySlots()
   // const data = await olt.displayPons()
   // const data = await olt.displayPon({ pon_type: 'gpon', board: null, slot: 1, port: 1 })
