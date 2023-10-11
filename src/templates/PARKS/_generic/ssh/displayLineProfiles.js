@@ -63,7 +63,10 @@ const displayLineProfiles = async (options) => {
   return data.map((item) => {
     return {
       name: item.name,
-      gems: item.index,
+      tcont: {
+        gems: item.index,
+        dba_profile: item.bandwidthName,
+      },
       custom_fields: {
         ...item
       }
