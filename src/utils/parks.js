@@ -48,11 +48,11 @@ const expandVlans = function* (range) {
 // remove junk lines
 const removeJunksFromResponse = (splitted = []) => {
   return splitted.filter(line => {
-    return !JUNKS.map(junk => {
-      return line === '' || line.indexOf(junk) !== CHAR_NOT_FOUND
-    }).includes(true)
+    return !JUNKS
+      .map(junk => line === '' || line.indexOf(junk) !== CHAR_NOT_FOUND)
+      .includes(true)
   }).map(line => {
-    return line
+    return (line || '')
       .replaceAll('  ', '') // removes unwanted spaces
       .replaceAll(' :', ':') // removes unwanted spaces
       .replaceAll(' |', '|') // removes unwanted spaces

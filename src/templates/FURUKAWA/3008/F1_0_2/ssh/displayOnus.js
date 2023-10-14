@@ -122,7 +122,7 @@ const displayOnus = async (options, {
     })
   }
 
-  const chunksOnus = getChunks(values, 50)
+  const chunksOnus = getChunks(values, 30)
   if (!chunksOnus) return null
   
   const onus = []
@@ -162,6 +162,7 @@ const displayOnus = async (options, {
   }
 
   return onus
+    .filter(item => item.board && item.slot && item.port)
 }
 
 module.exports = displayOnus

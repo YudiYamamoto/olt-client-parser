@@ -26,17 +26,18 @@ const displayUnconfiguredOnus = async (options) => {
 display ont autofind all`
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
-  
-  const splitted = chunk.split('\r\n')
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.shift()
-  splitted.pop()
-  splitted.pop()
 
+  const splitted = chunk.split('\r\n')
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.shift()
+    splitted.pop()
+    splitted.pop()
+
+  console.log(splitted, cmd)
   if (splitted[0].indexOf('Failure') > -1) return null
 
   const columns = [

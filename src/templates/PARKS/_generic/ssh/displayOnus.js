@@ -1,11 +1,6 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { column2json } = require('../../../../utils/lib')
-const {
-  removeJunksFromResponse,
-  splitResponseByCommands,
-  slitInterface,
-  ONU_STATUS,
-} = require('../../../../utils/parks')
+const { hour2time } = require('../../../../utils/lib')
+const { removeJunksFromResponse } = require('../../../../utils/parks')
 
 // Power Level: Sinal que a ONU esta recebendo da OLT
 // show interface gpon[id_slot/id_porta] onu status
@@ -29,35 +24,60 @@ RSSI        : -17.67dBm (+-3dBm)
 PARKS#
 */
 
-module.exports = async (options, { interface }) => {
-  let response = await (await connect(options))
-    .execParks(`show interface ${interface} onu status`)
+const regex = /(?<ont_id>\d+)-(?<serial_number>\w+):/
 
-  if (!response) return null
+module.exports = async (options, { pon_type = 'gpon', board = '0', slot = '0', port = '0' }) => {
+  const interface = `${pon_type}${slot}/${port}`
+  const chunks = await (await connect(options)).execParks(`show interface ${interface} onu status`)
+  if (!chunks) return null
 
-  response = response.split('\r\n')
-  response.shift() // remove: 10.12.13.2: terminal length 0
-  response.shift() // remove: PARKS#show interface gpon1/1 onu status
-  response.shift() // remove: Interface gpon1/1:
-  // Content
-  response.pop()   // remove: PARKS#
+  const splitted = chunks.split('\r\n')
+  splitted.shift() // remove: 10.12.13.2: terminal length 0
+  splitted.shift() // remove: PARKS#show interface gpon1/1 onu status
+  splitted.shift() // remove: Interface gpon1/1:
+  splitted.pop()   // remove: PARKS#
 
-  response = removeJunksFromResponse(response)
+  const tx_power = '0'
+  const distance = 0
+  const element = ''
 
-  const regex = /(?<ont_id>\d+)-(?<serial_number>\w+):/;
+  return splitted
+    .map((item) => item.match(regex)?.groups)
+    .filter(ont => !!ont)
+    .map(item => {
+      const index = splitted.findIndex(x => x.indexOf(item.serial_number) > -1)
+      const [status, power_level, rssi] = splitted.slice(index + 1, index + 4)
 
-  return response.map((item) => {
-    return item.match(regex)?.groups;   
-  }).filter(ont => ont !== undefined).map(ont => ({
-    ont_id: ont.ont_id,
-    serial_number: ont.serial_number,
-    board: 0, //TODO: Pegar do parâmetro de interface
-    slot: 0, //TODO: Pegar do parâmetro de interface
-    type: null, //TODO: Pegar do parâmetro de interface
-    real_type: null,
-    software_version: null,
-    available: null, //TODO: validar campo active
-    role: 'main',
-    custom_fields: {}
-  }));
+      const stage = status.indexOf('ACTIVE') ? 'online' : 'disabled'
+      const [olt_rx_power] = power_level.trim().replace('Power Level : ', '').split(' (')
+      const [rx_power] = rssi.trim().replace('RSSI        : ', '').split(' (')
+
+      return {
+        board, 
+        slot, 
+        port,
+        ont_id: item.ont_id,
+        temperature: 0,
+        tx_power: parseFloat((tx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+        olt_rx_power: parseFloat((olt_rx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+        catv_rx_power: 0,
+        onu_type: item.type, // GENERIC
+        name: item.name,
+        rx_power: parseFloat((rx_power || '').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+        onu_external_id: item.serial_number,
+        serial_number: item.serial_number,
+        mac_address: (element || ''),
+        description: item.description,
+        distance: parseInt(distance !== '' ? distance : '0', 10),
+        stage,
+        uptime_at: hour2time(item.online_duration),
+        custom_fields: {
+          ...item,
+          status,
+          power_level,
+          rssi,
+          source: 'import_onu',
+        }
+      }
+    })
 }

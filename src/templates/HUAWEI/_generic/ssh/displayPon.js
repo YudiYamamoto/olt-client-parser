@@ -8,7 +8,7 @@
   -------------------------------------------------------------
 */
 
-const displayPons = require("./displayPons")
+const displayPons = require('./displayPons')
 
 //TODO Verificar
 const displayPon = async (options, { port, ...params }) => {

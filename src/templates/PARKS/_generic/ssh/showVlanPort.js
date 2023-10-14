@@ -6,7 +6,7 @@ const { flatten, CHAR_NOT_FOUND } = require('../../../../utils/lib')
 // são as vlans que estão na porta
 
 const TAGGED_VLANS = 'switchport trunk allowed vlan'
-module.exports = async (options, { interface }) => {
+module.exports = async (options, interface) => {
   const response = await (await connect(options))
     .execParks(`show running-config interface ${interface}`)
 

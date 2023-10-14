@@ -30,14 +30,14 @@ mgmt1.100               up      unknown
 mgmt1.4020              up      unknown
 */
 
-module.exports = async (options) => {
-  let response = await (await connect(options))
+module.exports = async (options, { board }) => {
+  const chunks = await (await connect(options))
     .execParks('show interface description')
 
-  if (!response) return null
+  if (!chunks) return null
 
-  response = splitResponse(response, line_feed=CR)
-  response.shift() // remove: PARKS#show interface description
+  const splitted = splitResponse(chunks, line_feed=CR)
+  splitted.shift() // remove: PARKS#show interface description
 
   const columns = [
     [0, 24],  // interface
@@ -46,20 +46,30 @@ module.exports = async (options) => {
     [42, 53], // description
   ]
 
-  response = dummy2json(response.join(LF), columns, 1)
-  return response.map((description) => {
-    let interface = description.interface?.match(INTERFACE_SPLIT).groups;
+  const data = dummy2json(splitted.join(LF), columns, 1)
+  return data
+    .map(item => {
+      const interface = item && item.interface.match(INTERFACE_SPLIT).groups
+      if (interface.type.indexOf('pon') <= -1) return null
 
-    return {
-      board: 0,
-      slot: Number(interface.slot) || 0,
-      port: Number(interface.port) || 0,
-      type: interface.type,
-      real_type: description.description,
-      software_version: '',
-      available: description.status.toLowerCase().indexOf('up') > -1,
-      role: 'main',
-      custom_fields: {}
-    };
-  });
+      return {
+        board,
+        slot: interface.slot || '0',
+        type: interface.type,
+        real_type: item.description,
+        software_version: '',
+        available: item.status.toLowerCase().indexOf('up') > -1,
+        role: 'main',
+        custom_fields: {
+          ...item,
+        }
+      }
+    })
+    .filter(item => !!item)
+    .reduce((acc, item) => {
+      const check = acc
+        .findIndex(searchItem => searchItem.slot === item.slot)
+      if (check <= -1) acc.push(item)
+      return acc
+    }, [])
 }

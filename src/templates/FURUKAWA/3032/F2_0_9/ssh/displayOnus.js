@@ -117,7 +117,7 @@ const displayOnus = async (options, {
     })
   }
 
-  const chunksOnus = getChunks(values, 50)
+  const chunksOnus = getChunks(values, 30)
   if (!chunksOnus) return null
   
   const onus = []
@@ -140,7 +140,6 @@ const displayOnus = async (options, {
   
       const additionals = generateOpticalModuleInfo(lines)
       const { temperature = 0, tx_power = 0, olt_rx_power = 0, custom_fields } = additionals || {}
-
       const onu = { ...chunks[index] }
       onus.push({
         ...onu,
@@ -157,6 +156,7 @@ const displayOnus = async (options, {
   }
 
   return onus
+    .filter(item => item.board && item.slot && item.port)
 }
 
 module.exports = displayOnus
