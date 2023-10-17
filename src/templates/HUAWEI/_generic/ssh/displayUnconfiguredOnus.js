@@ -42,7 +42,7 @@ display ont autofind all`
     splitted.pop()
     splitted.pop()
 
-  if (splitted[0].indexOf('Failure') > -1) return null
+  if (splitted && Array.isArray(splitted) && splitted[0] && splitted[0].indexOf('Failure') > -1) return null
 
   const data = splitted
     .join('\n')
@@ -61,7 +61,7 @@ display ont autofind all`
       )
     )
   return data.map((item) => {
-    const [serial_number] = item.ont_s_n.split(' (')
+    const [serial_number] = (item.ont_s_n || '').split(' (')
     const [board, slot, port] = (item.fsp || '').split('/')
     return {
       pon_type: 'gpon',
@@ -76,6 +76,7 @@ display ont autofind all`
       }
     }
   })
+  .filter(item => item.board && item.board !== '')
 }
 
 module.exports = displayUnconfiguredOnus
