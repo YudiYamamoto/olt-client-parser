@@ -1,22 +1,22 @@
 'use strict'
 const OLTClientParser = require('../index')
 
-// const olt = new OLTClientParser({
-//   name: 'TESTE',
-//   brand: 'Huawei',
-//   model: 'Huawei_MA5608T',
-//   firmware: 'MA5600V800R017C10', // 1.9.0
-//   // firmware: 'MA5600V800R018C10', // 1.9.0
-//   // firmware: 'MA5600V800R015C00', // 1.9.0
-//   connectionType: 'ssh',
-//   options: {
-//     host: '138.97.70.10',
-//     port: 2822,
-//     username: 'made4ont',
-//     password: 'made4olt',
-//     shellPrompt: 'MA5608T>',
-//   }
-// });
+const olt = new OLTClientParser({
+  name: 'TESTE',
+  brand: 'Huawei',
+  model: 'Huawei_MA5608T',
+  firmware: 'MA5600V800R017C10', // 1.9.0
+  // firmware: 'MA5600V800R018C10', // 1.9.0
+  // firmware: 'MA5600V800R015C00', // 1.9.0
+  connectionType: 'ssh',
+  options: {
+    host: '138.97.70.10',
+    port: 2822,
+    username: 'made4ont',
+    password: 'made4olt',
+    shellPrompt: 'MA5608T>',
+  }
+});
 
 /*
 const olt = new OLTClientParser({
@@ -36,6 +36,22 @@ const olt = new OLTClientParser({
 */
 
 // const olt = new OLTClientParser({
+//  name: 'ADUSTINA',
+//  brand: 'ZTE',
+//  model: 'ZTE-C320',
+//  firmware: '2.1.0',
+//  connectionType: 'ssh',
+//  options: {
+//    host: '172.16.29.5',
+//    port: 22,
+//    username: 'made4olt2',
+//    password: '0ltm@ad&@2023',
+//    shellPrompt: 'ZTE-C320-ADT',
+//    algorithms: { cipher: ['aes128-cbc', '3des-cbc'] }
+//  }
+// });
+
+// const olt = new OLTClientParser({
 //   name: 'TESTE',
 //   brand: 'Furukawa',
 //   model: 'Furukawa_3032',
@@ -50,19 +66,19 @@ const olt = new OLTClientParser({
 //   }
 // });
 
-const olt = new OLTClientParser({
-  name: 'TESTE',
-  brand: 'Parks',
-  model: 'Parks_CGP802',
-  firmware: '6_0_6',
-  connectionType: 'ssh',
-  options: {
-    host: '10.12.13.2',
-    port: 22,
-    username: 'made4it',
-    password: 'mudar@123',
-  }
-});
+// const olt = new OLTClientParser({
+//   name: 'TESTE',
+//   brand: 'Parks',
+//   model: 'Parks_CGP802',
+//   firmware: '6_0_6',
+//   connectionType: 'ssh',
+//   options: {
+//     host: '10.12.13.2',
+//     port: 22,
+//     username: 'made4it',
+//     password: 'mudar@123',
+//   }
+// });
 
 // const olt = new OLTClientParser({
 //   name: 'TESTE',
@@ -79,9 +95,9 @@ const olt = new OLTClientParser({
 // });
 
 (async () => {
-  // const data = await olt.checkStage()
-  const data = await olt.displayBoards()
-  // const data = await olt.displaySlots()
+  //const data = await olt.checkStage()
+  // const data = await olt.displayBoards()
+  // const data = await olt.displaySlots({board: '1'})
   // const data = await olt.displayPons()
   // const data = await olt.displayPon({ pon_type: 'gpon', board: null, slot: 1, port: 1 })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '1' })
@@ -97,6 +113,9 @@ const olt = new OLTClientParser({
   // const data = await olt.displayDbaProfiles()
   // const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayOLTServiceProfiles()
+
+  // const data = await olt.createOnu({ board: '0', slot: '0', port: '0', ont_id: '0'})
+  const data = await olt.deleteOnu({ board: '0', slot: '0', port: '0', ont_id: '0'})
   
   // const data = await olt.displayOnuProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' }) // *
