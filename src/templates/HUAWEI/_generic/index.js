@@ -28,6 +28,8 @@ const sshEnablePon = require('./ssh/enablePon')
 const sshDisablePon = require('./ssh/disablePon')
 const sshCreateDbaProfile = require('./ssh/createDbaProfile')
 const sshCreateSrvProfile = require('./ssh/createSrvProfile')
+const sshCreateOnu = require('./ssh/createOnu')
+const sshDeleteOnu = require('./ssh/deleteOnu')
 
 const telnetEnableRoot = require('./telnet/enableRoot')
 const telnetDisplayPermissionByUser = require('./telnet/displayPermissionByUser')
@@ -66,6 +68,8 @@ module.exports = {
     disablePon: sshDisablePon,
     createDbaProfile: sshCreateDbaProfile,
     createSrvProfile: sshCreateSrvProfile,
+    createOnu: sshCreateOnu,
+    deleteOnu: sshDeleteOnu
   },
   telnet: {
     enableRoot: telnetEnableRoot,
