@@ -2,12 +2,12 @@ const sshCheckStage = require('./ssh/checkStage')
 const sshDisplayBoards = require('./ssh/displayBoards')
 const sshDisplaySlots = require('./ssh/displaySlots')
 const sshDisplayPons = require('./ssh/displayPons')
-// const sshDisplayPon = require('./ssh/displayPon')
-// const sshDisplayOnus = require('./ssh/displayOnus')
-// const sshDisplayOnu = require('./ssh/displayOnu')
+const sshDisplayPon = require('./ssh/displayPon')
+const sshDisplayOnus = require('./ssh/displayOnus')
+const sshDisplayOnu = require('./ssh/displayOnu')
 // const sshDisplayUplinks = require('./ssh/displayUplinks')
 // const sshDisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
-// const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
+const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
 // const sshDisplayDbaProfiles = require ('./ssh/displayDbaProfiles')
 // const sshDisplayLineProfiles = require ('./ssh/displayLineProfiles')
 // const sshDisplayVlans = require ('./ssh/displayVlans')
@@ -42,12 +42,12 @@ module.exports = {
     displayBoards: sshDisplayBoards,
     displaySlots: sshDisplaySlots,
     displayPons: sshDisplayPons,
-    // displayPon: sshDisplayPon,
-    // displayOnus: sshDisplayOnus,
-    // displayOnu: sshDisplayOnu,
+    displayPon: sshDisplayPon,
+    displayOnus: sshDisplayOnus,
+    displayOnu: sshDisplayOnu,
     // displayUplinks: sshDisplayUplinks,
     // displayOLTServiceProfiles: sshDisplayOLTServiceProfiles,
-    // showOpticalModuleInfo: sshShowOpticalModuleInfo,
+    showOpticalModuleInfo: sshShowOpticalModuleInfo,
     // displayDbaProfiles: sshDisplayDbaProfiles,
     // displayLineProfiles: sshDisplayLineProfiles,
     // displayVlans: sshDisplayVlans,
