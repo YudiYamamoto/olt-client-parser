@@ -3,6 +3,7 @@ const FURUKAWA = require('./FURUKAWA')
 const ZTE = require('./ZTE')
 const MADE4OLT = require('./MADE4OLT')
 const PARKS = require('./PARKS')
+const DATACOM = require('./DATACOM')
 
 module.exports = {
   HUAWEI,
@@ -10,4 +11,5 @@ module.exports = {
   ZTE,
   MADE4OLT,
   PARKS,
+  DATACOM,
 }

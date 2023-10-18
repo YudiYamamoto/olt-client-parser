@@ -1,20 +1,20 @@
 'use strict'
 const OLTClientParser = require('../index')
 
+
 const olt = new OLTClientParser({
-  name: 'TESTE',
-  brand: 'Huawei',
-  model: 'Huawei_MA5608T',
-  firmware: 'MA5600V800R017C10', // 1.9.0
-  // firmware: 'MA5600V800R018C10', // 1.9.0
-  // firmware: 'MA5600V800R015C00', // 1.9.0
+  name: 'DATACOM',
+  brand: 'DATACOM',
+  model: 'DATACOM',
+  firmware: 'DATACOM',
   connectionType: 'ssh',
   options: {
-    host: '138.97.70.10',
-    port: 2822,
-    username: 'made4ont',
-    password: 'made4olt',
-    shellPrompt: 'MA5608T>',
+    host: '177.128.199.14',
+    port: 6002,
+    username: 'admin',
+    password: 'Made4Olt748205@',
+    shellPrompt: 'OLT_Teste#',
+    algorithms: { cipher: ['aes192-ctr'] }
   }
 });
 
@@ -95,10 +95,10 @@ const olt = new OLTClientParser({
 // });
 
 (async () => {
-  //const data = await olt.checkStage()
+  // const data = await olt.checkStage()
   // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({board: '1'})
-  // const data = await olt.displayPons()
+  const data = await olt.displayPons({ board: '1', slot: '1', port: '1' })
   // const data = await olt.displayPon({ pon_type: 'gpon', board: null, slot: 1, port: 1 })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '1' })
   // const data = await olt.displayOnus({ interface: 'gpon1/1' }) // Parks
@@ -115,7 +115,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayOLTServiceProfiles()
 
   // const data = await olt.createOnu({ board: '0', slot: '0', port: '0', ont_id: '0'})
-  const data = await olt.deleteOnu({ board: '0', slot: '0', port: '0', ont_id: '0'})
+  // const data = await olt.deleteOnu({ board: '0', slot: '0', port: '0', ont_id: '0'})
   
   // const data = await olt.displayOnuProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' }) // *
