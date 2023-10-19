@@ -17,16 +17,17 @@ const sshDisplayOnuProfiles = require('./ssh/displayOnuProfiles')
 const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
 // const sshdisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
 // // actions
-// const sshCreateVlan = require('./ssh/createVlan')
-// const sshDeleteVlan = require('./ssh/deleteVlan')
-// const sshVlanTag = require('./ssh/vlanTag')
-// const sshVlanUntag = require('./ssh/vlanUntag')
-// const sshEnableAutoNegotiation = require('./ssh/enableAutoNegotiation')
-// const sshDisableAutoNegotiation = require('./ssh/disableAutoNegotiation')
-// const sshEnableUplink = require('./ssh/enableUplink')
-// const sshDisableUplink = require('./ssh/disableUplink')
-// const sshEnablePon = require('./ssh/enablePon')
-// const sshDisablePon = require('./ssh/disablePon')
+const sshCreateVlan = require('./ssh/createVlan')
+const sshDeleteVlan = require('./ssh/deleteVlan')
+const sshVlanTag = require('./ssh/vlanTag')
+const sshVlanUntag = require('./ssh/vlanUntag')
+const sshRemoveVlanUplink = require('./ssh/removeVlanUplink')
+const sshEnableAutoNegotiation = require('./ssh/enableAutoNegotiation')
+const sshDisableAutoNegotiation = require('./ssh/disableAutoNegotiation')
+const sshEnableUplink = require('./ssh/enableUplink')
+const sshDisableUplink = require('./ssh/disableUplink')
+const sshEnablePon = require('./ssh/enablePon')
+const sshDisablePon = require('./ssh/disablePon')
 // const sshCreateDbaProfile = require('./ssh/createDbaProfile')
 // const sshCreateSrvProfile = require('./ssh/createSrvProfile')
 // const sshCreateOnu = require('./ssh/createOnu')
@@ -58,16 +59,17 @@ module.exports = {
     scopeVlanLanToLan: sshScopeVlanLanToLan,
     // displayUnconfiguredOnus: sshdisplayUnconfiguredOnus,
     // // actions
-    // createVlan: sshCreateVlan,
-    // deleteVlan: sshDeleteVlan,
-    // vlanTag: sshVlanTag,
-    // vlanUntag: sshVlanUntag,
-    // enableAutoNegotiation: sshEnableAutoNegotiation,
-    // disableAutoNegotiation: sshDisableAutoNegotiation,
-    // enableUplink: sshEnableUplink,
-    // disableUplink: sshDisableUplink,
-    // enablePon: sshEnablePon,
-    // disablePon: sshDisablePon,
+    createVlan: sshCreateVlan,
+    deleteVlan: sshDeleteVlan,
+    vlanTag: sshVlanTag,
+    vlanUntag: sshVlanUntag,
+    removeVlanUplink: sshRemoveVlanUplink,
+    enableAutoNegotiation: sshEnableAutoNegotiation,
+    disableAutoNegotiation: sshDisableAutoNegotiation,
+    enableUplink: sshEnableUplink,
+    disableUplink: sshDisableUplink,
+    enablePon: sshEnablePon,
+    disablePon: sshDisablePon,
     // createDbaProfile: sshCreateDbaProfile,
     // createSrvProfile: sshCreateSrvProfile,
     // createOnu: sshCreateOnu,
