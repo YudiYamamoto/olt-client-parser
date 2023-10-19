@@ -14,7 +14,7 @@ const olt = new OLTClientParser({
     username: 'admin',
     password: 'Made4Olt748205@',
     shellPrompt: 'OLT_Teste#',
-    algorithms: { cipher: ['aes192-ctr'] }
+    algorithms: { cipher: ['aes192-ctr'] },
   }
 });
 
@@ -104,10 +104,10 @@ const olt = new OLTClientParser({
   // const data = await olt.displayOnus({ interface: 'gpon1/1' }) // Parks
   // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })
   // const data = await olt.displayOnu({ serial_number: 'prks00b80c94' }) // Parks
-  const data = await olt.showOpticalModuleInfo({ board: '1', slot: '1', port: '1', ont_id: '1' })
+  // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '1', port: '1', ont_id: '1' })
   // const data = await olt.showOpticalModuleInfo() 
   // const data = await olt.displayVlans()
-  // const data = await olt.displayVlan('109')
+  // const data = await olt.displayVlan('10')
   // const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayDbaProfiles()
@@ -120,7 +120,7 @@ const olt = new OLTClientParser({
   // const data = await olt.displayOnuProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' }) // *
 
-  // const data = await olt.scopeVlanLanToLan()
+  const data = await olt.scopeVlanLanToLan()
   // const data = await olt.createVlan({ vlan: 147, description: 'TESTE' })
   // const data = await olt.deleteVlan(669);
   // const data = await olt.deleteVlan({ vlan: 669 }); // Parks

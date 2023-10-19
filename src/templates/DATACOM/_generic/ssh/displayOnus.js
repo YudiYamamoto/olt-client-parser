@@ -1,6 +1,7 @@
 const { connect } = require('../../../../config/ssh-connect')
 const { dummy2json } = require('../../../../utils/lib')
 
+//STANDBY 
 /*
   Itf     ONU ID   Serial Number   Oper State   Software Download State      Name
 --------  ------   -------------   ----------   --------------------------   ------------------------------------------------
@@ -43,10 +44,19 @@ const displayOnus = async (options) => {
 		port: item['itf_--------'].split('/')[2],
 		ont_id: item['onuid_------'],
 		serial_number: item['serial_number_-------------'],
-		onu_type: item.onu || '',
+    pon_type,
+    uptime_at: hour2time(item.uptime || ''), // TODO
+		onu_type: item.onu || '', // TODO
 		operational_state: item['oper_state_----------'],
 		name: item['name_----------------------'],
-		mac_adress: item.mac || '',
+    catv_rx_power: 0,
+    // stage: STATUS 
+    // temperature: parseFloat((item['temperature_(_c)'] || '0').toLowerCase().replace('c', '').trim().replace(/ /gi, ''), 10),
+    // tx_power: parseFloat((item['txpower_(d_bm)'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+    // rx_power: parseFloat((item['rxpower_(d_bm)'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+    // olt_rx_power: parseFloat((item['o_l_t_rx_o_n_t_power(d_bm)'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+    // distance: parseInt(item['distance_(m)'] || '0', 10),  
+		mac_adress: item.mac || '', // TODO
 		onu_external_id: item.external_id || '',
 		authorization_at: new Date(),
 	}))

@@ -1,5 +1,5 @@
 const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../utils/lib')
+const { dummy2json, column2json } = require('../../../../utils/lib')
 const { splitResponse } = require('../../../../utils/parks')
 //const { commandOpticalModuleInfo, generateOpticalModuleInfo } = require('./execOpticalModuleInfo')
 
@@ -40,38 +40,49 @@ OLT_Teste# show interface gpon 1/1/1 onu 1
 	Tx Optical Power [dBm]  : 2.22       
 */
 
-	const showOpticalModuleInfo = async (options, params) => {
-		const { 
-			board,
-			slot,
-			port,
-			ont_id
-		} = params
-		const cmd = `show interface gpon ${board}/${slot}/${port} onu ${ont_id} | nomore`;
-		const conn = await connect(options)
-		const chunk = await conn.execDatacom(cmd)
-		if (!chunk && chunk === '') return null
+const showOpticalModuleInfo = async (options, params) => {
+	const { 
+		board,
+		slot,
+		port,
+		ont_id
+	} = params
+	const cmd = `show interface gpon ${board}/${slot}/${port} onu ${ont_id} | nomore`;
+	const conn = await connect(options)
+	const chunk = await conn.execDatacom(cmd)
+	if (!chunk && chunk === '') return null
 
-		const splitted = splitResponse(chunk);
-		splitted.pop();
+	const splitted = splitResponse(chunk);
+	splitted.pop();
 
-		const data = splitted.filter(item => item !== '');
+	const filtered = splitted.filter(item => item !== '');
+	
+	const data = filtered
+		.map(item => column2json(
+			item
+			.split('\n')
+			.map(item2 => 
+				item2
+					.replace(':', '[$%]')
+					.replace(/\:/gi, '-')
+					.replace('[$%]', ':')
+				)
+			)
+		)
 		
-		console.log(data)
+	return {
+		ont_id: data[1].id, 
+		rx_power: data[30]['rx_optical_power[d_bm]'],
+		tx_power: data[31]['tx_optical_power[d_bm]'],
+		olt_rx_ont_power_dbm: data[30]['rx_optical_power[d_bm]'] || '',
+		temperature_c: null,
+		voltage_v: null,
+		current_ma: null,
+		distance_m: data[11].distance,
+		custom_fields: {
+			...data,
+		}
 	}
+}
 
-//TODO terminar implementação
-    const data = splitted
-  .map(item => column2json(
-    item
-    .split('\n')
-    .map(item2 => 
-      item2
-        .replace(':', '[$%]')
-        .replace(/\:/gi, '-')
-        .replace('[$%]', ':')
-      )
-    )
-  )
-
-	module.exports = showOpticalModuleInfo
+module.exports = showOpticalModuleInfo

@@ -5,15 +5,16 @@ const sshDisplayPons = require('./ssh/displayPons')
 const sshDisplayPon = require('./ssh/displayPon')
 const sshDisplayOnus = require('./ssh/displayOnus')
 const sshDisplayOnu = require('./ssh/displayOnu')
-// const sshDisplayUplinks = require('./ssh/displayUplinks')
+const sshDisplayUplinks = require('./ssh/displayUplinks')
 // const sshDisplayOLTServiceProfiles = require('./ssh/displayOLTServiceProfiles')
 const sshShowOpticalModuleInfo = require('./ssh/showOpticalModuleInfo')
-// const sshDisplayDbaProfiles = require ('./ssh/displayDbaProfiles')
-// const sshDisplayLineProfiles = require ('./ssh/displayLineProfiles')
-// const sshDisplayVlans = require ('./ssh/displayVlans')
-// const sshDisplayVlan = require ('./ssh/displayVlan')
+const sshDisplayDbaProfiles = require ('./ssh/displayDbaProfiles')
+const sshDisplayLineProfiles = require ('./ssh/displayLineProfiles')
+const sshDisplayVlans = require ('./ssh/displayVlans')
+const sshDisplayVlan = require ('./ssh/displayVlan')
+const sshDisplayOnuProfiles = require('./ssh/displayOnuProfiles')
 // const sshScopeVlanInternet = require('./ssh/scopeVlanInternet')
-// const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
+const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
 // const sshdisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
 // // actions
 // const sshCreateVlan = require('./ssh/createVlan')
@@ -45,15 +46,16 @@ module.exports = {
     displayPon: sshDisplayPon,
     displayOnus: sshDisplayOnus,
     displayOnu: sshDisplayOnu,
-    // displayUplinks: sshDisplayUplinks,
+    displayUplinks: sshDisplayUplinks,
     // displayOLTServiceProfiles: sshDisplayOLTServiceProfiles,
     showOpticalModuleInfo: sshShowOpticalModuleInfo,
-    // displayDbaProfiles: sshDisplayDbaProfiles,
-    // displayLineProfiles: sshDisplayLineProfiles,
-    // displayVlans: sshDisplayVlans,
-    // displayVlan: sshDisplayVlan,
+    displayDbaProfiles: sshDisplayDbaProfiles,
+    displayLineProfiles: sshDisplayLineProfiles,
+    displayVlans: sshDisplayVlans,
+    displayVlan: sshDisplayVlan,
+    displayOnuProfiles: sshDisplayOnuProfiles,
     // scopeVlanInternet: sshScopeVlanInternet,
-    // scopeVlanLanToLan: sshScopeVlanLanToLan,
+    scopeVlanLanToLan: sshScopeVlanLanToLan,
     // displayUnconfiguredOnus: sshdisplayUnconfiguredOnus,
     // // actions
     // createVlan: sshCreateVlan,
