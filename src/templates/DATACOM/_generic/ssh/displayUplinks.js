@@ -2,7 +2,7 @@ const { connect } = require("../../../../config/ssh-connect");
 const { dummy2json } = require("../../../../utils/lib");
 const { splitResponse } = require("../../../../utils/parks");
 
-//STANDBY 
+//EM PROGRESS
 /*
 177.128.199.14: show interface link | nomore
 Gigabit Ethernet Interfaces:
@@ -36,18 +36,10 @@ const displayUplinks = async (options) => {
   const chunk = await conn.execDatacom(cmd);
   if (!chunk && chunk === "") return null;
   
-  const filtered = chunk.replace(/CHASSIS|ID\/SLOT|ID\/PORT/g, '');
-  const splitted = splitResponse(filtered);
-	console.log(splitted)
-	return;
-  splitted.shift();
+  const splitted = splitResponse(chunk);
   splitted.pop();
-  splitted.pop();
-  
-  const filterWhiteSpace = splitted.filter(item => item.trim() !== '');
-	
-  console.log(filterWhiteSpace);
-  return;
+
+  const filtered = splitted.filter(row => !['CHASSIS', 'ID/SLOT', 'ID/PORT'].some(field => row.includes(field)));
 
   const columns = [
     [0, 11],
@@ -61,19 +53,28 @@ const displayUplinks = async (options) => {
     [69, 82],
   ]
 
-  const data = dummy2json(splitted.join('\n'), columns, 2)
-  console.log(data)
-  return
+  const data = filtered.filter((row) => !/^[-\s]+$/.test(row));
+  const uplinks = data.join('\n').split(/\n+/);
+
+  console.log(uplinks)
+  return;
 
   return data.map((item) => ({
-		name: item.name,
-    description,
-    port_attribute,
-    mode,
-    speed,
-    admin_status: null,
-    physical_status: null,
-    prot_status: null,
+		chassis: item.chassis,
+    idSlot: item.id[1],
+    idPort: item.id[2],
+    disabled: item[3],
+    blocked: item[4],
+    parent: item[5],
+    id: item[6],
+    link: item[7],
+    shutdown: item[8],
+    speed: item[9],
+    duplex: item[10],
+    by1: item[11],
+    by2: item[12],
+    lag: item[13],
+    description: item[14],
   }));
 };
 

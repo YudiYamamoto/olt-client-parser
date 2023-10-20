@@ -102,21 +102,23 @@ const olt = new OLTClientParser({
   // const data = await olt.displayPon({ pon_type: 'gpon', board: 1, slot: 1, port: 1 })
   // const data = await olt.displayOnus({ board: '1', slot: '1', port: '1' })
   // const data = await olt.displayOnus({ interface: 'gpon1/1' }) // Parks
-  // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '0' })
+  // const data = await olt.displayOnu({ board: '0', slot: '0', port: '0', ont_id: '1' })
   // const data = await olt.displayOnu({ serial_number: 'prks00b80c94' }) // Parks
   // const data = await olt.showOpticalModuleInfo({ board: '1', slot: '1', port: '1', ont_id: '1' })
   // const data = await olt.showOpticalModuleInfo() 
   // const data = await olt.displayVlans()
   // const data = await olt.displayVlan('10')
-  // const data = await olt.displayUplinks()
+  const data = await olt.displayUplinks()
   // const data = await olt.displayUnconfiguredOnus()
   // const data = await olt.displayDbaProfiles()
   // const data = await olt.displayLineProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayOLTServiceProfiles()
 
   // const data = await olt.createOnu({ board: '0', slot: '0', port: '0', ont_id: '0'})
-  // const data = await olt.deleteOnu({ board: '0', slot: '0', port: '0', ont_id: '0'})
-  
+  // const data = await olt.createOnu({ board: '1', slot: '1', port: '1', ont_id: '19'}) //DATACOM
+    // const data = await olt.deleteOnu({ servicePort: '1234', board: '1', slot: '1', port: '1', ont_id: '17'}) //DATACOM
+    // const data = await olt.deleteOnu({ board: '1', slot: '1', port: '1', ont_id: '19'})
+
   // const data = await olt.displayOnuProfiles() /** Verificar ZTE e Huawei */
   // const data = await olt.displayTraffic({ type: 'gpon', board: '1', slot: '1', port: '15', ont_id: '41' }) // *
 
@@ -138,7 +140,7 @@ const olt = new OLTClientParser({
   // const data = await olt.disableAutoNegotiation({ interface: 'gigabit-ethernet' , board: '1', slot: '1', port: '1' })
   // const data = await olt.enableTrunkMode('xgei-1/5/2')
   // const data = await olt.enableTrunkMode({ interface: 'giga-ethernet0/0', mode: 'access' }) // Parks
-  
+
   // const data = await olt.displaySpeedProfiles()
   // const data = await olt.disableUplink({ type: 'mcu', board: '0', slot: '2', port: '0' })
   // const data = await olt.disableUplink({ interface: 'gigabit-ethernet', board: '1', slot: '1', port: '1' }) // //DATACOM
@@ -155,6 +157,7 @@ const olt = new OLTClientParser({
   // const data = await olt.enablePon({ interface: 'gpon1/1' })
   // const data = await olt.createDbaProfile({ name: 'DBA_TEST_TYPE_4', type: 4, speed: 51200 });
   // const data = await olt.createSrvProfile({ profile_name: 'SRV_PROFILE_TEST_3', vlan: '669' });
+  // const data = await olt.createSrvProfile({ service_profile: 'SERVICE_PROFILE_NODE', onu_profile: 'ONU-GENERICA' }); //DATACOM
 
   console.log(data);
 })()
