@@ -2,7 +2,6 @@ const { connect } = require("../../../../config/ssh-connect");
 const { dummy2json } = require("../../../../utils/lib");
 const { splitResponse } = require("../../../../utils/parks");
 
-//EM PROGRESS
 /*
 177.128.199.14: show interface link | nomore
 Gigabit Ethernet Interfaces:
@@ -39,43 +38,36 @@ const displayUplinks = async (options) => {
   const splitted = splitResponse(chunk);
   splitted.pop();
 
-  const filtered = splitted.filter(row => !['CHASSIS', 'ID/SLOT', 'ID/PORT'].some(field => row.includes(field)));
+  const filter = splitted.map(row => {
+    return ['CHASSIS', 'ID/SLOT', 'ID/PORT'].some(field => row.includes(field))
+      ? row.replace('ID/PORT', '       ')
+      : row;
+  });
+  const filtered = filter.filter(row => !['CHASSIS', 'ID/SLOT', 'ID/PORT'].some(field => row.includes(field)));
+  const uplinks = filtered.join('\n').split(/\n+/);
 
-  const columns = [
-    [0, 11],
-    [11, 17],
-    [17, 27],
-    [27, 34],
-    [34, 42],
-    [42, 52],
-    [52, 61],
-    [61, 69],
-    [69, 82],
-  ]
+  const uplinksGroup = [];
+  let interfaceName = '';
 
-  const data = filtered.filter((row) => !/^[-\s]+$/.test(row));
-  const uplinks = data.join('\n').split(/\n+/);
+  for (const line of uplinks) {
+    if (line.includes(' Interfaces:')) {
+      interfaceName = line.trim().replace(' Interfaces:', '');
+    } else if (line.match(/^\d/)) {
+      const [id, link, shutdown, speed, duplex, disabledBy, blockedBy, lag, description] = line.split(/\s+/);
+      uplinksGroup.push({
+        name: interfaceName,
+        description,
+        port_attribute: id.split('/')[2],
+        mode: duplex,
+        speed,
+        admin_status: '',
+        physical_status: link,
+        prot_status: ''
+      });
+    }
+  }
 
-  console.log(uplinks)
-  return;
-
-  return data.map((item) => ({
-		chassis: item.chassis,
-    idSlot: item.id[1],
-    idPort: item.id[2],
-    disabled: item[3],
-    blocked: item[4],
-    parent: item[5],
-    id: item[6],
-    link: item[7],
-    shutdown: item[8],
-    speed: item[9],
-    duplex: item[10],
-    by1: item[11],
-    by2: item[12],
-    lag: item[13],
-    description: item[14],
-  }));
+  return uplinksGroup;
 };
 
 module.exports = displayUplinks;
