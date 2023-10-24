@@ -132,6 +132,15 @@ class SSHWrapper {
     return new Promise((resolve) => connection.connect(resolve))
   }
 
+  async execDatacom(cmds) {
+    const options = this.getOptions()
+    const connection = new SSH2Shell({
+      server: options,
+      commands: [...cmds],
+    })
+    return new Promise((resolve) => connection.connect(resolve))
+  }
+
   async exec2(cmd, isTerminal=true) {
     const commands = [isTerminal ? 'terminal length 0' : null, cmd, 'exit']
 

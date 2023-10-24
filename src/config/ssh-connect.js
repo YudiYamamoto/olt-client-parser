@@ -76,6 +76,12 @@ const connect = async (defaultOptions) => {
     return await client2.execParks(commands)
   }
 
+  const execDatacom = async (cmd) => {
+    const cmds = (cmd || '').split('\n')
+    const chunks = await client2.execDatacom(cmds)
+    return chunks 
+  }
+
   const exec7 = async (cmd) => {
     const cmds = (cmd || '').split('\n')
     const chunks = await client2.exec4(cmds)
@@ -93,6 +99,7 @@ const connect = async (defaultOptions) => {
     exec6,
     exec7,
     execParks,
+    execDatacom,
   }
 }
 
