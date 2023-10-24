@@ -23,26 +23,25 @@ splitted.pop()
 splitted.pop()
 
 const columns = [
-[0, 17],
-[17, 24],
-[24, 33],
-[33, 42],
-[42, 55],
-[55, 62],
-[62, 71],
-[71, 80],
+[0, 15],
+[16, 21],
+[21, 30],
+[30, 39],
+[39, 52],
+[52, 59],
+[59, 68],
+[68, 80],
 ]
-
 const data = dummy2json(splitted.join('\n'), columns, 2)
 
 return data
 .map((item) =>  {      
   return {
     name: item.name || '',
-    type: item.type || '',
-    speed: item.max_bwmaxbw.split('-    ')[1] || '',
-    assured: item.assured_bw || '',
-    fixed: item.fixed_bw || '',
+    type: '1',
+    speed: item.dmax_bwmaxb.split('-')[1].trim() || '',
+    assured: item.dassure_bw || '',
+    fixed: item.fixe_bw || '',
     custom_fields: {
       ...item
     }

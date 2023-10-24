@@ -13,9 +13,10 @@ const checkStage = async (options) => {
   if (!chunkDa && chunkDa === '') return null
   
   const chunkIt = chunkDa.split('\r\n')
+  chunkIt.shift();
+  chunkIt.pop();
 
-  const chunk = chunkIt.join('\n')
-  return chunk
+  return chunkIt.join('\n')
 }
 
 module.exports = checkStage

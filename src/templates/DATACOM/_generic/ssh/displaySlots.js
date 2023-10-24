@@ -13,7 +13,7 @@ Chassis/Slot  Product model      Role     Status        Firmware version
 1/PSU2        PSU-125-DC         None     Ready         Not available
 */
 
-const displayBoards = async (options) => {  
+const displayBoards = async (options, { board }) => {  
   const cmd = 'show platform'
   const conn = await connect(options)
   const chunk = await conn.execDatacom(cmd)
@@ -34,15 +34,18 @@ const displayBoards = async (options) => {
   
   const data = dummy2json(splitted.join('\n'), columns, 1)
 
-  return data.map((item) => ({
-    board: item['chassis_slot_------------'].split('/')[0] || '',
-    slot: item['chassis_slot_------------'].split('/')[1] || '',
-    type: item['productmodel_-----------------'],
-    real_type: item['productmodel_-----------------'],
-    software_version: item['firmwareversion_----------------------'],
-    available: item['status_------------'],
-    role: item['role_-------']
-  }));
+  return data
+    .map((item) => ({
+      board: item['chassis_slot_------------'].split('/')[0] || '',
+      slot: !isNaN(item['chassis_slot_------------'].split('/')[1]) ? item['chassis_slot_------------'].split('/')[1] : '',
+      type: item['productmodel_-----------------'],
+      real_type: item['productmodel_-----------------'],
+      software_version: item['firmwareversion_----------------------'],
+      available: item['status_------------'].toLowerCase() === 'ready',
+      role: item['role_-------'].toLowerCase(),
+    }))
+    .filter((item) => item.board === board)
+    .filter((item) => item.slot !== '')
 }
 
 

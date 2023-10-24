@@ -15,7 +15,8 @@ const dummy2json = (chunk, columns, skipLine = 3, delimiter = '_', delimiterHead
     if (line.trim().split('').every(char => char === delimiterHeader)) continue
     const element = {}
     for (const [col, position] of columns.entries()) {
-      const [start, end] = position
+      const [start, end] = position || []
+      if (isNaN(start) || isNaN(end)) continue
       const value = (line || '').substring(start, end).trim()
       if (!header[col]) header[col] = []
       const name = header[col].join(delimiter).trim()

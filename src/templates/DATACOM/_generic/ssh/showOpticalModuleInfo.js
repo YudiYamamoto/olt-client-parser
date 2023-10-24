@@ -41,13 +41,14 @@ OLT_Teste# show interface gpon 1/1/1 onu 1
 */
 
 const showOpticalModuleInfo = async (options, params) => {
-	const { 
+	const {
+		pon_type: type,
 		board,
 		slot,
 		port,
 		ont_id
 	} = params
-	const cmd = `show interface gpon ${board}/${slot}/${port} onu ${ont_id} | nomore`;
+	const cmd = `show interface ${type} ${board}/${slot}/${port} onu ${ont_id} | nomore`;
 	const conn = await connect(options)
 	const chunk = await conn.execDatacom(cmd)
 	if (!chunk && chunk === '') return null

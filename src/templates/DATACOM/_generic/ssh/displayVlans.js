@@ -36,14 +36,9 @@ const displayVlans = async (originalOptions) => {
 
   const data = dummy2json(splitted.join('\n'), columns, 2)
 
-  const list = []
-  for (const item of data) {
-    list.push({
-      vlan_id: item.vlan_id,
-      name: item.name,
-		})
-  }
-  return list
+  return data
+    .map(item => item.vlan_id)
+    .filter(item => item !== '')
 }
 
 module.exports = displayVlans

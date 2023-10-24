@@ -1,6 +1,5 @@
-const { connect } = require("../../../../config/ssh-connect");
-const { dummy2json } = require("../../../../utils/lib");
-const { splitResponse } = require("../../../../utils/parks");
+const { connect } = require('../../../../config/ssh-connect')
+const { dummy2json } = require('../../../../utils/lib')
 
 /*
 177.128.199.14: show interface link | nomore
@@ -30,44 +29,58 @@ OLT_Teste#
 */
 
 const displayUplinks = async (options) => {
-  const conn = await connect(options);
-  const cmd = `show interface link | nomore`;
-  const chunk = await conn.execDatacom(cmd);
-  if (!chunk && chunk === "") return null;
+  const conn = await connect(options)
+  const cmd = `show interface link | nomore`
+  const chunk = await conn.execDatacom(cmd)
+  if (!chunk && chunk === '') return null
   
-  const splitted = splitResponse(chunk);
-  splitted.pop();
+  const splitted = chunk.split('\r\n')
+  splitted.shift()
+  splitted.pop()
 
-  const filter = splitted.map(row => {
-    return ['CHASSIS', 'ID/SLOT', 'ID/PORT'].some(field => row.includes(field))
-      ? row.replace('ID/PORT', '       ')
-      : row;
-  });
-  const filtered = filter.filter(row => !['CHASSIS', 'ID/SLOT', 'ID/PORT'].some(field => row.includes(field)));
-  const uplinks = filtered.join('\n').split(/\n+/);
+  const [error, joined] = splitted
+    .join('||')
+    .split('Ten Gigabit Ethernet Interfaces:')
+    .map(item => {
+      const newItem = item.split('||')
+      newItem.shift()
+      newItem.pop()
 
-  const uplinksGroup = [];
-  let interfaceName = '';
+      return newItem
+    })
 
-  for (const line of uplinks) {
-    if (line.includes(' Interfaces:')) {
-      interfaceName = line.trim().replace(' Interfaces:', '');
-    } else if (line.match(/^\d/)) {
-      const [id, link, shutdown, speed, duplex, disabledBy, blockedBy, lag, description] = line.split(/\s+/);
-      uplinksGroup.push({
-        name: interfaceName,
-        description,
-        port_attribute: id.split('/')[2],
-        mode: duplex,
-        speed,
-        admin_status: '',
-        physical_status: link,
-        prot_status: ''
-      });
-    }
-  }
+  console.log(joined)
+  joined.shift()
+  joined.shift()
 
-  return uplinksGroup;
-};
+  const columns = [
+    [0, 9],
+    [9, 15],
+    [15, 25],
+    [25, 32],
+    [32, 40],
+    [40, 50],
+    [50, 59],
+    [59, 67],
+    [67, 100]
+  ]
+  const elements = dummy2json(joined.join('\n'), columns, 2)
 
-module.exports = displayUplinks;
+  return elements
+    .map(element => ({
+      name: element.idport_id,
+      description: element.description,
+      port_attribute: '',
+      mode: element.duplex === '-' ? 'auto' : element.duplex,
+      speed: element.speed,
+      admin_status: element.shutdown.toLowerCase() === 'false' ? 'down': 'up',
+      physical_status: element.link.toLowerCase(),
+      prot_status: element.link.toLowerCase(),
+      custom_fields: {
+        ...element,
+      }
+    })
+  )
+}
+
+module.exports = displayUplinks

@@ -22,7 +22,7 @@ Available upstream bandwidth
 const displayPon = async (options, { port, ...params }) => {
   const data = await displayPons(options, params);
 
-  return data.port || ''
+  return data.find((item) => item.port === port)
 }
 
 module.exports = displayPon;

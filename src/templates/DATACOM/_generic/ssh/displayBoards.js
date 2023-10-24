@@ -31,10 +31,17 @@ const displayBoards = async (options) => {
     [56, 85]
   ]
   
-  const data = dummy2json(splitted.join('\n'), columns, 1)
+  const elements = dummy2json(splitted.join('\n'), columns, 1)
 
-  return data.map((item) => ({ board: item['chassis_slot_------------'].split('/')[0] }))
+  const boards = {}
+  elements.forEach(item => {
+    const key = `${item['chassis_slot_------------'].split('/')[0]}`
+    if (!boards[key]) boards[key] = 0
+  })
+  const items = Object.keys(boards)
+  return items
+    .map(item => ({ board: item }))
+    .filter(item => !!item.board)
 }
-
 
 module.exports = displayBoards

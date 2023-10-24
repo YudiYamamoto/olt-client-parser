@@ -9,8 +9,13 @@ const { dummy2json, hour2time, column2json } = require('../../../../utils/lib')
 1/1/1     2        TPLGF43E1868    Up           None
 */
 
-const displayOnus = async (options) => {
-  const cmd = 'show interface gpon onu'
+const STATUS = {
+  'active': 'online',
+  'inactive': 'offline'
+}
+
+const displayOnus = async (options, { pon_type: type = 'gpon', board = '1', slot = '1', port = '1'}) => {
+  const cmd = `show interface ${type} onu`
   const conn = await connect(options)
   const chunk = await conn.execDatacom(cmd)
   if (!chunk && chunk === '') return null
@@ -28,83 +33,64 @@ const displayOnus = async (options) => {
     [76, 99],
   ]
 
-	const data = dummy2json(splitted.join('\n'), columns, 1)
+	const elements = dummy2json(splitted.join('\n'), columns, 1)
+  const data = elements.filter((item) => item['itf_--------'] === `${board}/${slot}/${port}`)
 
   let cmd2 = '';
-  for (let i = 0; i < data.length; i++) {
-    cmd2 += `show interface gpon ${data[i]['itf_--------']} onu ${data[i]['onuid_------']} | nomore
+  for (const interface of data) {
+    cmd2 += `show interface ${type} ${interface['itf_--------']} onu ${interface['onuid_------']} | nomore
     `;
   }
+  if (cmd2 == '') return []
 
   const chunkOnu = await conn.execDatacom(cmd2)
-
   const splitted2 = chunkOnu.split('\r\n')
-  splitted2.pop()
+  splitted2.shift()
 
-  const onuFiltered = splitted2.filter(item => item !== '');
+  const joined = splitted2.join('\n')
+  const onuGroup = joined.split(' | nomore')
+    .map((item) => { 
+      const newItem = item.split('\n')
+      newItem.pop()
+      newItem.pop()
 
-  const onuGroup = []
-  let onu = {}
+      return column2json(newItem
+        .filter((item2) => item2 !== '')
+        .map((item3) => 
+          item3
+            .replace(':', '[$%]')
+            .replace(/\:/gi, '-')
+            .replace('[$%]', ':')
+          )
+      )
+    })
 
-  for (const row of onuFiltered) {
-    if (row.includes('show')) {
-      if (onu.length > 0) {
-        onuGroup.push(onu);
-        onu = {};
-      }
-      onu = [row]
-    } else {
-      //Por conta da hora foi adicionado essa condição
-      if (row.includes('Uptime')) {
-        const parts = row.split('                  :');
-        if (parts.length === 2) {
-          const key = parts[0].trim();
-          const value = parts[1].trim();
-          onu[key] = value;
-          continue;
-        }
-      }
-
-      const parts = row.split(':');
-      if (parts.length === 2) {
-        const key = parts[0].trim();
-        const value = parts[1].trim();
-        onu[key] = value;
-      }
+	return onuGroup.map((item) => ({
+    board,
+    slot,
+    port,
+    ont_id: item['id'],
+    serial_number: item.serial_number,
+    pon_type: type,
+    uptime_at: hour2time(item.uptime || ''),
+    onu_type: item.equipment_i_d,
+    name: item.name,
+    catv_rx_power: 0,
+    stage: STATUS[item.primarystatus.toLowerCase()] || 'disabled',
+    temperature: 0,
+    tx_power: parseFloat((item['tx_optical_power[d_bm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10) || '',
+    rx_power: parseFloat((item['rx_optical_power[d_bm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10) || '',
+    distance: parseInt((item['distance'] || '0').replace(' [km]', ''), 10),   
+    mac_adress: item.mac || '',
+    onu_external_id: item.external_id || '',
+    authorization_at: new Date(),
+    line_profile: item.line_profile,
+    onu_profile: item.service_profile,
+    custom_fields: {
+      ...item,
+      source: 'import_onu',
     }
-  }
-
-  if (Object.keys(onu).length > 0) {
-    onuGroup.push(onu);
-  }
-
-	return onuGroup.map((item) => {
-    const dirtyData = item[0]
-    const dataFiltered = dirtyData.match(/interface\s(.*?)\sonu/);
-    const interface = dataFiltered ? dataFiltered[1] : null;
-
-    return {
-      board: interface.split('/')[0].split(' ')[1],
-      slot: interface.split('/')[1],
-      port: interface.split('/')[2],
-      ont_id: item['ID'],
-      serial_number: item['Serial Number'],
-      pon_type: interface.split('/')[0].split(' ')[0],
-      uptime_at: hour2time(item['Uptime'] || ''),
-      onu_type: item.onu || '',
-      operational_state: item['Operational state'],
-      name: item['Name'],
-      catv_rx_power: 0,
-      stage: null,
-      temperature: null,
-      tx_power: parseFloat((item['Tx Optical Power [dBm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10) || '',
-      rx_power: parseFloat((item['Rx Optical Power [dBm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10) || '',
-      distance: parseInt(item['Distance'] || '0', 10),   
-      mac_adress: item.mac || '',
-      onu_external_id: item.external_id || '',
-      authorization_at: new Date(),
-    }
-	})
+	}))
 }
 
 module.exports = displayOnus

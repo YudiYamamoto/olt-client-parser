@@ -19,27 +19,25 @@ const displayVlan = async (options, vlan) => {
   splitted.pop()
   splitted.pop()
   splitted.pop()
+  splitted.pop()
   
   const columns = [
     [0, 6],
-    [6, 13],
-    [13, 41],
-    [41, 55],
+    [6, 30],
+    [30, 58],
+    [58, 80],
   ]
 
   const data = dummy2json(splitted.join('\n'), columns, 2)
-
-  const list = []
-  for (const item of data) {
-    list.push({
-      name: item.name || '',
-      description: item.interfacename || '',
+  return data
+    .map(item => ({
+      name: item.vlan_id || '',
+      description: item.name || '',
       custom_fields: {
         ...item
       }
-		})
-  }
-  return list
+    }))
+    .filter(item => item.name !== '')
 }
 
 module.exports = displayVlan
