@@ -12,13 +12,17 @@ IRARA-OLT#
 
 const displayUnconfiguredOnus = async (originalOptions) => {
   const conn = await connect(originalOptions)
-  const cmd = 'show pon onu uncfg'
+  const cmd = `terminal length 512
+show pon onu uncfg`
   const chunk = await conn.exec2(cmd)
+
+  console.log(cmd, chunk);
   
   const splitted = chunk.split('\n')
+  splitted.shift()
+  splitted.shift()
+  splitted.shift()
   splitted.pop()
-  splitted.shift()
-  splitted.shift()
 
   const columns = [
     [0, 20],
