@@ -17,8 +17,6 @@ const displayBoards = async (options) => {
   const conn = await connect(options)
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
-
-  console.log('teste')
   
   const splitted = chunk.split('\r\n')
   splitted.shift()

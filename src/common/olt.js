@@ -42,8 +42,8 @@ class OLT {
       ...(modelTemplate && modelTemplate[connectionType]),
       ...(modelTemplate && modelTemplate[firmware] && modelTemplate[firmware][connectionType])
     }
-    
-    return {
+
+    const data = {
       container: {
         ...Object.assign(brandTemplate.generic, container),
       },
@@ -53,6 +53,8 @@ class OLT {
         ...container.options,
       }
     }
+    
+    return data
   }
 }
 

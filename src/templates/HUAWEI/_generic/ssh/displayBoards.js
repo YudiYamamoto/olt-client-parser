@@ -13,12 +13,10 @@ ID      Type       State      State     Type      Port          Port
 
 const displayBoards = async (options) => {  
   const cmd = `display frame info`
-  console.log('teste_generic')
   const conn = await connect(options)
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
 
-  
   const splitted = chunk.split('\r\n')
   splitted.shift()
   splitted.shift()

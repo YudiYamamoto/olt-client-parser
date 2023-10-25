@@ -2,19 +2,19 @@
 const OLTClientParser = require('../index')
 
 const olt = new OLTClientParser({
- name: 'JP-PINHEIRO',
- brand: 'Huawei',
- model: 'Huawei_MA5603T',
- firmware: 'FMA5600V800R017C00',
- connectionType: 'ssh',
- options: {
-   host: 'localhost',
-   port: 2222,
-   username: 'sysravi',
-   password: 'v4497270',
-   shellPrompt: '*',
-   algorithms: { cipher: ['aes256-cbc'] },
- }
+  name: 'JP-PINHEIRO',
+  brand: 'Huawei',
+  model: 'Huawei_MA5603T',
+  firmware: 'MA5600V800R017C00',
+  connectionType: 'ssh',
+  options: {
+    host: 'localhost',
+    port: 2222,
+    username: 'sysravi',
+    password: 'v4497270',
+    shellPrompt: '*',
+    algorithms: { cipher: ['aes256-cbc'] },
+  }
 });
 
 // const olt = new OLTClientParser({
