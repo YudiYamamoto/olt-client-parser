@@ -29,7 +29,6 @@ const olt = new OLTClientParser({
 //     username: 'admin',
 //     password: 'Made4Olt748205@',
 //     shellPrompt: 'OLT_Teste#',
-//     algorithms: { cipher: ['aes192-ctr'] },
 //   }
 // });
 

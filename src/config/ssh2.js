@@ -135,7 +135,7 @@ class SSHWrapper {
   async execDatacom(cmds) {
     const options = this.getOptions()
     const connection = new SSH2Shell({
-      server: options,
+      server: { ...options, algorithms: { cipher: ['aes192-ctr'] } },
       commands: [...cmds],
     })
     return new Promise((resolve) => connection.connect(resolve))
