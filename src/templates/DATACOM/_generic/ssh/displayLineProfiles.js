@@ -46,19 +46,23 @@ return data
   .map((item) =>  {      
     return {
       name: item.name || '',
-      tcont: [{
-        id: item.tcont || '',
+      tconts: [{
+        name: item.tcont || '',
         dba_profile: item.bandwidth_profile || '',
         gems: [{
           name: item.gem_id || '',
           type: item.gem_id || '',
-        }]
+        }],
+        custom_fields: {
+          ...item
+        }
       }],
       custom_fields: {
         ...item
       }
     }
   })
+  .filter((item) => item.name !== '')
 }
 
 module.exports = displayLineProfiles

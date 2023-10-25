@@ -29,7 +29,7 @@ const displayVlan = async (options, vlan) => {
   ]
 
   const data = dummy2json(splitted.join('\n'), columns, 2)
-  return data
+  const [response] = data
     .map(item => ({
       name: item.vlan_id || '',
       description: item.name || '',
@@ -38,6 +38,7 @@ const displayVlan = async (options, vlan) => {
       }
     }))
     .filter(item => item.name !== '')
+  return response
 }
 
 module.exports = displayVlan

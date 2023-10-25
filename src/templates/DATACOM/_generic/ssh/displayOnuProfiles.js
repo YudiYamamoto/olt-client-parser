@@ -23,6 +23,8 @@ const displayOnuProfiles = async (options) => {
   splitted.pop()
   splitted.pop()
 
+  console.log(splitted)
+
   const columns = [
     [0, 18],
     [18, 26],

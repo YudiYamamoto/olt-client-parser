@@ -10,7 +10,7 @@ const displayOnus = async (options, params) => {
   const length = chance.integer({ min: 0, max: size })
   for await (const [index] of Array.from({ length }).entries()) {
     const ont_id = index + 1
-    const mac_address = `FF:${board.padStart(2, '0')}:${slot.padStart(2, '0')}:${port.padStart(2, '0')}:MM:${ont_id.toString().padStart(2, '0')}`
+    const mac_address = `FF:${board.padStart(2, '0')}:${slot.padStart(2, '0')}:${(port || '').padStart(2, '0')}:MM:${ont_id.toString().padStart(2, '0')}`
     const onu = await displayOnu(options, { ...params, ont_id, mac_address })
     if (onu) data.push(onu)
   }      

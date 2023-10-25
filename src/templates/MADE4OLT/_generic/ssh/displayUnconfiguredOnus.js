@@ -4,7 +4,7 @@ const chance = require('chance').Chance()
 const numberOfOnus = chance.integer({ min: 20, max: 50 })
 
 const randomOnuType = (type) => `MD000-${(type[0]).toUpperCase()}${chance.integer({ min: 1, max: '4' })}`
-const randomSerialNumber = (board, slot, type, port) => `MB${board}S${slot}R${type.toUpperCase()}${port.padStart(2, '0')}I${chance.integer({ min: 20, max: 50 })}`
+const randomSerialNumber = (board, slot, type, port) => `MB${board}S${slot}R${type.toUpperCase()}${(port || '').padStart(2, '0')}I${chance.integer({ min: 20, max: 50 })}`
 
 const generateOnu = () => {
   const board = 1

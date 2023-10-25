@@ -11,7 +11,7 @@ const { dummy2json, hour2time, column2json } = require('../../../../utils/lib')
 
 const STATUS = {
   'active': 'online',
-  'inactive': 'offline'
+  'inactive': 'disabled'
 }
 
 const displayOnus = async (options, { pon_type: type = 'gpon', board = '1', slot = '1', port = '1'}) => {
@@ -78,8 +78,8 @@ const displayOnus = async (options, { pon_type: type = 'gpon', board = '1', slot
     catv_rx_power: 0,
     stage: STATUS[item.primarystatus.toLowerCase()] || 'disabled',
     temperature: 0,
-    tx_power: parseFloat((item['tx_optical_power[d_bm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10) || '',
-    rx_power: parseFloat((item['rx_optical_power[d_bm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10) || '',
+    tx_power: parseFloat((item['tx_optical_power[d_bm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
+    rx_power: parseFloat((item['rx_optical_power[d_bm]'] || '0').toLowerCase().replace('dbm', '').trim().replace(/ /gi, ''), 10),
     distance: parseInt((item['distance'] || '0').replace(' [km]', ''), 10),   
     mac_adress: item.mac || '',
     onu_external_id: item.external_id || '',

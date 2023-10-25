@@ -36,7 +36,7 @@ const displayOnu = async (_options, {
   }
 
   const randomOnuType = () => `MD000-${type[0].toUpperCase()}${chance.integer({ min: 1, max: '4' })}`
-  const randomSerialNumber = () => `MB${board}S${slot}R${type.toUpperCase()}${port.padStart(2, '0')}`
+  const randomSerialNumber = () => `MB${board}S${slot}R${type.toUpperCase()}${(port || '').padStart(2, '0')}`
   
   const chunk = `
 ZXAN#show ${type} onu detail-info ${type}-onu_${f_p_s}:${ont_id}
