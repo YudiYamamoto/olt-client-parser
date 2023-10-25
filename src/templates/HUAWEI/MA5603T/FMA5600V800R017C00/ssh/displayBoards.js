@@ -1,5 +1,5 @@
-const { connect } = require('../../../../config/ssh-connect')
-const { dummy2json } = require('../../../../utils/lib')
+const { connect } = require('../../../../../config/ssh-connect')
+const { dummy2json } = require('../../../../../utils/lib')
 
 /*
         display frame info 
@@ -12,12 +12,13 @@ ID      Type       State      State     Type      Port          Port
 */
 
 const displayBoards = async (options) => {  
-  const cmd = `display frame info`
-  console.log('teste_generic')
+  const cmd = `display frame info
+  `
   const conn = await connect(options)
   const chunk = await conn.exec7(cmd)
   if (!chunk && chunk === '') return null
 
+  console.log('teste')
   
   const splitted = chunk.split('\r\n')
   splitted.shift()
@@ -35,7 +36,7 @@ const displayBoards = async (options) => {
   ]
   
   const data = dummy2json(splitted.join('\n'), columns, 2)
-  return data.map((item) => ({ board: item.frame_i_d }))
+  return data.map((item) => ({ board: item.frame__i_d }))
 }
 
 

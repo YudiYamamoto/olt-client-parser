@@ -1,22 +1,37 @@
 'use strict'
 const OLTClientParser = require('../index')
 
-
 const olt = new OLTClientParser({
-  name: 'DATACOM',
-  brand: 'DATACOM',
-  model: 'DATACOM',
-  firmware: 'DATACOM',
-  connectionType: 'ssh',
-  options: {
-    host: '177.128.199.14',
-    port: 6002,
-    username: 'admin',
-    password: 'Made4Olt748205@',
-    shellPrompt: 'OLT_Teste#',
-    algorithms: { cipher: ['aes192-ctr'] },
-  }
+ name: 'JP-PINHEIRO',
+ brand: 'Huawei',
+ model: 'Huawei_MA5603T',
+ firmware: 'FMA5600V800R017C00',
+ connectionType: 'ssh',
+ options: {
+   host: 'localhost',
+   port: 2222,
+   username: 'sysravi',
+   password: 'v4497270',
+   shellPrompt: '*',
+   algorithms: { cipher: ['aes256-cbc'] },
+ }
 });
+
+// const olt = new OLTClientParser({
+//   name: 'DATACOM',
+//   brand: 'DATACOM',
+//   model: 'DATACOM',
+//   firmware: 'DATACOM',
+//   connectionType: 'ssh',
+//   options: {
+//     host: '177.128.199.14',
+//     port: 6002,
+//     username: 'admin',
+//     password: 'Made4Olt748205@',
+//     shellPrompt: 'OLT_Teste#',
+//     algorithms: { cipher: ['aes192-ctr'] },
+//   }
+// });
 
 /*
 const olt = new OLTClientParser({
@@ -96,7 +111,7 @@ const olt = new OLTClientParser({
 
 (async () => {
   // const data = await olt.checkStage()
-  // const data = await olt.displayBoards()
+  const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data = await olt.displayPon({ pon_type: 'gpon', board: '1', slot: '1', port: '1' })
