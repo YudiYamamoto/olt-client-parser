@@ -1,6 +1,7 @@
 'use strict'
 const OLTClientParser = require('../index')
 
+/*
 const olt = new OLTClientParser({
   name: 'JP-PINHEIRO',
   brand: 'Huawei',
@@ -16,21 +17,23 @@ const olt = new OLTClientParser({
     algorithms: { cipher: ['aes256-cbc'] },
   }
 });
+*/
 
-// const olt = new OLTClientParser({
-//   name: 'DATACOM',
-//   brand: 'DATACOM',
-//   model: 'DATACOM',
-//   firmware: 'DATACOM',
-//   connectionType: 'ssh',
-//   options: {
-//     host: '177.128.199.14',
-//     port: 6002,
-//     username: 'admin',
-//     password: 'Made4Olt748205@',
-//     shellPrompt: 'OLT_Teste#',
-//   }
-// });
+const olt = new OLTClientParser({
+  name: 'DATACOM',
+  brand: 'DATACOM',
+  model: 'GENERIC',
+  firmware: '1.0.0',
+  connectionType: 'ssh',
+  options: {
+    host: '177.128.199.14',
+    port: '6002',
+    username: 'admin',
+    password: 'Made4Olt748205@',
+    shellPrompt: 'OLT_Teste#',
+    // algorithms: { cipher: ['aes192-ctr'] },
+  }
+});
 
 /*
 const olt = new OLTClientParser({
@@ -109,8 +112,8 @@ const olt = new OLTClientParser({
 // });
 
 (async () => {
-  // const data = await olt.checkStage()
-  const data = await olt.displayBoards()
+  const data = await olt.checkStage()
+  // const data = await olt.displayBoards()
   // const data = await olt.displaySlots({ board: '1' })
   // const data = await olt.displayPons({ board: '1', slot: '1' })
   // const data = await olt.displayPon({ pon_type: 'gpon', board: '1', slot: '1', port: '1' })

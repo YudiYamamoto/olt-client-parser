@@ -13,8 +13,8 @@ const checkStage = async (options) => {
   if (!chunkDa && chunkDa === '') return null
   
   const chunkIt = chunkDa.split('\r\n')
-  chunkIt.shift();
-  chunkIt.pop();
+  chunkIt.shift()
+  chunkIt.pop()
 
   return chunkIt.join('\n')
 }

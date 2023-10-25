@@ -1,10 +1,11 @@
 const generic = require('./_generic')
-// const DATACOM = require('./DATACOM')
 
 module.exports = {
   generic,
-  'DATACOM': {
-    ...generic,
+  GENERIC: {
+    F1_0_0: {
+      ...generic,
+    },
     options: {
       params: {
         numberPort: 16
