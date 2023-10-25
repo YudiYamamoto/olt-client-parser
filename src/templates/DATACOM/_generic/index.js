@@ -15,7 +15,9 @@ const sshDisplayVlan = require ('./ssh/displayVlan')
 const sshDisplayOnuProfiles = require('./ssh/displayOnuProfiles')
 // const sshScopeVlanInternet = require('./ssh/scopeVlanInternet')
 const sshScopeVlanLanToLan = require('./ssh/scopeVlanLanToLan')
-// const sshdisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
+const sshDisplayTraffic = require('./ssh/displayTraffic')
+const sshdisplayUnconfiguredOnus = require ('./ssh/displayUnconfiguredOnus')
+const sshDisplaySpeedProfiles = require('./ssh/displaySpeedProfiles')
 // // actions
 const sshCreateVlan = require('./ssh/createVlan')
 const sshDeleteVlan = require('./ssh/deleteVlan')
@@ -57,7 +59,9 @@ module.exports = {
     displayOnuProfiles: sshDisplayOnuProfiles,
     // scopeVlanInternet: sshScopeVlanInternet,
     scopeVlanLanToLan: sshScopeVlanLanToLan,
-    // displayUnconfiguredOnus: sshdisplayUnconfiguredOnus,
+    displayUnconfiguredOnus: sshdisplayUnconfiguredOnus,
+    displayTraffic: sshDisplayTraffic,
+    displaySpeedProfiles: sshDisplaySpeedProfiles,
     // // actions
     createVlan: sshCreateVlan,
     deleteVlan: sshDeleteVlan,
